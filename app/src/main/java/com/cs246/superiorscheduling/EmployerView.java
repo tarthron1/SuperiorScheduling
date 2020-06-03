@@ -17,7 +17,7 @@ public class EmployerView extends AppCompatActivity {
         Intent intent = new Intent(this, AccountManagerView.class);
         startActivity(intent);
     }
-    public void viewScheduler(View view) {
+    public void viewSchedulerEditor(View view) {
         Intent intent = new Intent(this, AccountManagerView.class);
         startActivity(intent);
     }
