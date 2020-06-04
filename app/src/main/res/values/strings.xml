@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Superior Scheduling</string>
+    <string name="viewschedule">viewSchedule</string>
 </resources>
