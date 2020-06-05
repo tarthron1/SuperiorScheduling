@@ -16,4 +16,16 @@ public class Employee {
     public Employee(String firstName, String lastName, String nickName, LocalDate birthdate){
 
     }
+
+    public Employee(String firstName, String lastName, LocalDate birthdate){
+
+    }
+
+    public void toggleActive(){
+
+    }
+
+    public boolean isActive(){
+        return active;
+    }
 }
