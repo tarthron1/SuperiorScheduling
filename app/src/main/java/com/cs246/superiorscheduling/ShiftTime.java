@@ -10,7 +10,7 @@ public class ShiftTime {
     LocalTime endTime;
     Shift parentShift;
 
-    public  void ShiftTime(LocalTime startTime, LocalTime endTime, Shift parentShift){
+    public ShiftTime(LocalTime startTime, LocalTime endTime, Shift parentShift){
         this.startTime = startTime;
         this.endTime = endTime;
         this.parentShift = parentShift;
