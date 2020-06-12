@@ -5,16 +5,18 @@ import java.util.HashSet;
 
 public class ShiftTime {
 
-    HashSet<Employee> employeesOnShift;
+    private HashSet<Employee> employeesOnShift;
     LocalTime startTime;
     LocalTime endTime;
     Shift parentShift;
 
-    public ShiftTime(LocalTime startTime, LocalTime endTime){
-
+    public  void ShiftTime(LocalTime startTime, LocalTime endTime, Shift parentShift){
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.parentShift = parentShift;
     }
 
     public void addEmployee(Employee employee){
-
+        this.employeesOnShift.add(employee);
     }
 }
