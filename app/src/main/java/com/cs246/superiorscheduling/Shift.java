@@ -20,8 +20,16 @@ public class Shift {
         this.endTime = endTime;
     }
 
+    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
+        this.date = date;
+        this.requiredEmployees = requiredEmployees;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.shiftType = shiftType;
+    }
+
     public void addShiftTime(LocalTime startTime, LocalTime endTime){
-        ShiftTime newStartTime = new ShiftTime();
+        this.shiftTimes.add(new ShiftTime(startTime, endTime, this));
     }
 
 
