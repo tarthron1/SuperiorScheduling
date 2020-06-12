@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 public class ShiftTime {
 
-    private HashSet<Employee> employeesOnShift;
+    private HashSet<User> employeesOnShift;
     LocalTime startTime;
     LocalTime endTime;
     Shift parentShift;
@@ -16,7 +16,7 @@ public class ShiftTime {
         this.parentShift = parentShift;
     }
 
-    public void addEmployee(Employee employee){
-        this.employeesOnShift.add(employee);
+    public void addEmployee(User user){
+        this.employeesOnShift.add(user);
     }
 }
