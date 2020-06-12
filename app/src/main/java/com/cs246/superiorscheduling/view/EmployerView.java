@@ -1,10 +1,13 @@
-package com.cs246.superiorscheduling;
+package com.cs246.superiorscheduling.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.view.AccountManagerView;
 
 public class EmployerView extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.cs246.superiorscheduling;
+package com.cs246.superiorscheduling.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

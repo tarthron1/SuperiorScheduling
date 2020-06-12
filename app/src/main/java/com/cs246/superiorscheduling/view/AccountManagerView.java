@@ -1,8 +1,10 @@
-package com.cs246.superiorscheduling;
+package com.cs246.superiorscheduling.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.cs246.superiorscheduling.R;
 
 public class AccountManagerView extends AppCompatActivity {
 

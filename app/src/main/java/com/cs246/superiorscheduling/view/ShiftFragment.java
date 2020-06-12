@@ -1,4 +1,4 @@
-package com.cs246.superiorscheduling;
+package com.cs246.superiorscheduling.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.cs246.superiorscheduling.R;
 
 public class ShiftFragment extends Fragment {
     @Override
