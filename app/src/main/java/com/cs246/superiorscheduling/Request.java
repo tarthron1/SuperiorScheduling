@@ -4,24 +4,24 @@ import java.time.LocalDate;
 
 public class Request {
 
-    Employee requestor;
+    User requestor;
     LocalDate date;
     Shift shift = null;
     String reason = null;
 
-    public Request(Employee requestor, LocalDate date, Shift shift, String reason){
+    public Request(User requestor, LocalDate date, Shift shift, String reason){
 
     }
 
-    public Request(Employee requestor, LocalDate date, Shift shift){
+    public Request(User requestor, LocalDate date, Shift shift){
 
     }
 
-    public Request(Employee requestor, LocalDate date, String reason){
+    public Request(User requestor, LocalDate date, String reason){
 
     }
 
-    public Request(Employee requestor, LocalDate date){
-        
+    public Request(User requestor, LocalDate date){
+
     }
 }

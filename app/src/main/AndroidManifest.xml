@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmployeeView"></activity>
+        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".EmployeeView" />
         <activity android:name=".AccountManagerView" />
         <activity android:name=".SchedulerEditorView" />
         <activity android:name=".EmployerView" />
