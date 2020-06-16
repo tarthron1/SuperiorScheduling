@@ -21,10 +21,16 @@ public class EmployerView extends AppCompatActivity implements MainPresenter.Lis
         Intent intent = new Intent(this, AccountManagerView.class);
         startActivity(intent);
     }
-    public void viewSchedulerEditor(View view) {
-        Intent intent = new Intent(this, AccountManagerView.class);
+
+    public void viewSchedule(View view){
+        //Open new activity with schedule fragment?
+    }
+
+    public void editSchedules(View view) {
+        Intent intent = new Intent(this, ScheduleEditorView.class);
         startActivity(intent);
     }
+
 
     @Override
     public void notifyDataReady() {
