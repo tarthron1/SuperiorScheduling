@@ -20,7 +20,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void addAccount(View view){
-        /* //get switch result from create account form
+        //get switch result from create account form
         Switch managerSwitch = findViewById(R.id.manager_switch);
         //if manager switch is checked deliver EmployerView
         if(managerSwitch.isChecked()) {
@@ -31,6 +31,6 @@ public class SignUpActivity extends AppCompatActivity {
         else if(!managerSwitch.isChecked()) {
             Intent employee = new Intent(this, EmployeeView.class);
             startActivity(employee);
-        } */
+        }
     }
 }
