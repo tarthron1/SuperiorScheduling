@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.presenter.MainPresenter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainPresenter.Listener {
+
+    MainPresenter presenter = new MainPresenter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        presenter.registerUsers(this);
     }
 
     public void login(View view){
@@ -28,4 +32,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void notifyDataReady() {
+
+    }
+
+    @Override
+    public void notifyConfigChanged() {
+
+    }
 }
