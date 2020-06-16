@@ -1,10 +1,11 @@
-package com.cs246.superiorscheduling;
+package com.cs246.superiorscheduling.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.cs246.superiorscheduling.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
