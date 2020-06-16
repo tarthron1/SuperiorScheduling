@@ -1,4 +1,35 @@
 <resources>
     <string name="app_name">Superior Scheduling</string>
-    <string name="viewschedule">viewSchedule</string>
+    <string name="viewSchedule">View Schedule</string>
+    <string name="login_prompt">Login to Your Account</string>
+    <string name="newAccount_prompt">Create an Account</string>
+    <string name="login_button">Login</string>
+    <string name="newAccount_button">Create Account</string>
+    <string name="username_prompt">Username:</string>
+    <string name="password_prompt">Password:</string>
+    <string name="firstName_prompt">First Name:</string>
+    <string name="lastName_prompt">Last Name:</string>
+    <string name="preferredName_prompt">Nick Name:</string>
+    <string name="birthdate_prompt">Birthdate:</string>
+    <string name="position_prompt">Position:</string>
+    <string name="manager_type">Manager</string>
+    <string name="employee_type">Employee</string>
+    <string name="timeoff_button">Request Time Off</string>
+    <string name="accounts_button">Manage Accounts</string>
+    <string name="createSchedule_button">Create Schedule</string>
+    <string name="shift_prompt">Shift:</string>
+    <string name="reason_prompt">Reason:</string>
+    <string name="submitRequest_button">Submit Request</string>
+    <string name="addEmployees_button">Add to Shift</string>
+    <string name="reqEmployees_tracker">Number Needed:</string>
+    <string name="shiftType_prompt">Shift Type:</string>
+    <string name="date_prompt">Date:</string>
+    <string name="beginTime_prompt">Begin Time:</string>
+    <string name="endTime_prompt">End Time:</string>
+    <string name="addShift_button">Create Shift</string>
+    <string name="startDate_prompt">Start Date:</string>
+    <string name="endDate_prompt">End Date:</string>
+    <string name="clear_button">Clear</string>
+    <string name="publish_button">Publish</string>
+    <string name="scheduleEditor_title">Create Schedule</string>
 </resources>
