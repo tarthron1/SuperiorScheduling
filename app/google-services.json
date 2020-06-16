@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "388350873837",
+    "firebase_url": "https://superior-scheduling.firebaseio.com",
+    "project_id": "superior-scheduling",
+    "storage_bucket": "superior-scheduling.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388350873837:android:2fb9f640ab884e3b47bce4",
+        "android_client_info": {
+          "package_name": "com.cs246.superiorscheduling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388350873837-ahabo0sndqu8c8tr6mtqee3uf7s7imp4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cs246.superiorscheduling",
+            "certificate_hash": "7b34fcff5be02f643bca8f76cff4d6334be76928"
+          }
+        },
+        {
+          "client_id": "388350873837-n6l4sbcpgop2uqurc70p6g8gdd0t740e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASLFly3EbJTt8gQ1--Qn8m9rbFFooTBLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388350873837-n6l4sbcpgop2uqurc70p6g8gdd0t740e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
