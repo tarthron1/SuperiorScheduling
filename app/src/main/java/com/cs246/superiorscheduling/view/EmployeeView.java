@@ -14,27 +14,43 @@ import com.cs246.superiorscheduling.view.AccountManagerView;
 
 public class EmployeeView extends AppCompatActivity implements MainPresenter.Listener {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_view);
-    }
 
-    public void viewSchedule(View view){
+        //show schedule fragment
         ScheduleView scheduleView = new ScheduleView();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.employee_container, scheduleView);
+        fragmentTransaction.replace(R.id.employee_container, scheduleView);
         fragmentTransaction.commit();
+    }
+
+    public void viewSchedule(View view){
+
     }
 
     public void requestTimeoff(View view){
         TimeoffFragment timeoffFragment = new TimeoffFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.employee_container, timeoffFragment);
+        fragmentTransaction.replace(R.id.employee_container, timeoffFragment);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
+
+    public void submitRequest(View view) {
+        System.out.println("Submitted");
+        ScheduleView scheduleView = new ScheduleView();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.employee_container, scheduleView);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        fragmentTransaction.commit();
+    }
+
 
     @Override
     public void notifyDataReady() {
