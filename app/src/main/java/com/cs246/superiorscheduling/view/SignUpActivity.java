@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.cs246.superiorscheduling.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,8 +44,8 @@ public class SignUpActivity extends AppCompatActivity {
         Switch pos = findViewById(R.id.manager_switch);
         Boolean manager = pos.isChecked();
 
-        EditText un = (EditText) findViewById(R.id.username);
-        String username = un.getText().toString();
+        EditText un = (EditText) findViewById(R.id.email);
+        String email = un.getText().toString();
 
         EditText pass = (EditText) findViewById(R.id.password);
         String password = pass.getText().toString();
@@ -57,9 +56,10 @@ public class SignUpActivity extends AppCompatActivity {
         intent.putExtra("nickName", nickName);
         intent.putExtra("birthDate", birthDate);
         intent.putExtra("manager", manager);
-        intent.putExtra("username", username);
+        intent.putExtra("email", email);
         intent.putExtra("password", password);
 
-        startActivity(intent);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
