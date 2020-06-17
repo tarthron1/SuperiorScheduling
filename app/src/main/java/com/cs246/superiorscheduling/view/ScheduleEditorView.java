@@ -44,12 +44,12 @@ public class ScheduleEditorView extends AppCompatActivity implements MainPresent
     }
 
     @Override
-    public void notifyDataReady() {
+    public void notifyChangeOnCloud() {
 
     }
 
     @Override
-    public void notifyConfigChanged() {
+    public void notifyNewDataToSave() {
 
     }
 }

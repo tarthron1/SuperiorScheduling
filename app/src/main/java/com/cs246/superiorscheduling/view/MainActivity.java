@@ -108,12 +108,12 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Lis
     }
 
     @Override
-    public void notifyDataReady() {
+    public void notifyChangeOnCloud() {
 
     }
 
     @Override
-    public void notifyConfigChanged() {
+    public void notifyNewDataToSave() {
 
     }
 
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Lis
 
     private void updateUI(FirebaseUser user) {
         if (user != null){
+            //todo check to see if the user is a manager then create the correct activity.
 
         }
     }

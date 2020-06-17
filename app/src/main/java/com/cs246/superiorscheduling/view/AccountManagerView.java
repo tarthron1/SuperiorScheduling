@@ -16,12 +16,12 @@ public class AccountManagerView extends AppCompatActivity implements MainPresent
     }
 
     @Override
-    public void notifyDataReady() {
+    public void notifyChangeOnCloud() {
 
     }
 
     @Override
-    public void notifyConfigChanged() {
+    public void notifyNewDataToSave() {
 
     }
 }

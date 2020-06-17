@@ -10,22 +10,22 @@ public class MainPresenter {
         registeredDataListeners.add(listener);
     }
     
-    public void notifyUsersDataReady(){
+    public void notifyUsersChangeOnCloud(){
         for (MainPresenter.Listener listener: this.registeredDataListeners
              ) {
-            listener.notifyDataReady();
+            listener.notifyChangeOnCloud();
         }
     }
 
-    public void notifyUsersConfigChanged(){
+    public void notifyCloudNewDataToSave(){
         for (MainPresenter.Listener listener: this.registeredDataListeners
              ) {
-            listener.notifyConfigChanged();
+            listener.notifyNewDataToSave();
         }
     }
 
     public interface Listener{
-        public void notifyDataReady();
-        public void notifyConfigChanged();
+        public void notifyChangeOnCloud();
+        public void notifyNewDataToSave();
     }
 }

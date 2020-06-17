@@ -17,12 +17,12 @@ public class ShiftFragment extends Fragment implements MainPresenter.Listener {
     }
 
     @Override
-    public void notifyDataReady() {
+    public void notifyChangeOnCloud() {
 
     }
 
     @Override
-    public void notifyConfigChanged() {
+    public void notifyNewDataToSave() {
 
     }
 }

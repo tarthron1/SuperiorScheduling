@@ -53,12 +53,12 @@ public class EmployeeView extends AppCompatActivity implements MainPresenter.Lis
 
 
     @Override
-    public void notifyDataReady() {
+    public void notifyChangeOnCloud() {
 
     }
 
     @Override
-    public void notifyConfigChanged() {
+    public void notifyNewDataToSave() {
 
     }
 }
