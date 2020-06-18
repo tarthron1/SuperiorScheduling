@@ -21,6 +21,7 @@ public class MainPresenter {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+        notifyCloudNewDataToSave();
     }
 
     public User getCurrentUser(){

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.presenter.EmployerViewPresenter;
 import com.cs246.superiorscheduling.model.Company;
 import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.Listener;
@@ -29,6 +30,7 @@ public class EmployerView extends AppCompatActivity implements Listener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employer_view);
+        EmployerViewPresenter presenter = new EmployerViewPresenter();
     }
 
     public void viewAccounts(View view) {
