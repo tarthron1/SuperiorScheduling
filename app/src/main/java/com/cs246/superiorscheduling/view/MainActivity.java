@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Lis
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
     private static final int CREATE_USER_REQUEST = 1;
+    private static String email;
+    private static String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,26 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Lis
 
     public void login(View view){
         //if manager is true deliver EmployerView
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
 
+                        // ...
+                    }
+                });
         //if manager is false deliver EmployeeView
     }
 
