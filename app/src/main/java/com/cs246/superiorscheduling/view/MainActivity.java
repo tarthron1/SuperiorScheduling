@@ -46,8 +46,61 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
     public void login(View view){
         //if manager is true deliver EmployerView
+        String email = findViewById(R.id.editTextTextPersonName).toString();
+        String password = findViewById(R.id.editTextTextPassword).toString();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
 
+                        // ...
+                    }
+                });
         //if manager is false deliver EmployeeView
+    }
+
+    public void createAccount(String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            User modelUser = new User(user.getUid(),firstName, lastName, nickName, birthDate);
+                            // todo pass modelUser to a company object once we figure out where to create said company object
+                            presenter.setCurrentUser(modelUser);
+
+                            // temporary make user manager at new company
+                            company = new Company("Test", modelUser);
+                            presenter.addCompany(company);
+
+                            notifyNewDataToSave();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
     }
 
     public void signUp(View view){
@@ -88,37 +141,6 @@ public class MainActivity extends AppCompatActivity implements Listener {
         }
     }
 
-    public void createAccount(String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            User modelUser = new User(user.getUid(),firstName, lastName, nickName, birthDate);
-                            // todo pass modelUser to a company object once we figure out where to create said company object
-                            presenter.setCurrentUser(modelUser);
-
-                            // temporary make user manager at new company
-                            company = new Company("Test", modelUser);
-                            presenter.addCompany(company);
-
-                            notifyNewDataToSave();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        // ...
-                    }
-                });
-    }
 
     @Override
     public void notifyChangeOnCloud() {

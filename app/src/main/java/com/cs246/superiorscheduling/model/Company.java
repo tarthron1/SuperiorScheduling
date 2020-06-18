@@ -14,7 +14,7 @@ public class Company  {
     ArrayList<Request> requestList;
 
     public Company(String name, User manager){
-        this.name = name;
+        this.setName(name);
         this.addManager(manager);
     }
 
@@ -57,7 +57,7 @@ public class Company  {
     }
 
     public void removeManager(User user){
-        if (managerList != null){
+        if (managerList.size() >= 1){
             managerList.remove(user);
         }
     }
