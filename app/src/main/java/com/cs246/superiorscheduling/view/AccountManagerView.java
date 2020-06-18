@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.MainPresenter;
 
-public class AccountManagerView extends AppCompatActivity implements MainPresenter.Listener {
+public class AccountManagerView extends AppCompatActivity implements Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
