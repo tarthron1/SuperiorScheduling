@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.MainPresenter;
 
-public class ScheduleEditorView extends AppCompatActivity implements MainPresenter.Listener {
+public class ScheduleEditorView extends AppCompatActivity implements Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
