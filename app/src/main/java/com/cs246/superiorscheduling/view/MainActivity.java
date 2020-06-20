@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cs246.superiorscheduling.R;
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
     private static final int CREATE_USER_REQUEST = 1;
+    private FirebaseDatabase database;
+
+    private EditText loginEmailField;
+    private EditText loginPasswordField;
 
     //temporary hard coded company
     private Company company;
@@ -42,12 +49,14 @@ public class MainActivity extends AppCompatActivity implements Listener {
         setContentView(R.layout.activity_main);
         presenter.registerListeners(this);
         mAuth = FirebaseAuth.getInstance();
+        loginEmailField = (EditText) findViewById(R.id.editTextLoginEmail);
+        loginPasswordField = (EditText) findViewById(R.id.editTextTextPassword);
     }
 
     public void login(View view){
         //if manager is true deliver EmployerView
-        String email = findViewById(R.id.editTextTextPersonName).toString();
-        String password = findViewById(R.id.editTextTextPassword).toString();
+        String email = loginEmailField.getText().toString().trim();
+        final String password = loginPasswordField.getText().toString().trim();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -60,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, ("Authentication failed. "),
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -87,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // temporary make user manager at new company
                             company = new Company("Test", modelUser);
                             presenter.addCompany(company);
+                            getInstance();
 
                             notifyNewDataToSave();
                             updateUI(user);
@@ -191,6 +201,15 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
             }
         }
+    }
+
+    public void getInstance(){
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference user = database.getReference("users");
+        DatabaseReference company = database.getReference("companies");
+        user.setValue(presenter.getCurrentUser());
+        company.setValue(this.company);
+
     }
 
 
