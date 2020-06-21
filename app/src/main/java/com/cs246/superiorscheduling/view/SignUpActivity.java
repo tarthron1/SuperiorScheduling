@@ -12,7 +12,7 @@ import com.cs246.superiorscheduling.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Date;
-
+// The SignUp view to create an account
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;

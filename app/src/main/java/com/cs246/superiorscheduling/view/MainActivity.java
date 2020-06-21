@@ -27,7 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+// The first view (Login page) of Superior Scheduling
 public class MainActivity extends AppCompatActivity implements Listener {
 
     MainPresenter presenter = new MainPresenter();
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
         loginPasswordField = (EditText) findViewById(R.id.editTextTextPassword);
     }
 
+    // Ability to login into your account
     public void login(View view){
         //if manager is true deliver EmployerView
         String email = loginEmailField.getText().toString().trim();
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
         //if manager is false deliver EmployeeView
     }
 
+    // Ability to create an account
     public void createAccount(String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -113,11 +115,13 @@ public class MainActivity extends AppCompatActivity implements Listener {
                 });
     }
 
+    // Creates a new intent to move the user from the MainActivity to the SignUpActivity
     public void signUp(View view){
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivityForResult(intent, CREATE_USER_REQUEST);
     }
 
+    // Assigns the signUp values to their respective variables
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -170,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
             updateUI(currentUser);
         }
 
-
+    // Updates the User Interface
     private void updateUI(FirebaseUser user) {
         if (user != null){
             //todo check to see if the user is a manager then create the correct activity.
@@ -203,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
         }
     }
 
+    // Gets the correct user and company from the database
     public void getInstance(){
         database = FirebaseDatabase.getInstance();
         DatabaseReference user = database.getReference("users");

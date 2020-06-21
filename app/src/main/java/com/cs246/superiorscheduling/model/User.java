@@ -12,6 +12,62 @@ public class User {
     private Date birthDate;
     private ArrayList<Company> companies;
 
+    // Uid Setter
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    // FirstName Getter
+    public String getFirstName() {
+        return firstName;
+    }
+
+    // FirstName Setter
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    // LastName Getter
+    public String getLastName() {
+        return lastName;
+    }
+
+    // LastName Setter
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    // NickName Getter
+    public String getNickName() {
+        return nickName;
+    }
+
+    // NickName Setter
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    // BirthDate Getter
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    // BirthDate Setter
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    // Companies Getter
+    public ArrayList<Company> getCompanies() {
+        return companies;
+    }
+
+    // Companies Setter
+    public void setCompanies(ArrayList<Company> companies) {
+        this.companies = companies;
+    }
+
+    // Constructor (Specified)
     public User(String uid, String firstName, String lastName, String nickName, Date birthDate){
         this.uid = uid;
         this.firstName = firstName;
@@ -20,12 +76,14 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    // Constructor (Basic)
     public User(String firstName, String lastName, Date birthDate){
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
     }
 
+    // Uid Getter
     public String getUid() {
         return uid;
     }

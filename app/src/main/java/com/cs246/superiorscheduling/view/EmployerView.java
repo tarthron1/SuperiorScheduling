@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Date;
-
+// The Employer's View
 public class EmployerView extends AppCompatActivity implements Listener {
 
     @Override
@@ -33,15 +33,18 @@ public class EmployerView extends AppCompatActivity implements Listener {
         EmployerViewPresenter presenter = new EmployerViewPresenter();
     }
 
+    // Ability to view Accounts
     public void viewAccounts(View view) {
         Intent intent = new Intent(this, AccountManagerView.class);
         startActivity(intent);
     }
 
+    // TODO: Create Ability to view the Current Schedule
     public void viewSchedule(View view){
         //Open new activity with schedule fragment?
     }
 
+    // Ability to edit Schedules
     public void editSchedules(View view) {
         Intent intent = new Intent(this, ScheduleEditorView.class);
         startActivity(intent);
