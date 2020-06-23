@@ -1,7 +1,10 @@
 package com.cs246.superiorscheduling.presenter;
 
+import android.view.View;
+
 import com.cs246.superiorscheduling.model.Company;
 import com.cs246.superiorscheduling.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -10,6 +13,7 @@ public class MainPresenter {
     private ArrayList<Listener> registeredDataListeners = new ArrayList<>();
     private ArrayList<Company> companies = new ArrayList<>();
     private User currentUser;
+    private FirebaseAuth mAuth;
 
     // Registers listener
     public void registerListeners(Listener listener){
@@ -52,5 +56,6 @@ public class MainPresenter {
             listener.notifyNewDataToSave();
         }
     }
+
 
 }

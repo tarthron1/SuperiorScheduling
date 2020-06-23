@@ -20,8 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private static String TAG = "MainActivity";
     private static final int CREATE_USER_REQUEST = 1;
     private FirebaseDatabase database;
+    private DatabaseReference userRefrence;
 
     private EditText loginEmailField;
     private EditText loginPasswordField;
@@ -49,8 +53,10 @@ public class MainActivity extends AppCompatActivity implements Listener {
         setContentView(R.layout.activity_main);
         presenter.registerListeners(this);
         mAuth = FirebaseAuth.getInstance();
-        loginEmailField = (EditText) findViewById(R.id.editTextLoginEmail);
-        loginPasswordField = (EditText) findViewById(R.id.editTextTextPassword);
+        database = FirebaseDatabase.getInstance();
+//        userRefrence = database.getReference().child("users").child(mAuth.getUid());
+        loginEmailField = findViewById(R.id.editTextLoginEmail);
+        loginPasswordField = findViewById(R.id.editTextTextPassword);
     }
 
     // Ability to login into your account
@@ -65,7 +71,33 @@ public class MainActivity extends AppCompatActivity implements Listener {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            final FirebaseUser user = mAuth.getCurrentUser();
+                            final User modelUser = new User();
+                            ValueEventListener userListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User userFromDatabase;
+                                    userFromDatabase = dataSnapshot.child("users").getValue(User.class);
+                                    Log.d(TAG, userRefrence.toString());
+                                    presenter.setCurrentUser(userFromDatabase);
+                                    Log.d(TAG, presenter.getCurrentUser().getUid());
+
+//                                    modelUser.setFirstName(userFromDatabase.getFirstName());
+//                                    modelUser.setLastName(userFromDatabase.getLastName());
+//                                    modelUser.setBirthDate(userFromDatabase.getBirthDate());
+//                                    modelUser.setCompanies(userFromDatabase.getCompanies());
+//                                    modelUser.setNickName(userFromDatabase.getNickName());
+//                                    modelUser.setUid(userFromDatabase.getUid());
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.w(TAG, "get user info failed", databaseError.toException());
+                                }
+                            };
+                            userRefrence.addValueEventListener(userListener);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -164,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     @Override
     public void notifyNewDataToSave() {
 
+
     }
 
 
@@ -203,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements Listener {
                 startActivity(intent);
 
 
+            } else {
+                Intent intent = new Intent(this, EmployeeView.class);
+                startActivity(intent);
             }
         }
     }
@@ -210,8 +246,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
     // Gets the correct user and company from the database
     public void getInstance(){
         database = FirebaseDatabase.getInstance();
-        DatabaseReference user = database.getReference("users");
-        DatabaseReference company = database.getReference("companies");
+        DatabaseReference user = database.getReference("users").child(presenter.getCurrentUser().getUid());
+        DatabaseReference company = database.getReference("companies").child(this.company.getName());
         user.setValue(presenter.getCurrentUser());
         company.setValue(this.company);
 

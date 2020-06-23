@@ -1,7 +1,7 @@
 package com.cs246.superiorscheduling.model;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class User {
 
@@ -10,7 +10,11 @@ public class User {
     private String lastName;
     private String nickName;
     private Date birthDate;
-    private ArrayList<Company> companies;
+    private HashMap<String, Company> companies;
+
+    public User(){
+
+    }
 
     // Uid Setter
     public void setUid(String uid) {
@@ -58,12 +62,12 @@ public class User {
     }
 
     // Companies Getter
-    public ArrayList<Company> getCompanies() {
+    public HashMap<String, Company> getCompanies() {
         return companies;
     }
 
     // Companies Setter
-    public void setCompanies(ArrayList<Company> companies) {
+    public void setCompanies(HashMap<String,Company> companies) {
         this.companies = companies;
     }
 
@@ -87,4 +91,14 @@ public class User {
     public String getUid() {
         return uid;
     }
+
+    public void addCompany(Company company){
+        this.companies.put(company.getName(), company);
+    }
+
+
+
+
+
+
 }

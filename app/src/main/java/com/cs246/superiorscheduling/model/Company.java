@@ -13,6 +13,10 @@ public class Company  {
     ArrayList<Schedule> scheduleList;
     ArrayList<Request> requestList;
 
+    public Company(){
+
+    }
+
     // Inactive Employee list Getter
     public ArrayList<User> getInactiveEmployeeList() {
         return inactiveEmployeeList;
@@ -57,6 +61,7 @@ public class Company  {
     public Company(String name, User manager){
         this.setName(name);
         this.addManager(manager);
+        manager.addCompany(this);
     }
 
     // Manager list Getter
