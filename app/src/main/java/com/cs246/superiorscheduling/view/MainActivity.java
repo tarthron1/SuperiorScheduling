@@ -1,14 +1,14 @@
 package com.cs246.superiorscheduling.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Company;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     }
 
     // Ability to create an account
-    public void createAccount(String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
+    public void createAccount(final String companyName, String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // todo pass modelUser to a company object once we figure out where to create said company object
                             presenter.setCurrentUser(modelUser);
 
-                            // temporary make user manager at new company
-                            company = new Company("Test", modelUser);
+                            // check if companyName is in cloud
+                            company = new Company(companyName, modelUser);
                             presenter.addCompany(company);
                             getInstance();
 
@@ -159,11 +159,11 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
         if (requestCode == CREATE_USER_REQUEST){
             if (resultCode == RESULT_OK){
+                String companyName = data.getStringExtra("companyName");
                 String firstName = data.getStringExtra("firstName");
                 String lastName = data.getStringExtra("lastName");
                 String nickName = data.getStringExtra("nickName");
                 String birthDateString = data.getStringExtra("birthDate");
-                Boolean manager = data.getBooleanExtra("manager", false);
                 String email = data.getStringExtra("email");
                 String password = data.getStringExtra("password");
 
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                     birthDate = null;
                     e.printStackTrace();
                 }
-                createAccount(email, password, firstName, lastName, nickName, birthDate);
+                createAccount(companyName, email, password, firstName, lastName, nickName, birthDate);
 
 
             }
