@@ -10,7 +10,7 @@ public class User {
     private String lastName;
     private String nickName;
     private Date birthDate;
-    private HashMap<String, Company> companies;
+    private HashMap<String, Company> companies = new HashMap<>();
 
     public User(){
 

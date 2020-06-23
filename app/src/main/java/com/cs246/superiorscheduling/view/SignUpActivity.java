@@ -30,8 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // get company info from AttachCompanyActivity
-        Intent attachCompany = getIntent();
-        companyName = attachCompany.getStringExtra("companyName");
+        companyName = data.getStringExtra("company");
     }
 
     // collect info and pass back to main activity

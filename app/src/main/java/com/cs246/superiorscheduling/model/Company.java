@@ -61,7 +61,6 @@ public class Company  {
     public Company(String name, User manager){
         this.setName(name);
         this.addManager(manager);
-        manager.addCompany(this);
     }
 
     // Manager list Getter

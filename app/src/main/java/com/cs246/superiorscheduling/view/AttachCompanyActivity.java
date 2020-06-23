@@ -25,8 +25,8 @@ public class AttachCompanyActivity extends AppCompatActivity {
 
         List<String> companies = new ArrayList<>();
         // temporary hard coded company options - need to set up dynamic list.
-        companies.add("Company #1");
-        companies.add("Company #2");
+        companies.add("Company 1");
+        companies.add("Company 2");
 
         spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, companies));
     }

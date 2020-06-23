@@ -72,12 +72,13 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             final FirebaseUser user = mAuth.getCurrentUser();
+                            userRefrence = database.getReference().child("users").child(user.getUid());
                             final User modelUser = new User();
                             ValueEventListener userListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     User userFromDatabase;
-                                    userFromDatabase = dataSnapshot.child("users").getValue(User.class);
+                                    userFromDatabase = dataSnapshot.getValue(User.class);
                                     Log.d(TAG, userRefrence.toString());
                                     presenter.setCurrentUser(userFromDatabase);
                                     Log.d(TAG, presenter.getCurrentUser().getUid());
@@ -237,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
 
             } else {
-                Intent intent = new Intent(this, EmployeeView.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, EmployeeView.class);
+//                startActivity(intent);
             }
         }
     }
