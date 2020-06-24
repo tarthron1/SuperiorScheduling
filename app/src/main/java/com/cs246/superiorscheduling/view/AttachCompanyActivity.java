@@ -65,7 +65,9 @@ public class AttachCompanyActivity extends AppCompatActivity {
                     int useless = 1+1;
                     for (Company c: companies
                     ) {
-                        companyNames.add(c.getName());
+                        if (!companyNames.contains(c.getName())){
+                            companyNames.add(c.getName());
+                        }
                     }
                     spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, companyNames));
                 }
