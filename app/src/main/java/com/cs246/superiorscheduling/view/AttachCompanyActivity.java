@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Company;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,12 +38,6 @@ public class AttachCompanyActivity extends AppCompatActivity {
         //populate company spinner options
         getCompanies();
         spinner = (Spinner) findViewById(R.id.company);
-        // temporary hard coded company options - need to set up dynamic list.
-
-//        companyNames.add("Company 1");
-//        companyNames.add("Company 2");
-
-        spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, companyNames));
     }
 
     public void createUser(View view) {
@@ -70,7 +63,11 @@ public class AttachCompanyActivity extends AppCompatActivity {
                 ) {
                     companies.add(company.getValue(Company.class));
                     int useless = 1+1;
-
+                    for (Company c: companies
+                    ) {
+                        companyNames.add(c.getName());
+                    }
+                    spinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, companyNames));
                 }
             }
 
@@ -78,13 +75,8 @@ public class AttachCompanyActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
         };
         companiesLocation.addValueEventListener(companyListener);
-        for (Company company: companies
-             ) {
-            companyNames.add(company.getName());
-        }
     }
 
 
