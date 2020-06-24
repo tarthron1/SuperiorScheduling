@@ -33,12 +33,12 @@ import java.util.Date;
 // The first view (Login page) of Superior Scheduling
 public class MainActivity extends AppCompatActivity implements Listener {
 
-    MainPresenter presenter = new MainPresenter();
+    MainPresenter presenter;
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
     private static final int CREATE_USER_REQUEST = 1;
     private FirebaseDatabase database;
-    private DatabaseReference userRefrence;
+    private DatabaseReference userReference;
 
     private EditText loginEmailField;
     private EditText loginPasswordField;
@@ -51,12 +51,35 @@ public class MainActivity extends AppCompatActivity implements Listener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter.registerListeners(this);
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        presenter = new MainPresenter();
+        getCompanies();
+        presenter.registerListeners(this);
         database = FirebaseDatabase.getInstance();
-//        userRefrence = database.getReference().child("users").child(mAuth.getUid());
         loginEmailField = findViewById(R.id.editTextLoginEmail);
         loginPasswordField = findViewById(R.id.editTextTextPassword);
+    }
+
+    public void getCompanies(){
+        DatabaseReference companiesLocation = database.getInstance().getReference().child("companies");
+        ValueEventListener companyListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot company: snapshot.getChildren()
+                ) {
+                    presenter.addCompany(company.getValue(Company.class));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        };
+        companiesLocation.addValueEventListener(companyListener);
     }
 
     // Ability to login into your account
@@ -72,25 +95,16 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             final FirebaseUser user = mAuth.getCurrentUser();
-                            userRefrence = database.getReference().child("users").child(user.getUid());
-                            final User modelUser = new User();
+                            userReference = database.getReference().child("users").child(user.getUid());
                             ValueEventListener userListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     User userFromDatabase;
                                     userFromDatabase = dataSnapshot.getValue(User.class);
-                                    Log.d(TAG, userRefrence.toString());
+                                    Log.d(TAG, userReference.toString());
                                     presenter.setCurrentUser(userFromDatabase);
                                     Log.d(TAG, presenter.getCurrentUser().getUid());
-
-//                                    modelUser.setFirstName(userFromDatabase.getFirstName());
-//                                    modelUser.setLastName(userFromDatabase.getLastName());
-//                                    modelUser.setBirthDate(userFromDatabase.getBirthDate());
-//                                    modelUser.setCompanies(userFromDatabase.getCompanies());
-//                                    modelUser.setNickName(userFromDatabase.getNickName());
-//                                    modelUser.setUid(userFromDatabase.getUid());
-
-
+                                    updateUI(user);
                                 }
 
                                 @Override
@@ -98,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
                                     Log.w(TAG, "get user info failed", databaseError.toException());
                                 }
                             };
-                            userRefrence.addValueEventListener(userListener);
-                            updateUI(user);
+                            userReference.addValueEventListener(userListener);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -215,18 +229,24 @@ public class MainActivity extends AppCompatActivity implements Listener {
             //create a list of companies that apply pass that list to the intent.
             ArrayList<Company> companiesUserIsManager = new ArrayList<>();
             ArrayList<Company> companiesUserIsEmployee = new ArrayList<>();
-            for (Company company: presenter.getCompanies()
-                 ) {
-                ArrayList<User> managerList = company.getManagerList();
-                ArrayList<User> employeeList = company.getActiveEmployeeList();
-                if (managerList != null) {
-                    if (managerList.contains(presenter.getCurrentUser())) {
-                        companiesUserIsManager.add(company);
+            if (presenter.getCurrentUser() != null) {
+                for (Company company : presenter.getCompanies()
+                ) {
+                    ArrayList<User> managerList = company.getManagerList();
+                    ArrayList<User> employeeList = company.getActiveEmployeeList();
+                    if (managerList != null) {
+                        for (User manager : managerList) {
+                            if (manager.getUid().equals(presenter.getCurrentUser().getUid())) {
+                                companiesUserIsManager.add(company);
+                            }
+                        }
                     }
-                }
-                if (employeeList != null) {
-                    if (employeeList.contains(presenter.getCurrentUser())) {
-                        companiesUserIsEmployee.add(company);
+                    if (employeeList != null) {
+                        for (User employee : employeeList) {
+                            if (employee.getUid().equals(presenter.getCurrentUser().getUid())) {
+                                companiesUserIsEmployee.add(company);
+                            }
+                        }
                     }
                 }
             }
@@ -237,9 +257,9 @@ public class MainActivity extends AppCompatActivity implements Listener {
                 startActivity(intent);
 
 
-            } else {
-//                Intent intent = new Intent(this, EmployeeView.class);
-//                startActivity(intent);
+            } if (companiesUserIsEmployee.size() != 0) {
+                Intent intent = new Intent(this, EmployeeView.class);
+                startActivity(intent);
             }
         }
     }
