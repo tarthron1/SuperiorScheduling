@@ -3,10 +3,12 @@ package com.cs246.superiorscheduling.model;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Company  {
 
     private String name;
+    private String companyID;
     ArrayList<User> inactiveEmployeeList = new ArrayList<>();
     ArrayList<User> activeEmployeeList = new ArrayList<>();
     ArrayList<User> managerList = new ArrayList<>();
@@ -61,6 +63,12 @@ public class Company  {
     public Company(String name, User manager){
         this.setName(name);
         this.addManager(manager);
+        UUID uuid =  UUID.randomUUID();
+        this.companyID = uuid.toString();
+    }
+
+    public String getCompanyID() {
+        return companyID;
     }
 
     // Manager list Getter
