@@ -9,6 +9,7 @@ public class Company  {
 
     private String name;
     private String companyID;
+    UUID uuid = UUID.randomUUID();
     ArrayList<User> inactiveEmployeeList = new ArrayList<>();
     ArrayList<User> activeEmployeeList = new ArrayList<>();
     ArrayList<User> managerList = new ArrayList<>();
@@ -63,8 +64,9 @@ public class Company  {
     public Company(String name, User manager){
         this.setName(name);
         this.addManager(manager);
-        UUID uuid =  UUID.randomUUID();
         this.companyID = uuid.toString();
+        this.name = uuid.toString();
+
     }
 
     public String getCompanyID() {

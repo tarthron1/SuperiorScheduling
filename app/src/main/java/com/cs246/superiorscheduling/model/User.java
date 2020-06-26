@@ -2,6 +2,7 @@ package com.cs246.superiorscheduling.model;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class User {
 
@@ -10,6 +11,7 @@ public class User {
     private String lastName;
     private String nickName;
     private Date birthDate;
+    UUID uuid = UUID.randomUUID();
     private HashMap<String, Company> companies = new HashMap<>();
 
     public User(){
@@ -78,6 +80,9 @@ public class User {
         this.lastName = lastName;
         this.nickName = nickName;
         this.birthDate = birthDate;
+        this.firstName = uuid.toString();
+        this.lastName = uuid.toString();
+        this.nickName = uuid.toString();
     }
 
     // Constructor (Basic)
@@ -85,6 +90,8 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.firstName = uuid.toString();
+        this.lastName = uuid.toString();
     }
 
     // Uid Getter
