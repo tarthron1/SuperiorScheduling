@@ -3,15 +3,28 @@ package com.cs246.superiorscheduling.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Shift {
 
+    private String shiftID;
+    UUID uuid = UUID.randomUUID();
     String shiftType;
     LocalDate date;
     LocalTime beginTime;
     LocalTime endTime;
-    ArrayList<ShiftTime> shiftTimes;
+    ArrayList<String> shiftTimes;
     int requiredEmployees;
+
+    // ID Getter
+    public String getShiftID() {
+        return shiftID;
+    }
+
+    // ID Setter
+    public void setShiftID(String shiftID) {
+        this.shiftID = shiftID;
+    }
 
     // ShiftType Getter
     public String getShiftType() {
@@ -54,12 +67,12 @@ public class Shift {
     }
 
     // ShiftTimes Getter
-    public ArrayList<ShiftTime> getShiftTimes() {
+    public ArrayList<String> getShiftTimes() {
         return shiftTimes;
     }
 
     // ShiftTimes Setter
-    public void setShiftTimes(ArrayList<ShiftTime> shiftTimes) {
+    public void setShiftTimes(ArrayList<String> shiftTimes) {
         this.shiftTimes = shiftTimes;
     }
 
@@ -79,6 +92,7 @@ public class Shift {
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
         this.endTime = endTime;
+        this.shiftID = uuid.toString();
     }
 
     // Constructor (Specific?)
@@ -88,11 +102,12 @@ public class Shift {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.shiftType = shiftType;
+        this.shiftID = uuid.toString();
     }
 
     // Adds new ShiftTime
     public void addShiftTime(LocalTime startTime, LocalTime endTime){
-        this.shiftTimes.add(new ShiftTime(startTime, endTime, this));
+        this.shiftTimes.add(new ShiftTime(startTime, endTime, this).toString());
     }
 
 

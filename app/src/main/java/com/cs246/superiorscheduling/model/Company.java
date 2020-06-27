@@ -14,6 +14,7 @@ public class Company  {
     ArrayList<String> scheduleList;
     ArrayList<String> requestList;
 
+    // Default?
     public Company(){
 
     }
@@ -57,10 +58,6 @@ public class Company  {
     public void setRequestList(ArrayList<String> requestList) {
         this.requestList = requestList;
     }
-
-//    public void addRequest(Request request){
-//        this.requestList.add(request.getID());
-//    }
 
     // Constructor
     public Company(String name, User manager){
@@ -136,12 +133,12 @@ public class Company  {
     }
 
     // Adds schedule to the list
-//    public void addSchedule(Schedule schedule){
-//        this.scheduleList.add(schedule.getID());
-//    }
-//
-//    // Adds request to the list
-//    public void addRequest(Request request){
-//        this.requestList.add(request.getID());
-//    }
+    public void addSchedule(Schedule schedule){
+        this.scheduleList.add(schedule.getScheduleID());
+    }
+
+    // Adds request to the list
+    public void addRequest(Request request){
+        this.requestList.add(request.getRequestID());
+    }
 }

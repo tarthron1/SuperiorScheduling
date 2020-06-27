@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
         }
     }
 
-    // Gets the correct user and company from the database
+    // Old method to saving data to the cloud
 //    public void saveDataToCloud(){
 //        database = FirebaseDatabase.getInstance();
 //        DatabaseReference user = database.getReference("users").child(presenter.getCurrentUser().getUid());
@@ -295,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 //
 //    }
 
+    // Gets the correct user and company from the database
     public void saveDataToCloud(){
         DatabaseReference user = database.getReference().child("users").child(presenter.getCurrentUser().getUserID());
         DatabaseReference company = database.getReference().child("companies").child(this.company.getCompanyID());

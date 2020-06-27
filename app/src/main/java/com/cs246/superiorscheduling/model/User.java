@@ -14,6 +14,7 @@ public class User {
     private Date birthDate;
     private ArrayList<String> companies = new ArrayList<>();
 
+    //  Default?
     public User(){
 
     }

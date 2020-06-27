@@ -3,13 +3,26 @@ package com.cs246.superiorscheduling.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Schedule {
 
+    private String scheduleID;
+    UUID uuid = UUID.randomUUID();
     LocalDate startDay;
     LocalDate endDay;
-    public ArrayList<Shift> shiftList;
+    public ArrayList<String> shiftList;
     boolean published = false;
+
+    // ID Getter
+    public String getScheduleID() {
+        return scheduleID;
+    }
+
+    // ID Setter
+    public void setScheduleID(String scheduleID) {
+        this.scheduleID = scheduleID;
+    }
 
     // StartDay Getter
     public LocalDate getStartDay() {
@@ -32,12 +45,12 @@ public class Schedule {
     }
 
     // ShiftList Getter
-    public ArrayList<Shift> getShiftList() {
+    public ArrayList<String> getShiftList() {
         return shiftList;
     }
 
     // ShiftList Setter
-    public void setShiftList(ArrayList<Shift> shiftList) {
+    public void setShiftList(ArrayList<String> shiftList) {
         this.shiftList = shiftList;
     }
 
@@ -55,19 +68,20 @@ public class Schedule {
     public Schedule(LocalDate startDay, LocalDate endDay){
         this.startDay = startDay;
         this.endDay = endDay;
+        this.scheduleID = uuid.toString();
     }
 
     // Creates shift
     public void createShift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
         if (!this.published){
-        this.shiftList.add(new Shift(date, requiredEmployees, beginTime, endTime));
+        this.shiftList.add(new Shift(date, requiredEmployees, beginTime, endTime).toString());
          }
     }
 
     // Creates shift (specific?)
     public void createShift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
         if (!this.published){
-        this.shiftList.add(new Shift(date, requiredEmployees, beginTime, endTime, shiftType));
+        this.shiftList.add(new Shift(date, requiredEmployees, beginTime, endTime, shiftType).toString());
         }
     }
 
