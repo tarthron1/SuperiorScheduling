@@ -1,26 +1,26 @@
 package com.cs246.superiorscheduling.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class User {
 
-    private String uid;
+    private String userID;
     private String firstName;
     private String lastName;
     private String nickName;
     private Date birthDate;
-    UUID uuid = UUID.randomUUID();
-    private HashMap<String, Company> companies = new HashMap<>();
+    private ArrayList<String> companies = new ArrayList<>();
 
     public User(){
 
     }
 
     // Uid Setter
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     // FirstName Getter
@@ -64,25 +64,22 @@ public class User {
     }
 
     // Companies Getter
-    public HashMap<String, Company> getCompanies() {
+    public ArrayList<String> getCompanies() {
         return companies;
     }
 
     // Companies Setter
-    public void setCompanies(HashMap<String,Company> companies) {
+    public void setCompanies(ArrayList<String> companies) {
         this.companies = companies;
     }
 
     // Constructor (Specified)
-    public User(String uid, String firstName, String lastName, String nickName, Date birthDate){
-        this.uid = uid;
+    public User(String userID, String firstName, String lastName, String nickName, Date birthDate){
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;
         this.birthDate = birthDate;
-        this.firstName = uuid.toString();
-        this.lastName = uuid.toString();
-        this.nickName = uuid.toString();
+        this.userID = userID;
     }
 
     // Constructor (Basic)
@@ -90,17 +87,15 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        this.firstName = uuid.toString();
-        this.lastName = uuid.toString();
     }
 
     // Uid Getter
-    public String getUid() {
-        return uid;
+    public String getUserID() {
+        return userID;
     }
 
     public void addCompany(Company company){
-        this.companies.put(company.getName(), company);
+        this.companies.add(company.getCompanyID());
     }
 
 

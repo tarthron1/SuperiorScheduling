@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                                     userFromDatabase = dataSnapshot.getValue(User.class);
                                     Log.d(TAG, userReference.toString());
                                     presenter.setCurrentUser(userFromDatabase);
-                                    Log.d(TAG, presenter.getCurrentUser().getUid());
+                                    Log.d(TAG, presenter.getCurrentUser().getUserID());
                                     updateUI(user);
                                 }
 
@@ -232,18 +232,18 @@ public class MainActivity extends AppCompatActivity implements Listener {
             if (presenter.getCurrentUser() != null) {
                 for (Company company : presenter.getCompanies()
                 ) {
-                    ArrayList<User> managerList = company.getManagerList();
-                    ArrayList<User> employeeList = company.getActiveEmployeeList();
+                    ArrayList<String> managerList = company.getManagerList();
+                    ArrayList<String> employeeList = company.getActiveEmployeeList();
                     if (managerList != null) {
-                        for (User manager : managerList) {
-                            if (manager.getUid().equals(presenter.getCurrentUser().getUid())) {
+                        for (String manager : managerList) {
+                            if (manager.equals(presenter.getCurrentUser().getUserID())) {
                                 companiesUserIsManager.add(company);
                             }
                         }
                     }
                     if (employeeList != null) {
-                        for (User employee : employeeList) {
-                            if (employee.getUid().equals(presenter.getCurrentUser().getUid())) {
+                        for (String employee : employeeList) {
+                            if (employee.equals(presenter.getCurrentUser().getUserID())) {
                                 companiesUserIsEmployee.add(company);
                             }
                         }
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
             if (companiesUserIsManager.size() != 0){
                 Intent intent = new Intent(this, EmployerView.class );
-                intent.putExtra("uid", presenter.getCurrentUser().getUid());
+                intent.putExtra("uid", presenter.getCurrentUser().getUserID());
                 startActivity(intent);
 
 
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     // Gets the correct user and company from the database
     public void getInstance(){
         database = FirebaseDatabase.getInstance();
-        DatabaseReference user = database.getReference("users").child(presenter.getCurrentUser().getUid());
+        DatabaseReference user = database.getReference("users").child(presenter.getCurrentUser().getUserID());
         DatabaseReference company = database.getReference("companies").child(this.company.getName());
         user.setValue(presenter.getCurrentUser());
         company.setValue(this.company);

@@ -1,7 +1,5 @@
 package com.cs246.superiorscheduling.model;
 
-import android.os.Parcelable;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -88,17 +86,17 @@ public class Company  {
 
     // Adds employee to the list (inactive by default)
     public void addEmployee(User user){
-        this.inactiveEmployeeList.add(user.getUid());
+        this.inactiveEmployeeList.add(user.getUserID());
     }
 
     // Makes employee active
     public void makeActive(User user){
-        if (inactiveEmployeeList.contains(user.getUid()) && (!activeEmployeeList.contains(user.getUid()))){
-            inactiveEmployeeList.remove(user.getUid());
-            activeEmployeeList.add(user.getUid());
-        } else if (inactiveEmployeeList.contains(user.getUid()) && (activeEmployeeList.contains(user.getUid()))){
-            inactiveEmployeeList.remove(user.getUid());
-        } else if ((!inactiveEmployeeList.contains(user.getUid())) && activeEmployeeList.contains(user.getUid())){
+        if (inactiveEmployeeList.contains(user.getUserID()) && (!activeEmployeeList.contains(user.getUserID()))){
+            inactiveEmployeeList.remove(user.getUserID());
+            activeEmployeeList.add(user.getUserID());
+        } else if (inactiveEmployeeList.contains(user.getUserID()) && (activeEmployeeList.contains(user.getUserID()))){
+            inactiveEmployeeList.remove(user.getUserID());
+        } else if ((!inactiveEmployeeList.contains(user.getUserID())) && activeEmployeeList.contains(user.getUserID())){
 
         } else {
 
@@ -107,23 +105,23 @@ public class Company  {
 
     // Makes employee inactive
     public void makeInactive(User user){
-        if (activeEmployeeList.contains(user.getUid())){
-            activeEmployeeList.remove(user.getUid());
-            if (!inactiveEmployeeList.contains(user.getUid())){
-                inactiveEmployeeList.add(user.getUid());
+        if (activeEmployeeList.contains(user.getUserID())){
+            activeEmployeeList.remove(user.getUserID());
+            if (!inactiveEmployeeList.contains(user.getUserID())){
+                inactiveEmployeeList.add(user.getUserID());
             }
         }
     }
 
     // Adds manager to the list
     public void addManager(User user){
-        managerList.add(user.getUid());
+        managerList.add(user.getUserID());
     }
 
     // Removes manager from the list
     public void removeManager(User user){
         if (managerList.size() >= 1){
-            managerList.remove(user.getUid());
+            managerList.remove(user.getUserID());
         }
     }
 
