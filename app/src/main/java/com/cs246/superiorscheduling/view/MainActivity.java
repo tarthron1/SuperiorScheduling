@@ -156,12 +156,12 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             if (companyExistsInDatabase){
                                 Company companyToAddNewUserTo = presenter.getCompanyByName(companyName);
                                 companyToAddNewUserTo.addEmployee(modelUser);
-//                                modelUser.addCompany(companyToAddNewUserTo);
+                                modelUser.addCompany(companyToAddNewUserTo);
                                 company = companyToAddNewUserTo;
                             } else {
                                 company = new Company(companyName, modelUser);
                                 presenter.addCompany(company);
- //                               modelUser.addCompany(company);
+                                modelUser.addCompany(company);
                             }
 
 
