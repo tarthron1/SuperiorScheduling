@@ -72,6 +72,17 @@ public class MainPresenter {
         return companies;
     }
 
+    //Get company by name
+    public Company getCompanyByName(String companyName){
+        for (Company company: this.getCompanies()
+             ) {
+            if(company.getName().equals(companyName)){
+                return company;
+            }
+        }
+        return null;
+    }
+
     // Notifies change on Cloud?
     public void notifyUsersChangeOnCloud(){
         for (Listener listener: this.registeredDataListeners

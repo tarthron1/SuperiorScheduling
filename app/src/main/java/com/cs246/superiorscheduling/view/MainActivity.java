@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private EditText loginEmailField;
     private EditText loginPasswordField;
 
-    //temporary hard coded company
+
+    boolean companyExistsInDatabase = false;
     private Company company;
 
 
@@ -130,6 +131,16 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
     // Ability to create an account
     public void createAccount(final String companyName, String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
+
+        for (Company company: presenter.getCompanies()
+             ) {
+            if (company.getName().equals(companyName)){
+                companyExistsInDatabase = true;
+                break;
+            }
+        }
+
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -142,10 +153,20 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // todo pass modelUser to a company object once we figure out where to create said company object
                             presenter.setCurrentUser(modelUser);
 
-                            // check if companyName is in cloud
-                            company = new Company(companyName, modelUser);
-                            presenter.addCompany(company);
-                            getInstance();
+                            if (companyExistsInDatabase){
+                                Company companyToAddNewUserTo = presenter.getCompanyByName(companyName);
+                                companyToAddNewUserTo.addEmployee(modelUser);
+//                                modelUser.addCompany(companyToAddNewUserTo);
+                                company = companyToAddNewUserTo;
+                            } else {
+                                company = new Company(companyName, modelUser);
+                                presenter.addCompany(company);
+ //                               modelUser.addCompany(company);
+                            }
+
+
+
+                            saveDataToCloud();
 
                             notifyNewDataToSave();
                             updateUI(user);
@@ -265,10 +286,18 @@ public class MainActivity extends AppCompatActivity implements Listener {
     }
 
     // Gets the correct user and company from the database
-    public void getInstance(){
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference user = database.getReference("users").child(presenter.getCurrentUser().getUserID());
-        DatabaseReference company = database.getReference("companies").child(this.company.getName());
+//    public void saveDataToCloud(){
+//        database = FirebaseDatabase.getInstance();
+//        DatabaseReference user = database.getReference("users").child(presenter.getCurrentUser().getUid());
+//        DatabaseReference company = database.getReference("companies").child(this.company.getName());
+//        user.setValue(presenter.getCurrentUser());
+//        company.setValue(this.company);
+//
+//    }
+
+    public void saveDataToCloud(){
+        DatabaseReference user = database.getReference().child("users").child(presenter.getCurrentUser().getUserID());
+        DatabaseReference company = database.getReference().child("companies").child(this.company.getCompanyID());
         user.setValue(presenter.getCurrentUser());
         company.setValue(this.company);
 
