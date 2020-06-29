@@ -83,7 +83,8 @@ public class Company  {
 
     // Adds employee to the list (inactive by default)
     public void addEmployee(User user){
-        this.inactiveEmployeeList.add(user.getUserID());
+        //TODO change back to inactive list.
+        this.activeEmployeeList.add(user.getUserID());
     }
 
     // Makes employee active
