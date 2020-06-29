@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.MainPresenter;
-
+// Fragment to view the shifts
 public class ShiftFragment extends Fragment implements Listener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {

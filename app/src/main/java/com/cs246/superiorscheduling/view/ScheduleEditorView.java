@@ -10,7 +10,7 @@ import android.view.View;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.MainPresenter;
-
+// The view used to edit the Schedules
 public class ScheduleEditorView extends AppCompatActivity implements Listener {
 
     @Override
@@ -19,6 +19,7 @@ public class ScheduleEditorView extends AppCompatActivity implements Listener {
         setContentView(R.layout.activity_schedule_editor_view);
     }
 
+    // Ability to add shifts
     public void addShift(View view){
         // Open shift fragment
         ShiftFragment shiftFragment = new ShiftFragment();
@@ -29,6 +30,7 @@ public class ScheduleEditorView extends AppCompatActivity implements Listener {
         fragmentTransaction.commit();
     }
 
+    // Ability to add employees
     public void addEmployee(View view){
         // Open employee fragment
         AddEmployeeFragment addEmployeeFragment = new AddEmployeeFragment();
@@ -39,8 +41,9 @@ public class ScheduleEditorView extends AppCompatActivity implements Listener {
         fragmentTransaction.commit();
     }
 
+    // Ability to add the shift with its employees to the schedule
     public void addToSchedule(View view){
-        // add shift with employees to schedule
+        // TODO: Add shift with employees to schedule
 
     }
 

@@ -12,7 +12,7 @@ import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.MainPresenter;
 import com.cs246.superiorscheduling.view.AccountManagerView;
-
+// The Employee's View
 public class EmployeeView extends AppCompatActivity implements Listener {
 
 
@@ -29,10 +29,12 @@ public class EmployeeView extends AppCompatActivity implements Listener {
         fragmentTransaction.commit();
     }
 
+    // TODO: Create Ability to view the Current Schedule
     public void viewSchedule(View view){
 
     }
 
+    // Ability to request time off
     public void requestTimeoff(View view){
         TimeoffFragment timeoffFragment = new TimeoffFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -42,6 +44,7 @@ public class EmployeeView extends AppCompatActivity implements Listener {
         fragmentTransaction.commit();
     }
 
+    // Ability to submit request
     public void submitRequest(View view) {
         System.out.println("Submitted");
         ScheduleView scheduleView = new ScheduleView();

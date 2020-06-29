@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.AttachCompanyActivity" />
         <activity android:name=".view.SignUpActivity" />
         <activity android:name=".view.EmployeeView"></activity>
         <activity android:name=".view.AccountManagerView" />

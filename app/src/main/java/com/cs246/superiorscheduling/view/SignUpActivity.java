@@ -1,27 +1,36 @@
 package com.cs246.superiorscheduling.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Date;
-
+// The SignUp view to create an account
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
+    private static final int CREATE_COMPANY_REQUEST = 2;
+    private String companyName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         auth = FirebaseAuth.getInstance();
+
+        Intent intent = new Intent(this, AttachCompanyActivity.class);
+        startActivityForResult(intent, CREATE_COMPANY_REQUEST);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // get company info from AttachCompanyActivity
+        companyName = data.getStringExtra("company");
     }
 
     // collect info and pass back to main activity
@@ -41,9 +50,6 @@ public class SignUpActivity extends AppCompatActivity {
         EditText bd = (EditText) findViewById(R.id.birth_date);
         String birthDate = bd.getText().toString();
 
-        Switch pos = findViewById(R.id.manager_switch);
-        Boolean manager = pos.isChecked();
-
         EditText un = (EditText) findViewById(R.id.email);
         String email = un.getText().toString();
 
@@ -51,11 +57,11 @@ public class SignUpActivity extends AppCompatActivity {
         String password = pass.getText().toString();
 
         // Add info to intent
+        intent.putExtra("companyName", companyName);
         intent.putExtra("firstName", firstName);
         intent.putExtra("lastName", lastName);
         intent.putExtra("nickName", nickName);
         intent.putExtra("birthDate", birthDate);
-        intent.putExtra("manager", manager);
         intent.putExtra("email", email);
         intent.putExtra("password", password);
 
