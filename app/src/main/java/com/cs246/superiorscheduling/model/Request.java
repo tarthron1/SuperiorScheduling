@@ -7,7 +7,7 @@ public class Request {
 
     private String requestID;
     UUID uuid = UUID.randomUUID();
-    User requester;
+    String requesterID;
     LocalDate date;
     String shift = null;
     String reason = null;
@@ -23,13 +23,13 @@ public class Request {
     }
 
     // Requester Getter
-    public User getRequester() {
-        return requester;
+    public String getRequesterID() {
+        return requesterID;
     }
 
     // Requester Setter
-    public void setRequester(User requester) {
-        this.requester = requester;
+    public void setRequesterID(String requesterID) {
+        this.requesterID = requesterID;
     }
 
     // Date Getter
@@ -63,8 +63,8 @@ public class Request {
     }
 
     // Constructor (full)
-    public Request(User requester, LocalDate date, String shift, String reason){
-        this.requester = requester;
+    public Request(User requesterID, LocalDate date, String shift, String reason){
+        this.requesterID = requesterID.getUserID();
         this.date = date;
         this.shift = shift;
         this.reason = reason;
@@ -72,24 +72,24 @@ public class Request {
     }
 
     // Constructor (w/o reason) *changed order of parameters (06/27/2020)
-    public Request(User requester, String shift, LocalDate date){
-        this.requester = requester;
+    public Request(String requesterID, String shift, LocalDate date){
+        this.requesterID = requesterID;
         this.date = date;
         this.shift = shift;
         this.requestID = uuid.toString();
     }
 
     // Constructor (w/o shift)
-    public Request(User requester, LocalDate date, String reason){
-        this.requester = requester;
+    public Request(String requesterID, LocalDate date, String reason){
+        this.requesterID = requesterID;
         this.date = date;
         this.reason = reason;
         this.requestID = uuid.toString();
     }
 
     // Constructor (w/o reason & shift)
-    public Request(User requester, LocalDate date){
-        this.requester = requester;
+    public Request(String requesterID, LocalDate date){
+        this.requesterID = requesterID;
         this.date = date;
         this.requestID = uuid.toString();
     }
