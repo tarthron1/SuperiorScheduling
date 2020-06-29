@@ -1,19 +1,18 @@
 package com.cs246.superiorscheduling.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.Listener;
-import com.cs246.superiorscheduling.presenter.MainPresenter;
+
 // The Manager's View of accounts
-public class AccountManagerView extends AppCompatActivity implements Listener {
+public class ManageAccountsActivity extends AppCompatActivity implements Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_manager_view);
+        setContentView(R.layout.activity_manage_accounts);
     }
 
     @Override

@@ -8,27 +8,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.Listener;
-
-// The Employee's View
-public class EmployeeView extends AppCompatActivity implements Listener {
-
+// The view used to edit the Schedules
+public class EditScheduleActivity extends AppCompatActivity implements Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_employee_view);
+        setContentView(R.layout.activity_edit_schedule);
     }
 
-    // TODO: Create Ability to view the Current Schedule
-    public void viewSchedule(View view){
-        Intent intent = new Intent(this, ScheduleViewActivity.class);
+    // Ability to add shifts
+    public void addShift(View view){
+        Intent intent = new Intent(this, AddShiftActivity.class);
         startActivity(intent);
     }
 
-    // Ability to request time off
-    public void requestTimeOff(View view){
-        Intent intent = new Intent(this, RequestTimeOffActivity.class);
-        startActivity(intent);
+    public void clearSchedule(View view) {
+
+    }
+
+    public void publishSchedule(View view) {
+
     }
 
     @Override

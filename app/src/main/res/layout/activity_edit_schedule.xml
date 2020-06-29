@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ScheduleEditorView">
+    tools:context=".view.EditScheduleActivity">
 
     <TextView
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/scheduleEditor_title"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,18 +63,19 @@
         android:id="@+id/button9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp"
         android:onClick="addShift"
-        android:text="@string/addShift_button"
+        android:text="Add Shift"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="clearSchedule"
         android:text="@string/clear_button"
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/button9"
@@ -85,21 +86,21 @@
         android:id="@+id/button11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="publishSchedule"
         android:text="@string/publish_button"
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/button10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button10" />
 
-    <FrameLayout
-        android:id="@+id/schedule_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Overview of Schedule]"
+        app:layout_constraintBottom_toTopOf="@+id/button9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button9">
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
-    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

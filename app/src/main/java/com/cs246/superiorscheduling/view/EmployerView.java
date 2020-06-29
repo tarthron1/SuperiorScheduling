@@ -1,28 +1,15 @@
 package com.cs246.superiorscheduling.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.EmployerViewPresenter;
-import com.cs246.superiorscheduling.model.Company;
-import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.Listener;
-import com.cs246.superiorscheduling.presenter.MainPresenter;
-import com.cs246.superiorscheduling.view.AccountManagerView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Date;
 // The Employer's View
 public class EmployerView extends AppCompatActivity implements Listener {
 
@@ -35,18 +22,19 @@ public class EmployerView extends AppCompatActivity implements Listener {
 
     // Ability to view Accounts
     public void viewAccounts(View view) {
-        Intent intent = new Intent(this, AccountManagerView.class);
+        Intent intent = new Intent(this, ManageAccountsActivity.class);
         startActivity(intent);
     }
 
     // TODO: Create Ability to view the Current Schedule
     public void viewSchedule(View view){
-        //Open new activity with schedule fragment?
+        Intent intent = new Intent(this, ScheduleViewActivity.class);
+        startActivity(intent);
     }
 
     // Ability to edit Schedules
-    public void editSchedules(View view) {
-        Intent intent = new Intent(this, ScheduleEditorView.class);
+    public void editSchedule(View view) {
+        Intent intent = new Intent(this, EditScheduleActivity.class);
         startActivity(intent);
     }
 
