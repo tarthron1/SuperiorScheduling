@@ -32,7 +32,7 @@ public class EmployeeView extends AppCompatActivity implements Listener {
     }
 
     @Override
-    public void notifyChangeOnCloud() {
+    public void notifyDataReady() {
 
     }
 

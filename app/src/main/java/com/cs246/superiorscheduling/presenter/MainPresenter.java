@@ -1,8 +1,5 @@
 package com.cs246.superiorscheduling.presenter;
 
-import android.nfc.Tag;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.cs246.superiorscheduling.model.Company;
@@ -87,7 +84,7 @@ public class MainPresenter {
     public void notifyUsersChangeOnCloud(){
         for (Listener listener: this.registeredDataListeners
              ) {
-            listener.notifyChangeOnCloud();
+            listener.notifyDataReady();
         }
     }
 

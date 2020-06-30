@@ -17,8 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 // The Manager's View of accounts
 public class ManageAccountsActivity extends AppCompatActivity implements Listener {
 
@@ -95,7 +93,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
                         presenter.addEmployee(tempUser);
                     }
                 }
-                notifyChangeOnCloud();
+                notifyDataReady();
             }
 
             @Override
@@ -108,7 +106,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
 
     //Any Code that relies on data from the cloud needs to be called from this function
     @Override
-    public void notifyChangeOnCloud() {
+    public void notifyDataReady() {
 
     }
 

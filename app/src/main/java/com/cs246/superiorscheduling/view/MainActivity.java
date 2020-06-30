@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
 
     @Override
-    public void notifyChangeOnCloud() {
+    public void notifyDataReady() {
 
     }
 

@@ -20,7 +20,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     }
 
     @Override
-    public void notifyChangeOnCloud() {
+    public void notifyDataReady() {
 
     }
 
