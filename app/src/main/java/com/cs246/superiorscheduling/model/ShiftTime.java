@@ -8,10 +8,11 @@ public class ShiftTime {
 
     private String shiftTimeID;
     UUID uuid = UUID.randomUUID();
+
     private HashSet<String> employeesOnShift;
     LocalTime startTime;
     LocalTime endTime;
-    Shift parentShift;
+    String parentShift;
 
     // ID Getter
     public String getShiftTimeID() {
@@ -54,12 +55,12 @@ public class ShiftTime {
     }
 
     // ParentShift Getter
-    public Shift getParentShift() {
+    public String getParentShift() {
         return parentShift;
     }
 
     // ParentShift Setter
-    public void setParentShift(Shift parentShift) {
+    public void setParentShift(String parentShift) {
         this.parentShift = parentShift;
     }
 
@@ -67,7 +68,7 @@ public class ShiftTime {
     public ShiftTime(LocalTime startTime, LocalTime endTime, Shift parentShift){
         this.startTime = startTime;
         this.endTime = endTime;
-        this.parentShift = parentShift;
+        this.parentShift = parentShift.getShiftID();
         this.shiftTimeID = uuid.toString();
     }
 

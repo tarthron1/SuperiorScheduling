@@ -10,11 +10,20 @@ public class Shift {
     private String shiftID;
     UUID uuid = UUID.randomUUID();
     String shiftType;
+    private String parentSchedule;
     LocalDate date;
     LocalTime beginTime;
     LocalTime endTime;
     ArrayList<String> shiftTimes;
     int requiredEmployees;
+
+    public String getParentSchedule() {
+        return parentSchedule;
+    }
+
+    public void setParentSchedule(String parentSchedule) {
+        this.parentSchedule = parentSchedule;
+    }
 
     // ID Getter
     public String getShiftID() {
@@ -87,7 +96,8 @@ public class Shift {
     }
 
     // Constructor (Standard)
-    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
+    public Shift(Schedule parentSchedule, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
+        this.parentSchedule = parentSchedule.getScheduleID();
         this.date = date;
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
@@ -96,7 +106,8 @@ public class Shift {
     }
 
     // Constructor (Specific?)
-    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
+    public Shift(Schedule parentSchedule, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
+        this.parentSchedule = parentSchedule.getScheduleID();
         this.date = date;
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
