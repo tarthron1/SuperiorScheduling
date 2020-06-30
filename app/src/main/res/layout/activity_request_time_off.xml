@@ -49,16 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
-    <EditText
-        android:id="@+id/request_shift"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView44"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView44" />
-
     <TextView
         android:id="@+id/textView45"
         android:layout_width="wrap_content"
@@ -91,4 +81,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+    <Spinner
+        android:id="@+id/request_shift"
+        android:layout_width="209dp"
+        android:layout_height="41dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView44"
+        tools:layout_editor_absoluteY="170dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

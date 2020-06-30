@@ -3,6 +3,8 @@ package com.cs246.superiorscheduling.view;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -31,6 +33,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference databaseCurrentUser, databaseScheduleList, databaseShiftList, databaseRequestList;
+    Spinner dropdown;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -116,6 +119,9 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     @Override
     public void notifyDataReady() {
         int test = 0;
+        dropdown = (Spinner) findViewById(R.id.request_shift);
+        // set shift list to dropdown
+        dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, //presenter.getShiftList()));
 
     }
 

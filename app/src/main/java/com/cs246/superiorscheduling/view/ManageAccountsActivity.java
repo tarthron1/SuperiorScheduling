@@ -2,6 +2,10 @@ package com.cs246.superiorscheduling.view;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Switch;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +44,24 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         allUsersDatabaseLocation = database.getReference().child("users");
         getCurrentUser();
 
+        TableLayout table = findViewById(R.id.EmployeeAccounts);
+        // set employee data onto table row
+        TableRow row = new TableRow(getApplicationContext());
+
+        TextView name = new TextView(getApplicationContext());
+        name.setText("Billy Bob");
+        row.addView(name);
+
+        Switch manager = new Switch(getApplicationContext());
+        manager.setChecked(false);
+        row.addView(manager);
+
+        Switch active = new Switch(getApplicationContext());
+        active.setChecked(true);
+        row.addView(active);
+
+        // add row to table
+        table.addView(row);
     }
 
     private void getCurrentUser() {
