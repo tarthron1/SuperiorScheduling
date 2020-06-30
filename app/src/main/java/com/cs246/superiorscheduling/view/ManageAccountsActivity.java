@@ -40,9 +40,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         allUsersDatabaseLocation = database.getReference().child("users");
         getCurrentUser();
 
-
-        int testing = 0;
-
     }
 
     private void getCurrentUser() {
