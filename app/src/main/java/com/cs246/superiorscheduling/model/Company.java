@@ -19,6 +19,23 @@ public class Company  {
 
     }
 
+    // Constructor
+    public Company(String name, User manager){
+        this.setName(name);
+        this.addManager(manager);
+        this.companyID = uuid.toString();
+
+    }
+    // Sets Name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Gets Name
+    public String getName(){
+        return this.name;
+    }
+
     // Inactive Employee list Getter
     public ArrayList<String> getInactiveEmployeeList() {
         return inactiveEmployeeList;
@@ -28,12 +45,18 @@ public class Company  {
     public void setInactiveEmployeeList(ArrayList<String> inactiveEmployeeList) {
         this.inactiveEmployeeList = inactiveEmployeeList;
     }
-
+    // Active Employee list Getter
+    public ArrayList<String> getActiveEmployeeList(){
+        return activeEmployeeList;
+    }
     // Active Employee list Setter
     public void setActiveEmployeeList(ArrayList<String> activeEmployeeList) {
         this.activeEmployeeList = activeEmployeeList;
     }
-
+    // Manager list Getter
+    public ArrayList<String> getManagerList() {
+        return managerList;
+    }
     // Manager list Setter
     public void setManagerList(ArrayList<String> managerList) {
         this.managerList = managerList;
@@ -59,26 +82,13 @@ public class Company  {
         this.requestList = requestList;
     }
 
-    // Constructor
-    public Company(String name, User manager){
-        this.setName(name);
-        this.addManager(manager);
-        this.companyID = uuid.toString();
-
-    }
 
     public String getCompanyID() {
         return companyID;
     }
 
-    // Manager list Getter
-    public ArrayList<String> getManagerList() {
-        return managerList;
-    }
-
-    // Active Employee list Getter
-    public ArrayList<String> getActiveEmployeeList(){
-        return activeEmployeeList;
+    public void setCompanyID(String companyID) {
+        this.companyID = companyID;
     }
 
     // Adds employee to the list (inactive by default)
@@ -123,15 +133,6 @@ public class Company  {
         }
     }
 
-    // Sets Name
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    // Gets Name
-    public String getName(){
-        return this.name;
-    }
 
     // Adds schedule to the list
     public void addSchedule(Schedule schedule){

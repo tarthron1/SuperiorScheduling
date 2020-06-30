@@ -19,6 +19,27 @@ public class User {
 
     }
 
+    // Constructor (Basic)
+    public User(String firstName, String lastName, Date birthDate){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
+    // Constructor (Specified)
+    public User(String userID, String firstName, String lastName, String nickName, Date birthDate){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nickName = nickName;
+        this.birthDate = birthDate;
+        this.userID = userID;
+    }
+
+    // Uid Getter
+    public String getUserID() {
+        return userID;
+    }
+
     // Uid Setter
     public void setUserID(String userID) {
         this.userID = userID;
@@ -74,34 +95,9 @@ public class User {
         this.companies = companies;
     }
 
-    // Constructor (Specified)
-    public User(String userID, String firstName, String lastName, String nickName, Date birthDate){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nickName = nickName;
-        this.birthDate = birthDate;
-        this.userID = userID;
-    }
-
-    // Constructor (Basic)
-    public User(String firstName, String lastName, Date birthDate){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-    }
-
-    // Uid Getter
-    public String getUserID() {
-        return userID;
-    }
 
     public void addCompany(Company company){
         this.companies.add(company.getCompanyID());
     }
-
-
-
-
-
 
 }
