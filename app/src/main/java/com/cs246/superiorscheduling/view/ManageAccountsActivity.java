@@ -1,5 +1,6 @@
 package com.cs246.superiorscheduling.view;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Switch;
@@ -44,24 +45,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         allUsersDatabaseLocation = database.getReference().child("users");
         getCurrentUser();
 
-        TableLayout table = findViewById(R.id.EmployeeAccounts);
-        // set employee data onto table row
-        TableRow row = new TableRow(getApplicationContext());
-
-        TextView name = new TextView(getApplicationContext());
-        name.setText("Billy Bob");
-        row.addView(name);
-
-        Switch manager = new Switch(getApplicationContext());
-        manager.setChecked(false);
-        row.addView(manager);
-
-        Switch active = new Switch(getApplicationContext());
-        active.setChecked(true);
-        row.addView(active);
-
-        // add row to table
-        table.addView(row);
     }
 
     private void getCurrentUser() {
@@ -126,7 +109,48 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     //Any Code that relies on data from the cloud needs to be called from this function
     @Override
     public void notifyDataReady() {
+        TableLayout table = findViewById(R.id.EmployeeAccounts);
+        // set table header
+        TableRow th = new TableRow(this);
 
+        TextView thName = new TextView(this);
+        thName.setText("Employee Name");
+        thName.setTypeface(null, Typeface.BOLD);
+        th.addView(thName);
+
+        TextView thPos = new TextView(this);
+        thPos.setText("Manager");
+        thPos.setTypeface(null, Typeface.BOLD);
+        th.addView(thPos);
+
+        TextView thActive = new TextView(this);
+        thActive.setText("Active");
+        thActive.setTypeface(null, Typeface.BOLD);
+        th.addView(thActive);
+
+        table.addView(th);
+
+        // set employee data onto table
+        /*
+        for (employee : list) {
+            TableRow row = new TableRow(this);
+
+            TextView name = new TextView(getApplicationContext());
+            name.setText("Billy Bob");
+            row.addView(name);
+
+            Switch manager = new Switch(getApplicationContext());
+            manager.setChecked(false);
+            row.addView(manager);
+
+            Switch active = new Switch(getApplicationContext());
+            active.setChecked(true);
+            row.addView(active);
+
+            // add row to table
+            table.addView(row);
+        }
+         */
     }
 
     //Once Data is ready to be saved to the cloud call this function.
