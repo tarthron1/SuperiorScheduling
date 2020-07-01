@@ -1,5 +1,7 @@
 package com.cs246.superiorscheduling.model;
 
+import android.widget.EditText;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -8,7 +10,7 @@ public class Request {
     private String requestID;
     UUID uuid = UUID.randomUUID();
     String requesterID;
-    LocalDate date;
+    String date;
     String shift = null;
     String reason = null;
 
@@ -33,12 +35,12 @@ public class Request {
     }
 
     // Date Getter
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
     // Date Setter
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -63,8 +65,8 @@ public class Request {
     }
 
     // Constructor (full)
-    public Request(User requesterID, LocalDate date, String shift, String reason){
-        this.requesterID = requesterID.getUserID();
+    public Request(String requesterID, String date, String shift, String reason){
+        this.requesterID = requesterID;
         this.date = date;
         this.shift = shift;
         this.reason = reason;
@@ -72,7 +74,7 @@ public class Request {
     }
 
     // Constructor (w/o reason) *changed order of parameters (06/27/2020)
-    public Request(String requesterID, String shift, LocalDate date){
+    public Request(String requesterID, String shift, String date){
         this.requesterID = requesterID;
         this.date = date;
         this.shift = shift;
@@ -80,15 +82,15 @@ public class Request {
     }
 
     // Constructor (w/o shift)
-    public Request(String requesterID, LocalDate date, String reason){
+    /*public Request(String requesterID, String date, String reason){
         this.requesterID = requesterID;
         this.date = date;
         this.reason = reason;
         this.requestID = uuid.toString();
-    }
+    }*/
 
     // Constructor (w/o reason & shift)
-    public Request(String requesterID, LocalDate date){
+    public Request(String requesterID, String date){
         this.requesterID = requesterID;
         this.date = date;
         this.requestID = uuid.toString();

@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 public class RequestTimeOffActivity extends AppCompatActivity implements Listener {
 
@@ -113,7 +116,13 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     }
 
     public void submitRequest(View view) {
-
+        String date = findViewById(R.id.request_date).toString();
+        String reason = findViewById(R.id.request_reason).toString();
+        String requestorID = UUID.randomUUID().toString();
+        String shift = null;
+        Request timeOffRequest = new Request(requestorID, date, shift, reason);
+        presenter.addRequest(timeOffRequest);
+        notifyNewDataToSave();
     }
 
     @Override
@@ -121,12 +130,13 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         int test = 0;
         dropdown = (Spinner) findViewById(R.id.request_shift);
         // set shift list to dropdown
-        dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, //presenter.getShiftList()));
+        //dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, //presenter.getShiftList()));
 
     }
 
     @Override
     public void notifyNewDataToSave() {
         databaseRequestList.setValue(presenter.getUserRequests());
+
     }
 }
