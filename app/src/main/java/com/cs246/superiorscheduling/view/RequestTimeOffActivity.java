@@ -118,10 +118,9 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     public void submitRequest(View view) {
         String date = findViewById(R.id.request_date).toString();
         String reason = findViewById(R.id.request_reason).toString();
-        String requestorID = UUID.randomUUID().toString();
-        String shift = null;
-        Request timeOffRequest = new Request(requestorID, date, shift, reason);
-        presenter.addRequest(timeOffRequest);
+//        String shift = findViewById(R.id.request_shift);
+//        Request timeOffRequest = new Request(presenter.getCurrentUser(), date, shift, reason);
+//        presenter.addRequest(timeOffRequest);
         notifyNewDataToSave();
     }
 

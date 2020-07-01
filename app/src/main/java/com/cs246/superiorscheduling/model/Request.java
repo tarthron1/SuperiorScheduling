@@ -65,8 +65,8 @@ public class Request {
     }
 
     // Constructor (full)
-    public Request(String requesterID, String date, String shift, String reason){
-        this.requesterID = requesterID;
+    public Request(User requester, String date, String shift, String reason){
+        this.requesterID = requester.getUserID();
         this.date = date;
         this.shift = shift;
         this.reason = reason;
@@ -74,24 +74,24 @@ public class Request {
     }
 
     // Constructor (w/o reason) *changed order of parameters (06/27/2020)
-    public Request(String requesterID, String shift, String date){
-        this.requesterID = requesterID;
+    public Request(User requester, String shift, String date){
+        this.requesterID = requester.getUserID();
         this.date = date;
         this.shift = shift;
         this.requestID = uuid.toString();
     }
 
     // Constructor (w/o shift)
-    /*public Request(String requesterID, String date, String reason){
-        this.requesterID = requesterID;
+    /*public Request(User requester, String date, String reason){
+        this.requesterID = requester.getUserID();
         this.date = date;
         this.reason = reason;
         this.requestID = uuid.toString();
     }*/
 
     // Constructor (w/o reason & shift)
-    public Request(String requesterID, String date){
-        this.requesterID = requesterID;
+    public Request(User requester, String date){
+        this.requesterID = requester.getUserID();
         this.date = date;
         this.requestID = uuid.toString();
     }
