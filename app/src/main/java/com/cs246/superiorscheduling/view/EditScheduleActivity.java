@@ -8,8 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.presenter.Listener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 // The view used to edit the Schedules
 public class EditScheduleActivity extends AppCompatActivity implements Listener {
+
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseUser, databaseSchedules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

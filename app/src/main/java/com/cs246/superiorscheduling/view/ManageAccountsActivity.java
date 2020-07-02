@@ -3,6 +3,7 @@ package com.cs246.superiorscheduling.view;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -32,6 +33,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     private DatabaseReference currentUserDatabaseLocation;
     private DatabaseReference allCompanyDatabaseLocation;
     private DatabaseReference allUsersDatabaseLocation;
+    private TableLayout table;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         currentUserDatabaseLocation = database.getReference().child("users").child(mAuth.getCurrentUser().getUid());
         allCompanyDatabaseLocation = database.getReference().child("companies");
         allUsersDatabaseLocation = database.getReference().child("users");
+        createTable();
         getCurrentUser();
 
     }
@@ -109,7 +112,13 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     //Any Code that relies on data from the cloud needs to be called from this function
     @Override
     public void notifyDataReady() {
-        TableLayout table = findViewById(R.id.EmployeeAccounts);
+        setTableData();
+
+
+    }
+
+    public void createTable() {
+        table = findViewById(R.id.EmployeeAccounts);
         // set table header
         TableRow th = new TableRow(this);
 
@@ -129,29 +138,42 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         th.addView(thActive);
 
         table.addView(th);
+    }
 
+    public void setTableData() {
         // set employee data onto table
-        /*
-        for (employee : list) {
+        for (User employee : presenter.getEmployeeList()) {
             TableRow row = new TableRow(this);
 
+            TextView userID = new TextView(this);
+            userID.setVisibility(View.INVISIBLE);
+            userID.setText(employee.getUserID());
+
             TextView name = new TextView(getApplicationContext());
-            name.setText("Billy Bob");
+            name.setText((employee.getFirstName() + " " + employee.getLastName()));
             row.addView(name);
 
             Switch manager = new Switch(getApplicationContext());
-            manager.setChecked(false);
+            if (presenter.getCurrentCompany().getManagerList().contains(employee.getUserID())) {
+                manager.setChecked(true);
+            } else {
+                manager.setChecked(false);
+            }
             row.addView(manager);
 
             Switch active = new Switch(getApplicationContext());
-            active.setChecked(true);
+            if (presenter.getCurrentCompany().getActiveEmployeeList().contains(employee.getUserID())) {
+                active.setChecked(true);
+            } else {
+                active.setChecked(false);
+            }
             row.addView(active);
 
             // add row to table
             table.addView(row);
         }
-         */
     }
+
 
     //Once Data is ready to be saved to the cloud call this function.
     @Override
