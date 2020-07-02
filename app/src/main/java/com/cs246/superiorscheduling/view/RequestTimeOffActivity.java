@@ -38,6 +38,10 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     FirebaseDatabase database;
     DatabaseReference databaseCurrentUser, databaseScheduleList, databaseShiftList, databaseRequestList;
     Spinner dropdown;
+    String date = null;
+    String reason = null;
+    String shift = null;
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -119,10 +123,10 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void submitRequest(View view) {
         EditText dateEditText = findViewById(R.id.request_date);
-        String date = dateEditText.getText().toString();
+        date = dateEditText.getText().toString();
         LocalDate localDate= LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        String reason = findViewById(R.id.request_reason).toString();
-        String shift = findViewById(R.id.request_shift).toString();
+        reason = findViewById(R.id.request_reason).toString();
+        shift = findViewById(R.id.request_shift).toString();
         Request timeOffRequest = new Request(presenter.getCurrentUser(), localDate, shift, reason);
         presenter.addRequest(timeOffRequest);
         notifyNewDataToSave();

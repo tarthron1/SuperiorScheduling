@@ -72,16 +72,9 @@ public class Schedule {
     }
 
     // Creates shift
-    public void createShift(Schedule parentSchedule, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
+    public void createShift(Shift shift){
         if (!this.published){
-        this.shiftList.add(new Shift(parentSchedule, date, requiredEmployees, beginTime, endTime).toString());
-         }
-    }
-
-    // Creates shift (specific?)
-    public void createShift(Schedule parentSchedule, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
-        if (!this.published){
-        this.shiftList.add(new Shift(parentSchedule, date, requiredEmployees, beginTime, endTime, shiftType).toString());
+        this.shiftList.add(shift.getShiftID());
         }
     }
 

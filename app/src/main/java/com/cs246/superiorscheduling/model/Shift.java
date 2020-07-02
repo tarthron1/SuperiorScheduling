@@ -117,8 +117,8 @@ public class Shift {
     }
 
     // Adds new ShiftTime
-    public void addShiftTime(LocalTime startTime, LocalTime endTime){
-        this.shiftTimes.add(new ShiftTime(startTime, endTime, this).toString());
+    public void addShiftTime(ShiftTime shiftTime){
+        this.shiftTimes.add(shiftTime.getShiftTimeID());
     }
 
 

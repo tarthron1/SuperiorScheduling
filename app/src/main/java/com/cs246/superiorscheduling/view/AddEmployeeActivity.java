@@ -66,7 +66,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         //add all employees to the list
         // todo: get list of employees
         int i = 0;
-        for (employee: list) {
+        /*for (employee: list) {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
@@ -93,7 +93,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                 row.setBackgroundColor(Color.RED);
             }
             employeeList.addView(row);
-        }
+        }*/
     }
 
     @Override
