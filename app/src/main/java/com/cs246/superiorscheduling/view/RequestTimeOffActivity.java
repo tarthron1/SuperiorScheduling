@@ -131,13 +131,18 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         presenter.addRequest(timeOffRequest);
         notifyNewDataToSave();
     }
+    public void populateSpinner(){
+        dropdown = (Spinner) findViewById(R.id.request_shift);
+        // set shift list to dropdown
+        // todo Iterate through the shift list get the shiftType. First item in list needs to be all day or something similar.
+        dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                presenter.getShiftNames()));
+    }
 
     @Override
     public void notifyDataReady() {
-        int test = 0;
-        dropdown = (Spinner) findViewById(R.id.request_shift);
-        // set shift list to dropdown
-        //dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, presenter.getShiftList()));
+        populateSpinner();
 
     }
 
