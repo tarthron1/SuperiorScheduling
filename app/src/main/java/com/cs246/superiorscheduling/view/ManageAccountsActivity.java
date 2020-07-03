@@ -145,7 +145,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         for (User employee : presenter.getEmployeeList()) {
             TableRow row = new TableRow(this);
 
-
             // set employee name to row
             TextView name = new TextView(getApplicationContext());
             name.setText((employee.getFirstName() + " " + employee.getLastName()));
