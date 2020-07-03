@@ -144,7 +144,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
 
     public void viewSubmittedRequests() {
         LinearLayout requests = findViewById(R.id.submitted_requests);
-        for (Request request : list) { //todo: get list of requests for user
+        for (Request request : presenter.getUserRequests()) { //todo: get list of requests for user
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
 
