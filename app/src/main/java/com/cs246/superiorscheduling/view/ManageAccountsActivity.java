@@ -113,7 +113,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     @Override
     public void notifyDataReady() {
         setTableData();
-
     }
 
     public void createTable() {

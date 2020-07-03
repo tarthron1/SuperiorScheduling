@@ -19,6 +19,8 @@ import java.util.UUID;
 
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
+    private Shift shift; // todo: get shift object from AddShiftActivity, or from cloud?
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +51,11 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             // check if switch is activated, if checked add employee id to ShiftTime
             Boolean onShift = ((Switch) sw).isChecked();
             if (onShift) {
-                // Set employeesOnShift list in ShiftTime object
+                // todo: Set employeesOnShift list in ShiftTime object
 
             }
         }
+        // todo: save to cloud
     }
 
     public Boolean checkRequestedOff(User employee, Shift shift) {
@@ -62,25 +65,26 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyDataReady() {
+        setEmployeeTableData();
+    }
+
+    public void setEmployeeTableData() {
         LinearLayout employeeList = findViewById(R.id.employee_list);
 
         //add all employees to the list
-        // todo: get list of employees
         int i = 0;
-        /*for (employee: list) {
+        for (User employee: list) { // todo: get list of employees
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
             i++;
 
             TextView name = new TextView(this);
-            // Todo: set employee's name to view
-            name.setText("Employee Name");
+            name.setText((employee.getFirstName() + " " + employee.getLastName()));
             row.addView(name);
 
             TextView userId = new TextView(this);
-            // Todo: set employee's UUID to view
-            userId.setText("UUID");
+            userId.setText(employee.getUserID());
             userId.setVisibility(View.INVISIBLE);
             row.addView(name);
 
@@ -88,13 +92,13 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             row.addView(addToShift);
 
             // Check if employee requested time off
-            Boolean timeOff = checkRequestedOff(employee);
+            Boolean timeOff = checkRequestedOff(employee, shift);
             if (timeOff) {
                 // color set to red if employee requested the time off
                 row.setBackgroundColor(Color.RED);
             }
             employeeList.addView(row);
-        }*/
+        }
     }
 
     @Override
