@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -140,10 +142,40 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
                 //presenter.getShiftNames()));
     }
 
+    public void viewSubmittedRequests() {
+        LinearLayout requests = findViewById(R.id.submitted_requests);
+        for (Request request : presenter.getUserRequests()) { //todo: get list of requests for user
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+
+            // Set date to row
+            TextView date = new TextView(this);
+            date.setText(request.getDate().toString());
+            row.addView(date);
+
+            // Check if there is a shift for the request
+            if (request.getShiftID() != null) {
+                // Set shiftType to row
+                TextView shift = new TextView(this);
+                shift.setText("Shift Type"); //todo: get shift type for submitted requests
+                row.addView(shift);
+            }
+
+            // Check if there is a reason for the request
+            if (request.getReason() != null) {
+                // Set reason to row
+                TextView reason = new TextView(this);
+                reason.setText(request.getReason());
+                row.addView(reason);
+            }
+            requests.addView(row);
+        }
+    }
+
     @Override
     public void notifyDataReady() {
         populateSpinner();
-
+        viewSubmittedRequests();
     }
 
     @Override
