@@ -39,18 +39,18 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     public void addToShift(View view) {
-        // How are we attaching employees to shifts?
-
         LinearLayout employeeList = findViewById(R.id.employee_list);
+        // iterate through each row on the list, get employee id and onShift switch
         for (int i = 0; i < employeeList.getChildCount(); i++){
             LinearLayout row = findViewById(i);
             View id = row.getChildAt(1);
             View sw = row.getChildAt(2);
 
+            // check if switch is activated, if checked add employee id to ShiftTime
             Boolean onShift = ((Switch) sw).isChecked();
             if (onShift) {
-                UUID user; // todo: convert id view to UUID
-                // Set user on shift? Shift on user?
+                // Set employeesOnShift list in ShiftTime object
+
             }
         }
     }
