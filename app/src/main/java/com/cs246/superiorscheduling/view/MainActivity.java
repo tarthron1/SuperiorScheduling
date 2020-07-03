@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                 startActivity(intent);
 
 
-            } if (companiesUserIsEmployee.size() != 0) {
+            } else {
                 Intent intent = new Intent(this, EmployeeView.class);
                 startActivity(intent);
             }

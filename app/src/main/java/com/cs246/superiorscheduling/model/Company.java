@@ -143,4 +143,15 @@ public class Company  {
     public void addRequest(Request request){
         this.requestList.add(request.getRequestID());
     }
+
+    public void toggleActiveEmployee(User employee) {
+        if (activeEmployeeList.contains(employee.getUserID())) {
+            activeEmployeeList.remove(employee.getUserID());
+            inactiveEmployeeList.add(employee.getUserID());
+        }
+        else {
+            activeEmployeeList.add(employee.getUserID());
+            inactiveEmployeeList.remove(employee.getUserID());
+        }
+    }
 }
