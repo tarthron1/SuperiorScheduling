@@ -132,12 +132,15 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         notifyNewDataToSave();
     }
 
-    @Override
-    public void notifyDataReady() {
-        int test = 0;
+    public void getSpinnerData() {
         dropdown = (Spinner) findViewById(R.id.request_shift);
         // set shift list to dropdown
         //dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, presenter.getShiftList()));
+    }
+
+    @Override
+    public void notifyDataReady() {
+        getSpinnerData();
 
     }
 
