@@ -31,7 +31,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     private AddEmployeePresenter presenter = new AddEmployeePresenter();
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
-    private DatabaseReference currentUserReference, companyReference, employeeRequestReference, usersReference;
+    private DatabaseReference currentUserReference, companyReference, employeeRequestReference, usersReference, shiftTimeReference, shiftReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,51 +61,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 presenter.setCurrentUser(snapshot.getValue(User.class));
-                companyReference = database.getReference().child("companies").child(presenter.getCurrentUser().getCompanies().get(0));
-                companyReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        presenter.setCurrentCompany(snapshot.getValue(Company.class));
-                        usersReference = database.getReference().child("users");
-
-                        for (String employeeID: presenter.getCurrentCompany().getActiveEmployeeList()){
-                            employeeRequestReference = database.getReference().child("request").child(employeeID);
-                            employeeRequestReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot request: snapshot.getChildren()
-                                         ) {
-                                        Request requestFromDatabase = request.getValue(Request.class);
-                                        presenter.addRequest(requestFromDatabase);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-                            usersReference = database.getReference().child("users").child(employeeID);
-                            usersReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    presenter.addEmployee(snapshot.getValue(User.class));
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                getCompaniesFromDatabase();
 
             }
 
@@ -114,6 +70,61 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
             }
         });
+    }
+
+    private void getCompaniesFromDatabase() {
+        companyReference = database.getReference().child("companies").child(presenter.getCurrentUser().getCompanies().get(0));
+        companyReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                presenter.setCurrentCompany(snapshot.getValue(Company.class));
+                getUsersAndRequestsFromDatabase();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void getUsersAndRequestsFromDatabase() {
+        usersReference = database.getReference().child("users");
+
+        for (String employeeID: presenter.getCurrentCompany().getActiveEmployeeList()){
+            employeeRequestReference = database.getReference().child("request").child(employeeID);
+            employeeRequestReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot request: snapshot.getChildren()
+                    ) {
+                        Request requestFromDatabase = request.getValue(Request.class);
+                        presenter.addRequest(requestFromDatabase);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            usersReference = database.getReference().child("users").child(employeeID);
+            usersReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    presenter.addEmployee(snapshot.getValue(User.class));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
     }
 
     public void addToShift(View view) {
@@ -179,6 +190,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-
+        shiftReference = database.getReference().child("shift").child(presenter.getCurrentCompany().getCompanyID());
+        shiftTimeReference = database.getReference().child("shiftTime").child(presenter.getCurrentCompany().getCompanyID());
+        shiftReference.setValue(presenter.getShift());
+        shiftTimeReference.setValue(presenter.getShiftTime());
     }
 }
