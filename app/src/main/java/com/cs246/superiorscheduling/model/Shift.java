@@ -17,6 +17,12 @@ public class Shift {
     ArrayList<String> shiftTimes;
     int requiredEmployees;
 
+    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime) {
+    }
+
+    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType) {
+    }
+
     public String getParentSchedule() {
         return parentSchedule;
     }
