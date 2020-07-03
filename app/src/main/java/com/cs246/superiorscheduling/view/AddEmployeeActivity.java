@@ -27,11 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
-    private Shift shift; // todo: get shift object from AddShiftActivity, or from cloud?
     private AddEmployeePresenter presenter = new AddEmployeePresenter();
-    private FirebaseAuth mAuth;
     private FirebaseDatabase database;
-    private DatabaseReference currentUserReference, companyReference, employeeRequestReference, usersReference, shiftTimeReference, shiftReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +51,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     public void getDatabaseData(){
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        currentUserReference = database.getReference().child("users").child(mAuth.getUid());
+        DatabaseReference currentUserReference = database.getReference().child("users").child(mAuth.getUid());
         currentUserReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -73,7 +70,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     private void getCompaniesFromDatabase() {
-        companyReference = database.getReference().child("companies").child(presenter.getCurrentUser().getCompanies().get(0));
+        DatabaseReference companyReference = database.getReference().child("companies").child(presenter.getCurrentUser().getCompanies().get(0));
         companyReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -91,10 +88,10 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     private void getUsersAndRequestsFromDatabase() {
-        usersReference = database.getReference().child("users");
+        DatabaseReference usersReference = database.getReference().child("users");
 
         for (String employeeID: presenter.getCurrentCompany().getActiveEmployeeList()){
-            employeeRequestReference = database.getReference().child("request").child(employeeID);
+            DatabaseReference employeeRequestReference = database.getReference().child("request").child(employeeID);
             employeeRequestReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -160,7 +157,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         //add all employees to the list
         int i = 0;
-        for (User employee: presenter.getEmployeeList()) { // todo: get list of employees
+        for (User employee: presenter.getEmployeeList()) {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
@@ -179,7 +176,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             row.addView(addToShift);
 
             // Check if employee requested time off
-            Boolean timeOff = checkRequestedOff(employee, shift);
+            Boolean timeOff = checkRequestedOff(employee, presenter.getShift());
             if (timeOff) {
                 // color set to red if employee requested the time off
                 row.setBackgroundColor(Color.RED);
@@ -190,8 +187,8 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-        shiftReference = database.getReference().child("shift").child(presenter.getCurrentCompany().getCompanyID());
-        shiftTimeReference = database.getReference().child("shiftTime").child(presenter.getCurrentCompany().getCompanyID());
+        DatabaseReference shiftReference = database.getReference().child("shift").child(presenter.getCurrentCompany().getCompanyID());
+        DatabaseReference shiftTimeReference = database.getReference().child("shiftTime").child(presenter.getCurrentCompany().getCompanyID());
         shiftReference.setValue(presenter.getShift());
         shiftTimeReference.setValue(presenter.getShiftTime());
     }
