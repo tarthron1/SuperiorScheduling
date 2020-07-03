@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -131,17 +133,49 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         presenter.addRequest(timeOffRequest);
         notifyNewDataToSave();
     }
-
-    public void getSpinnerData() {
+    public void populateSpinner(){
         dropdown = (Spinner) findViewById(R.id.request_shift);
         // set shift list to dropdown
-        //dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, presenter.getShiftList()));
+        // todo Iterate through the shift list get the shiftType. First item in list needs to be all day or something similar.
+        //dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                //android.R.layout.simple_spinner_dropdown_item,
+                //presenter.getShiftNames()));
+    }
+
+    public void viewSubmittedRequests() {
+        LinearLayout requests = findViewById(R.id.submitted_requests);
+        for (Request request : list) { //todo: get list of requests for user
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+
+            // Set date to row
+            TextView date = new TextView(this);
+            date.setText(request.getDate().toString());
+            row.addView(date);
+
+            // Check if there is a shift for the request
+            if (request.getShiftID() != null) {
+                // Set shiftType to row
+                TextView shift = new TextView(this);
+                shift.setText("Shift Type"); //todo: get shift type for submitted requests
+                row.addView(shift);
+            }
+
+            // Check if there is a reason for the request
+            if (request.getReason() != null) {
+                // Set reason to row
+                TextView reason = new TextView(this);
+                reason.setText(request.getReason());
+                row.addView(reason);
+            }
+            requests.addView(row);
+        }
     }
 
     @Override
     public void notifyDataReady() {
-        getSpinnerData();
-
+        populateSpinner();
+        viewSubmittedRequests();
     }
 
     @Override

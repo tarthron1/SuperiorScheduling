@@ -113,8 +113,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     @Override
     public void notifyDataReady() {
         setTableData();
-
-
     }
 
     public void createTable() {
@@ -145,14 +143,18 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         for (User employee : presenter.getEmployeeList()) {
             TableRow row = new TableRow(this);
 
+            // Set invisible text with user id to row
             TextView userID = new TextView(this);
             userID.setVisibility(View.INVISIBLE);
             userID.setText(employee.getUserID());
+            row.addView(userID);
 
+            // set employee name to row
             TextView name = new TextView(getApplicationContext());
             name.setText((employee.getFirstName() + " " + employee.getLastName()));
             row.addView(name);
 
+            // set manager switch to row
             Switch manager = new Switch(getApplicationContext());
             if (presenter.getCurrentCompany().getManagerList().contains(employee.getUserID())) {
                 manager.setChecked(true);
@@ -161,6 +163,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
             }
             row.addView(manager);
 
+            // set active switch to row
             Switch active = new Switch(getApplicationContext());
             if (presenter.getCurrentCompany().getActiveEmployeeList().contains(employee.getUserID())) {
                 active.setChecked(true);
@@ -174,6 +177,34 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         }
     }
 
+    public void saveChanges(View view) {
+        for (int i = 0; i < table.getChildCount(); i++) {
+            // Collect user id, manager, and active data from every row
+            TableRow row = (TableRow) table.getChildAt(i);
+            TextView id = (TextView) row.getChildAt(0);
+            Switch manager = (Switch) row.getChildAt(2);
+            Switch active = (Switch) row.getChildAt(3);
+
+            // see if manager and active switches are checked
+            if (manager.isChecked()) {
+                // todo: add id to manager list?
+            }
+            else {
+
+            }
+
+            if (active.isChecked()){
+                // todo: add to active list?
+            }
+            else {
+                // todo: add to inactive list?
+            }
+        }
+        // todo: save updated lists
+
+        // update table
+        setTableData();
+    }
 
     //Once Data is ready to be saved to the cloud call this function.
     @Override
