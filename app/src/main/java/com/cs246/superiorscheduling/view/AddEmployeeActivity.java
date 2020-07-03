@@ -8,23 +8,36 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.model.Company;
+import com.cs246.superiorscheduling.model.Request;
 import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.model.User;
+import com.cs246.superiorscheduling.presenter.AddEmployeePresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
-
-import java.util.UUID;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     private Shift shift; // todo: get shift object from AddShiftActivity, or from cloud?
+    private AddEmployeePresenter presenter = new AddEmployeePresenter();
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference currentUserReference, companyReference, employeeRequestReference, usersReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_employee);
+        getDatabaseData();
 
         // shift type and number needed from AddShiftActivity intent
         Intent intent = getIntent();
@@ -38,6 +51,69 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         TextView numberTextView = findViewById(R.id.req_employees);
         numberTextView.setText(numberNeeded);
+    }
+
+    public void getDatabaseData(){
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        currentUserReference = database.getReference().child("users").child(mAuth.getUid());
+        currentUserReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                presenter.setCurrentUser(snapshot.getValue(User.class));
+                companyReference = database.getReference().child("companies").child(presenter.getCurrentUser().getCompanies().get(0));
+                companyReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        presenter.setCurrentCompany(snapshot.getValue(Company.class));
+                        usersReference = database.getReference().child("users");
+
+                        for (String employeeID: presenter.getCurrentCompany().getActiveEmployeeList()){
+                            employeeRequestReference = database.getReference().child("request").child(employeeID);
+                            employeeRequestReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot request: snapshot.getChildren()
+                                         ) {
+                                        Request requestFromDatabase = request.getValue(Request.class);
+                                        presenter.addRequest(requestFromDatabase);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            usersReference = database.getReference().child("users").child(employeeID);
+                            usersReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    presenter.addEmployee(snapshot.getValue(User.class));
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void addToShift(View view) {
@@ -73,7 +149,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         //add all employees to the list
         int i = 0;
-        for (User employee: list) { // todo: get list of employees
+        for (User employee: presenter.getEmployeeList()) { // todo: get list of employees
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
