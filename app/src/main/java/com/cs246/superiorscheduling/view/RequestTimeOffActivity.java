@@ -137,14 +137,23 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         dropdown = (Spinner) findViewById(R.id.request_shift);
         // set shift list to dropdown
         // todo Iterate through the shift list get the shiftType. First item in list needs to be all day or something similar.
-        //dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                //android.R.layout.simple_spinner_dropdown_item,
-                //presenter.getShiftNames()));
+        dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                getShiftType()));
+    }
+
+    public ArrayList<String> getShiftType() {
+        ArrayList<String> shiftTypeList = new ArrayList();
+        shiftTypeList.set(0, "All Day");
+        for (Shift shift : presenter.getShiftList()) {
+            shiftTypeList.add(shift.getShiftType());
+        }
+        return shiftTypeList;
     }
 
     public void viewSubmittedRequests() {
         LinearLayout requests = findViewById(R.id.submitted_requests);
-        for (Request request : presenter.getUserRequests()) { //todo: get list of requests for user
+        for (Request request : presenter.getUserRequests() ) { //todo: get list of requests for user
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
 
