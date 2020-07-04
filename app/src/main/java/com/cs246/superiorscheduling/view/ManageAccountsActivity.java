@@ -8,6 +8,7 @@ import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +46,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         currentUserDatabaseLocation = database.getReference().child("users").child(mAuth.getCurrentUser().getUid());
         allCompanyDatabaseLocation = database.getReference().child("companies");
         allUsersDatabaseLocation = database.getReference().child("users");
-        createTable();
         getCurrentUser();
 
     }
@@ -116,7 +116,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     }
 
     public void createTable() {
-        table = findViewById(R.id.EmployeeAccounts);
         // set table header
         TableRow th = new TableRow(this);
 
@@ -139,15 +138,12 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     }
 
     public void setTableData() {
+        table = findViewById(R.id.EmployeeAccounts);
+        table.removeAllViews();
+        createTable();
         // set employee data onto table
         for (User employee : presenter.getEmployeeList()) {
             TableRow row = new TableRow(this);
-
-            // Set invisible text with user id to row
-            TextView userID = new TextView(this);
-            userID.setVisibility(View.INVISIBLE);
-            userID.setText(employee.getUserID());
-            row.addView(userID);
 
             // set employee name to row
             TextView name = new TextView(getApplicationContext());
@@ -178,32 +174,36 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     }
 
     public void saveChanges(View view) {
-        for (int i = 0; i < table.getChildCount(); i++) {
-            // Collect user id, manager, and active data from every row
-            TableRow row = (TableRow) table.getChildAt(i);
-            TextView id = (TextView) row.getChildAt(0);
-            Switch manager = (Switch) row.getChildAt(2);
-            Switch active = (Switch) row.getChildAt(3);
-
-            // see if manager and active switches are checked
-            if (manager.isChecked()) {
-                // todo: add id to manager list?
+        int tableIterator = 1;
+        for (User employee : presenter.getEmployeeList()) {
+            TableRow row = (TableRow) table.getChildAt(tableIterator);
+            View manager = row.getChildAt(1);
+            View active = row.getChildAt(2);
+            if (((Switch)manager).isChecked()) {
+                if (!presenter.getCurrentCompany().getManagerList().contains(employee.getUserID())) {
+                    presenter.getCurrentCompany().addManager(employee);
+                }
+            }
+            if (((Switch)active).isChecked()){
+                if (!presenter.getCurrentCompany().getActiveEmployeeList().contains(employee.getUserID())) {
+                    presenter.getCurrentCompany().toggleActiveEmployee(employee);
+                }
             }
             else {
-
+                if (!presenter.getCurrentCompany().getInactiveEmployeeList().contains(employee.getUserID())) {
+                    presenter.getCurrentCompany().toggleActiveEmployee(employee);
+                }
             }
-
-            if (active.isChecked()){
-                // todo: add to active list?
-            }
-            else {
-                // todo: add to inactive list?
-            }
+            tableIterator++;
         }
-        // todo: save updated lists
+
+        // save updated lists
+        notifyNewDataToSave();
 
         // update table
         setTableData();
+        Toast.makeText(this, ("Changes Saved."),
+                Toast.LENGTH_SHORT).show();
     }
 
     //Once Data is ready to be saved to the cloud call this function.
