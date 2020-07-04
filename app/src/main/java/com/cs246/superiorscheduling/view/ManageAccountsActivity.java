@@ -46,7 +46,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         currentUserDatabaseLocation = database.getReference().child("users").child(mAuth.getCurrentUser().getUid());
         allCompanyDatabaseLocation = database.getReference().child("companies");
         allUsersDatabaseLocation = database.getReference().child("users");
-        createTable();
         getCurrentUser();
 
     }
@@ -117,7 +116,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     }
 
     public void createTable() {
-        table = findViewById(R.id.EmployeeAccounts);
         // set table header
         TableRow th = new TableRow(this);
 
@@ -140,7 +138,9 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     }
 
     public void setTableData() {
-
+        table = findViewById(R.id.EmployeeAccounts);
+        table.removeAllViews();
+        createTable();
         // set employee data onto table
         for (User employee : presenter.getEmployeeList()) {
             TableRow row = new TableRow(this);
@@ -180,13 +180,11 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
             View manager = row.getChildAt(1);
             View active = row.getChildAt(2);
             if (((Switch)manager).isChecked()) {
-                // todo: add id to manager list?
                 if (!presenter.getCurrentCompany().getManagerList().contains(employee.getUserID())) {
                     presenter.getCurrentCompany().addManager(employee);
                 }
             }
             if (((Switch)active).isChecked()){
-                // todo: add to active list?
                 if (!presenter.getCurrentCompany().getActiveEmployeeList().contains(employee.getUserID())) {
                     presenter.getCurrentCompany().toggleActiveEmployee(employee);
                 }
@@ -199,8 +197,9 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
             tableIterator++;
         }
 
-        // todo: save updated lists
+        // save updated lists
         notifyNewDataToSave();
+
         // update table
         setTableData();
         Toast.makeText(this, ("Changes Saved."),
