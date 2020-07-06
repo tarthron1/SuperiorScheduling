@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 // The Manager's View of accounts
 public class ManageAccountsActivity extends AppCompatActivity implements Listener {
 
@@ -87,15 +89,43 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         ValueEventListener getEmployeeListListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<User> oldEmployeesToRemove = new ArrayList<>();
+                ArrayList<User> updatedEmployeesToAdd = new ArrayList<>();
                 for (DataSnapshot user: snapshot.getChildren()
                      ) {
                     User tempUser = user.getValue(User.class);
                     if (presenter.getCurrentCompany().getManagerList().contains(tempUser.getUserID())){
-                        presenter.addEmployee(tempUser);
+                        for (User userCurrentlyInList : presenter.getEmployeeList()
+                             ) {
+                            if(userCurrentlyInList.getUserID().equals(tempUser.getUserID())){
+                                oldEmployeesToRemove.add(userCurrentlyInList);
+                            }
+                        }
+                        updatedEmployeesToAdd.add(tempUser);
                     } else if (presenter.getCurrentCompany().getActiveEmployeeList().contains(tempUser.getUserID())){
-                        presenter.addEmployee(tempUser);
+                        for (User userCurrentlyInList : presenter.getEmployeeList()
+                        ) {
+                            if(userCurrentlyInList.getUserID().equals(tempUser.getUserID())){
+                                oldEmployeesToRemove.add(userCurrentlyInList);
+                            }
+                        }
+                        updatedEmployeesToAdd.add(tempUser);
                     } else if (presenter.getCurrentCompany().getInactiveEmployeeList().contains(tempUser.getUserID())){
-                        presenter.addEmployee(tempUser);
+                        for (User userCurrentlyInList : presenter.getEmployeeList()
+                        ) {
+                            if(userCurrentlyInList.getUserID().equals(tempUser.getUserID())){
+                                oldEmployeesToRemove.add(userCurrentlyInList);
+                            }
+                        }
+                        updatedEmployeesToAdd.add(tempUser);
+                    }
+                    for (User employee: oldEmployeesToRemove
+                         ) {
+                        presenter.removeEmployee(employee);
+                    }
+                    for (User employee:updatedEmployeesToAdd
+                         ) {
+                        presenter.addEmployee(employee);
                     }
                 }
                 notifyDataReady();
@@ -182,6 +212,10 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
             if (((Switch)manager).isChecked()) {
                 if (!presenter.getCurrentCompany().getManagerList().contains(employee.getUserID())) {
                     presenter.getCurrentCompany().addManager(employee);
+                }
+            } else {
+                if (presenter.getCurrentCompany().getManagerList().size() > 1){
+                    presenter.getCurrentCompany().removeManager(employee);
                 }
             }
             if (((Switch)active).isChecked()){
