@@ -3,16 +3,20 @@ package com.cs246.superiorscheduling.model;
 import android.widget.EditText;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 public class Request {
 
     private String requestID;
-    UUID uuid = UUID.randomUUID();
     String requesterID;
-    LocalDate date;
+    Date date;
     String shiftID = null;
     String reason = null;
+
+    public Request(){
+
+    }
 
     // ID Getter
     public String getRequestID() {
@@ -35,12 +39,12 @@ public class Request {
     }
 
     // Date Getter
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
     // Date Setter
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -63,34 +67,34 @@ public class Request {
     }
 
     // Constructor (full)
-    public Request(User requester, LocalDate date, String shiftID, String reason){
+    public Request(User requester, Date date, String shiftID, String reason){
         this.requesterID = requester.getUserID();
         this.date = date;
         this.shiftID = shiftID;
         this.reason = reason;
-        this.requestID = uuid.toString();
+        this.requestID = UUID.randomUUID().toString();
     }
 
     // Constructor (w/o reason) *changed order of parameters (06/27/2020)
-    public Request(User requester, String shiftID, LocalDate date){
+    public Request(User requester, String shiftID, Date date){
         this.requesterID = requester.getUserID();
         this.date = date;
         this.shiftID = shiftID;
-        this.requestID = uuid.toString();
+        this.requestID = UUID.randomUUID().toString();
     }
 
     // Constructor (w/o shift)
-    public Request(User requester, LocalDate date, String reason){
+    public Request(User requester, Date date, String reason){
         this.requesterID = requester.getUserID();
         this.date = date;
         this.reason = reason;
-        this.requestID = uuid.toString();
+        this.requestID = UUID.randomUUID().toString();
     }
 
     // Constructor (w/o reason & shift)
-    public Request(User requester, LocalDate date){
+    public Request(User requester, Date date){
         this.requesterID = requester.getUserID();
         this.date = date;
-        this.requestID = uuid.toString();
+        this.requestID = UUID.randomUUID().toString();
     }
 }
