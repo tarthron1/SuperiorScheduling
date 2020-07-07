@@ -86,9 +86,10 @@
         android:id="@+id/request_shift"
         android:layout_width="209dp"
         android:layout_height="41dp"
+        android:layout_marginTop="176dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView44"
-        tools:layout_editor_absoluteY="170dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="411dp"
