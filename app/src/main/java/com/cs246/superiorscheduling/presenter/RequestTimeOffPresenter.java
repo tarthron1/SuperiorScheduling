@@ -6,6 +6,7 @@ import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RequestTimeOffPresenter {
     private User currentUser;
@@ -13,6 +14,7 @@ public class RequestTimeOffPresenter {
     private ArrayList<String> shiftIdList;
     private ArrayList<Shift> shiftList;
     private ArrayList<Request> userRequests;
+    private HashMap<String, Shift> shiftTypeList;
 
     public User getCurrentUser() {
         return currentUser;
@@ -57,4 +59,17 @@ public class RequestTimeOffPresenter {
     public void addRequest(Request request){
         this.userRequests.add(request);
     }
+
+    public HashMap<String, Shift> getShiftTypeList() {
+        return shiftTypeList;
+    }
+
+    public void setShiftTypeList(HashMap<String, Shift> shiftTypeList) {
+        this.shiftTypeList = shiftTypeList;
+    }
+
+    public void addShiftType(Shift shift, String shiftType){
+        shiftTypeList.put(shiftType, shift);
+    }
+
 }

@@ -23,6 +23,10 @@ public class Shift {
     public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType) {
     }
 
+    public Shift() {
+
+    }
+
     public String getParentSchedule() {
         return parentSchedule;
     }

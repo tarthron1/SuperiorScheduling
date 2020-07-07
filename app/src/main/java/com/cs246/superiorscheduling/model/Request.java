@@ -80,12 +80,12 @@ public class Request {
     }
 
     // Constructor (w/o shift)
-    /*public Request(User requester, String date, String reason){
+    public Request(User requester, LocalDate date, String reason){
         this.requesterID = requester.getUserID();
         this.date = date;
         this.reason = reason;
         this.requestID = uuid.toString();
-    }*/
+    }
 
     // Constructor (w/o reason & shift)
     public Request(User requester, LocalDate date){
