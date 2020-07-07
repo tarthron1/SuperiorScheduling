@@ -13,6 +13,7 @@ public class User {
     private String nickName;
     private Date birthDate;
     private ArrayList<String> companies = new ArrayList<>();
+    private ArrayList<String> requests = new ArrayList<>();
 
     //  Default?
     public User(){
@@ -100,4 +101,15 @@ public class User {
         this.companies.add(company.getCompanyID());
     }
 
+    public ArrayList<String> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(ArrayList<String> requests) {
+        this.requests = requests;
+    }
+
+    public void addRequest(Request request) {
+        requests.add(request.getRequestID());
+    }
 }

@@ -27,9 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -40,9 +43,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     FirebaseDatabase database;
     DatabaseReference databaseCurrentUser, databaseScheduleList, databaseShiftList, databaseRequestList;
     Spinner dropdown;
-    String date = null;
-    String reason = null;
-    String shift = null;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -69,28 +70,28 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
 
             }
         });
-        notifyDataReady();
     }
 
     private void getSchedulesAndRequests() {
         databaseScheduleList = database.getReference().child("schedule").child(presenter.getCurrentUser().getCompanies().get(0));
-        databaseRequestList = database.getReference().child("request").child(presenter.getCurrentUser().getUserID());
 
-        databaseRequestList.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot request: snapshot.getChildren()
-                ) {
-                    presenter.addRequest(request.getValue(Request.class));
+        for (String requestID: presenter.getCurrentUser().getRequests()
+             ) {
+            databaseRequestList = database.getReference().child("request").child(presenter.getCurrentUser().getUserID()).child(requestID);
+            databaseRequestList.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Request newRequest = snapshot.getValue(Request.class);
+                    presenter.addRequest(newRequest);
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
 
-            }
-        });
         databaseScheduleList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,25 +129,36 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
 
             }
         });
+        notifyDataReady();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void submitRequest(View view) {
+        String date = null;
+        String reason = null;
         Request timeOffRequest;
         Spinner spinner = (Spinner) findViewById(R.id.request_shift);
         String valueCheck = spinner.getSelectedView().toString();
         EditText dateEditText = findViewById(R.id.request_date);
         date = dateEditText.getText().toString();
-        LocalDate localDate= LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        reason = findViewById(R.id.request_reason).toString();
-        shift = findViewById(R.id.request_shift).toString();
+        Date localDate= null;
+        try {
+            localDate = new SimpleDateFormat("MM/dd/yyyy").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        EditText reasonView = findViewById(R.id.request_reason);
+        reason = reasonView.getText().toString();
+        String shift = spinner.getSelectedItem().toString();
         if (shift == "All Day"){
              timeOffRequest = new Request(presenter.getCurrentUser(), localDate, reason);
         } else {
          timeOffRequest = new Request(presenter.getCurrentUser(), localDate, shift, reason);
         }
-        presenter.addRequest(timeOffRequest);
+        presenter.setNewRequest(timeOffRequest);
+        presenter.getCurrentUser().addRequest(timeOffRequest);
         notifyNewDataToSave();
+        viewSubmittedRequests();
     }
     public void populateSpinner(){
         dropdown = (Spinner) findViewById(R.id.request_shift);
@@ -174,6 +186,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     }
 
     public void viewSubmittedRequests() {
+
         LinearLayout requests = findViewById(R.id.submitted_requests);
         if (presenter.getUserRequests() != null) {
             for (Request request : presenter.getUserRequests()) { //todo: get list of requests for user
@@ -213,7 +226,9 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
 
     @Override
     public void notifyNewDataToSave() {
-        databaseRequestList.setValue(presenter.getUserRequests());
+        databaseCurrentUser.setValue(presenter.getCurrentUser());
+        DatabaseReference requestLocation = database.getReference().child("request").child(presenter.getCurrentUser().getUserID()).child(presenter.getNewRequest().getRequestID());
+        requestLocation.setValue(presenter.getNewRequest());
 
     }
 }

@@ -10,11 +10,12 @@ import java.util.HashMap;
 
 public class RequestTimeOffPresenter {
     private User currentUser;
-    private ArrayList<Schedule> scheduleList;
-    private ArrayList<String> shiftIdList;
-    private ArrayList<Shift> shiftList;
-    private ArrayList<Request> userRequests;
-    private HashMap<String, Shift> shiftTypeList;
+    private ArrayList<Schedule> scheduleList= new ArrayList<>();
+    private ArrayList<String> shiftIdList= new ArrayList<>();
+    private ArrayList<Shift> shiftList= new ArrayList<>();
+    private ArrayList<Request> userRequests = new ArrayList<>();
+    private HashMap<String, Shift> shiftTypeList = new HashMap<>();
+    private Request newRequest;
 
     public User getCurrentUser() {
         return currentUser;
@@ -72,4 +73,11 @@ public class RequestTimeOffPresenter {
         shiftTypeList.put(shiftType, shift);
     }
 
+    public Request getNewRequest() {
+        return newRequest;
+    }
+
+    public void setNewRequest(Request newRequest) {
+        this.newRequest = newRequest;
+    }
 }
