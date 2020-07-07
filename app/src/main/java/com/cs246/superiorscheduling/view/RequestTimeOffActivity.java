@@ -154,7 +154,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         // todo Iterate through the shift list get the shiftType. First item in list needs to be all day or something similar.
         dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                getShiftType()));
+                getShiftType())); 
     }
 
     public ArrayList<String> getShiftType() {
