@@ -3,6 +3,9 @@ package com.cs246.superiorscheduling.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,7 @@ import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.EditSchedulePresenter;
+import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -152,9 +156,44 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
 
     }
 
+    // display a list of current shifts that will be added to schedule
+    public void setShiftList() {
+        LinearLayout shiftList = findViewById(R.id.shift_list);
+
+        // add all shifts to the list
+        for (final Shift shift: presenter.getShifts()) {
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+
+            TextView shiftType = new TextView(this);
+            shiftType.setText(shift.getShiftType());
+            row.addView(shiftType);
+
+            TextView date = new TextView(this);
+            date.setText(shift.getDate().toString());
+            row.addView(date);
+
+            String shiftId = shift.getShiftID();
+
+            Button edit = new Button(this);
+            edit.setText("Edit");
+            edit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    editShift(shiftId);
+                }
+            });
+            row.addView(edit);
+        }
+    }
+
+    public void editShift(String shiftId) {
+
+    }
+
     @Override
     public void notifyDataReady() {
-
+        setShiftList();
     }
 
     @Override
