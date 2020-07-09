@@ -28,7 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     private AddEmployeePresenter presenter;
-
+    Intent intent;
+    String editingShiftId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +38,23 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new AddEmployeePresenter(mAuth.getUid(), database, this);
+        setUpView();
+    }
 
+    public void setUpView(){
         // shift type and number needed from AddShiftActivity intent
-        Intent intent = getIntent();
+        intent = getIntent();
         String shiftType = intent.getStringExtra("shiftType");
 
         String numberNeeded = intent.getStringExtra("numberNeeded");
+
+        // check if shiftId sent - shift is being edited
+        if(intent.getStringExtra("shiftId") != null) {
+            editingShiftId = intent.getStringExtra("shiftId");
+        }
+        else {
+            editingShiftId = null;
+        }
 
         // set shift type and number needed onto view
         TextView shiftTextView = findViewById(R.id.shift_name);
@@ -67,7 +79,11 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
             }
         }
-        // todo: save to cloud
+        // todo: save to cloud (if shift is being edited, need to remove old shift and replace with edited shift)
+
+        // go back to EditScheduleActivity
+        Intent intent = new Intent(this, EditScheduleActivity.class);
+        startActivity(intent);
     }
 
     public Boolean checkRequestedOff(User employee, Shift shift) {
@@ -101,6 +117,11 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             row.addView(name);
 
             Switch addToShift = new Switch(this);
+            //if shift is being edited, check if employee was added previously to shift
+            if (editingShiftId != null) {
+                //todo: create logic to check if employee is already on shift
+                //addToShift.setChecked();
+            }
             row.addView(addToShift);
 
             // Check if employee requested time off

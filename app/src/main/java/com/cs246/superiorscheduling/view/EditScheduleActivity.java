@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // The view used to edit the Schedules
 public class EditScheduleActivity extends AppCompatActivity implements Listener {
@@ -34,7 +35,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     private EditSchedulePresenter presenter;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
-
+    List<String> btnShiftIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +50,26 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
 
 
 
-    // Ability to add shifts
+    // start AddShiftActivity
     public void addShift(View view){
         Intent intent = new Intent(this, AddShiftActivity.class);
         startActivity(intent);
     }
 
     public void clearSchedule(View view) {
-
+        //todo: create logic to delete shifts on schedule
     }
 
     public void publishSchedule(View view) {
-
+        //todo: set schedule published to true, save schedule to cloud
     }
 
     // display a list of current shifts that will be added to schedule
     public void setShiftList() {
         LinearLayout shiftList = findViewById(R.id.shift_list);
-
+        int i = 0;
         // add all shifts to the list
-        for (final Shift shift: presenter.getShifts()) {
+        for (Shift shift: presenter.getShifts()) {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -80,22 +81,29 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             date.setText(shift.getDate().toString());
             row.addView(date);
 
-
+            btnShiftIds.add(shift.getShiftID());
 
             Button edit = new Button(this);
             edit.setText("Edit");
+            edit.setId(i);
             edit.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    String shiftId = shift.getShiftID();
-                    editShift(shiftId);
+                    editShift(btnShiftIds.get(v.getId()));
                 }
             });
             row.addView(edit);
+
+            // add row to layout
+            shiftList.addView(row);
+            i++;
         }
     }
 
+    // Pass shiftId of shift to be edited to AddShiftActivity
     public void editShift(String shiftId) {
-
+        Intent intent = new Intent(this, AddShiftActivity.class);
+        intent.putExtra("shiftId", shiftId);
+        startActivity(intent);
     }
 
     @Override
