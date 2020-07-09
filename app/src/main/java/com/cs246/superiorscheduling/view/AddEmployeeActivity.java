@@ -15,6 +15,7 @@ import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Company;
 import com.cs246.superiorscheduling.model.Request;
 import com.cs246.superiorscheduling.model.Shift;
+import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.AddEmployeePresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
@@ -88,6 +89,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     public Boolean checkRequestedOff(User employee, Shift shift) {
         // todo: create logic to check if employee requested time off
+
         return false; // return true if time was requested off
     }
 

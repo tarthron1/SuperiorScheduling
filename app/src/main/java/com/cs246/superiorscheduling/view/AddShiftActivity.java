@@ -16,9 +16,12 @@ import com.cs246.superiorscheduling.presenter.Listener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 // Fragment to view the shifts
 public class AddShiftActivity extends AppCompatActivity implements Listener {
@@ -91,8 +94,10 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
             shiftEditText.setText(shiftType);
 
             EditText dateEditText = (EditText) findViewById(R.id.shift_date);
-            String date = presenter.getShift().getDate();
-            dateEditText.setText(date);
+            LocalDate date = presenter.getShift().getDate();
+            DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyy");
+            String strDate = dateFormat.format(date);
+            dateEditText.setText(strDate);
 
             EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
             String beginTime = presenter.getShift().getBeginTime();
