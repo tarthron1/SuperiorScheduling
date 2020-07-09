@@ -27,20 +27,34 @@ import com.google.firebase.database.ValueEventListener;
 
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
-    private AddEmployeePresenter presenter = new AddEmployeePresenter();
-    private FirebaseDatabase database;
+    private AddEmployeePresenter presenter;
+    Intent intent;
+    String editingShiftId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_employee);
-        getDatabaseData();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        presenter = new AddEmployeePresenter(mAuth.getUid(), database, this);
+        setUpView();
+    }
 
+    public void setUpView(){
         // shift type and number needed from AddShiftActivity intent
-        Intent intent = getIntent();
+        intent = getIntent();
         String shiftType = intent.getStringExtra("shiftType");
 
         String numberNeeded = intent.getStringExtra("numberNeeded");
+
+        // check if shiftId sent - shift is being edited
+        if(intent.getStringExtra("shiftId") != null) {
+            editingShiftId = intent.getStringExtra("shiftId");
+        }
+        else {
+            editingShiftId = null;
+        }
 
         // set shift type and number needed onto view
         TextView shiftTextView = findViewById(R.id.shift_name);
@@ -48,80 +62,6 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         TextView numberTextView = findViewById(R.id.req_employees);
         numberTextView.setText(numberNeeded);
-    }
-
-    public void getDatabaseData(){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference currentUserReference = database.getReference().child("users").child(mAuth.getUid());
-        currentUserReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                presenter.setCurrentUser(snapshot.getValue(User.class));
-                getCompaniesFromDatabase();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getCompaniesFromDatabase() {
-        DatabaseReference companyReference = database.getReference().child("companies").child(presenter.getCurrentUser().getCompanies().get(0));
-        companyReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                presenter.setCurrentCompany(snapshot.getValue(Company.class));
-                getUsersAndRequestsFromDatabase();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    private void getUsersAndRequestsFromDatabase() {
-        DatabaseReference usersReference = database.getReference().child("users");
-
-        for (String employeeID: presenter.getCurrentCompany().getActiveEmployeeList()){
-            DatabaseReference employeeRequestReference = database.getReference().child("request").child(employeeID);
-            employeeRequestReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot request: snapshot.getChildren()
-                    ) {
-                        Request requestFromDatabase = request.getValue(Request.class);
-                        presenter.addRequest(requestFromDatabase);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-            usersReference = database.getReference().child("users").child(employeeID);
-            usersReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    presenter.addEmployee(snapshot.getValue(User.class));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-
     }
 
     public void addToShift(View view) {
@@ -139,7 +79,11 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
             }
         }
-        // todo: save to cloud
+        // todo: save to cloud (if shift is being edited, need to remove old shift and replace with edited shift)
+
+        // go back to EditScheduleActivity
+        Intent intent = new Intent(this, EditScheduleActivity.class);
+        startActivity(intent);
     }
 
     public Boolean checkRequestedOff(User employee, Shift shift) {
@@ -173,6 +117,11 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             row.addView(name);
 
             Switch addToShift = new Switch(this);
+            //if shift is being edited, check if employee was added previously to shift
+            if (editingShiftId != null) {
+                //todo: create logic to check if employee is already on shift
+                //addToShift.setChecked();
+            }
             row.addView(addToShift);
 
             // Check if employee requested time off
@@ -187,9 +136,6 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-        DatabaseReference shiftReference = database.getReference().child("shift").child(presenter.getCurrentCompany().getCompanyID());
-        DatabaseReference shiftTimeReference = database.getReference().child("shiftTime").child(presenter.getCurrentCompany().getCompanyID());
-        shiftReference.setValue(presenter.getShift());
-        shiftTimeReference.setValue(presenter.getShiftTime());
+        presenter.notifyNewDataToSave();
     }
 }

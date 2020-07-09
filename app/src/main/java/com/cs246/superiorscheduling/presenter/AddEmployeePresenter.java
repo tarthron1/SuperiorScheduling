@@ -5,18 +5,37 @@ import com.cs246.superiorscheduling.model.Request;
 import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class AddEmployeePresenter {
+public class AddEmployeePresenter implements Listener {
     private User currentUser;
     private Company currentCompany;
     private ArrayList<Request> requests;
     private ArrayList<User> employeeList;
     private Shift shift;
     private ShiftTime shiftTime;
+    private ArrayList<Listener> listeners;
+    private DatabaseHelper helper;
 
-    public AddEmployeePresenter() {
+    public AddEmployeePresenter(String userID, FirebaseDatabase database, Listener listener) {
+        listeners = new ArrayList<>();
+        listeners.add(listener);
+        helper = new DatabaseHelper(userID, database, this);
+    }
+    @Override
+    public void notifyDataReady() {
+        currentUser = helper.getUser();
+        currentCompany = helper.getCompany();
+        requests = helper.getRequestsByCompany();
+        employeeList = helper.getEmployees();
+    }
+
+    @Override
+    public void notifyNewDataToSave() {
+        helper.addShift(shift);
+        helper.addShiftTime(shiftTime);
 
     }
 
@@ -75,4 +94,6 @@ public class AddEmployeePresenter {
     public void setShiftTime(ShiftTime shiftTime) {
         this.shiftTime = shiftTime;
     }
+
+
 }

@@ -31,113 +31,20 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
 
     private static String TAG = "ManageAccountsActivity";
     private ManageAccountsPresenter presenter;
-    private FirebaseDatabase database;
-    private FirebaseAuth mAuth;
-    private DatabaseReference currentUserDatabaseLocation;
-    private DatabaseReference allCompanyDatabaseLocation;
-    private DatabaseReference allUsersDatabaseLocation;
     private TableLayout table;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_accounts);
-        presenter = new ManageAccountsPresenter();
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        currentUserDatabaseLocation = database.getReference().child("users").child(mAuth.getCurrentUser().getUid());
-        allCompanyDatabaseLocation = database.getReference().child("companies");
-        allUsersDatabaseLocation = database.getReference().child("users");
-        getCurrentUser();
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        presenter = new ManageAccountsPresenter(mAuth.getUid(), database, this);
     }
 
-    private void getCurrentUser() {
-        ValueEventListener getCurrentUserListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                presenter.setCurrentUser(snapshot.getValue(User.class));
-                getCurrentCompany();
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "get user info failed", error.toException());
-            }
-        };
-        currentUserDatabaseLocation.addValueEventListener(getCurrentUserListener);
-    }
 
-    private void getCurrentCompany() {
-        ValueEventListener getCurrentCompanyListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                presenter.setCurrentCompany(snapshot.child(presenter.getCurrentUser().getCompanies().get(0)).getValue(Company.class));
-                getEmployeeList();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        allCompanyDatabaseLocation.addValueEventListener(getCurrentCompanyListener);
-    }
-
-    private void getEmployeeList() {
-        ValueEventListener getEmployeeListListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<User> oldEmployeesToRemove = new ArrayList<>();
-                ArrayList<User> updatedEmployeesToAdd = new ArrayList<>();
-                for (DataSnapshot user: snapshot.getChildren()
-                     ) {
-                    User tempUser = user.getValue(User.class);
-                    if (presenter.getCurrentCompany().getManagerList().contains(tempUser.getUserID())){
-                        for (User userCurrentlyInList : presenter.getEmployeeList()
-                             ) {
-                            if(userCurrentlyInList.getUserID().equals(tempUser.getUserID())){
-                                oldEmployeesToRemove.add(userCurrentlyInList);
-                            }
-                        }
-                        updatedEmployeesToAdd.add(tempUser);
-                    } else if (presenter.getCurrentCompany().getActiveEmployeeList().contains(tempUser.getUserID())){
-                        for (User userCurrentlyInList : presenter.getEmployeeList()
-                        ) {
-                            if(userCurrentlyInList.getUserID().equals(tempUser.getUserID())){
-                                oldEmployeesToRemove.add(userCurrentlyInList);
-                            }
-                        }
-                        updatedEmployeesToAdd.add(tempUser);
-                    } else if (presenter.getCurrentCompany().getInactiveEmployeeList().contains(tempUser.getUserID())){
-                        for (User userCurrentlyInList : presenter.getEmployeeList()
-                        ) {
-                            if(userCurrentlyInList.getUserID().equals(tempUser.getUserID())){
-                                oldEmployeesToRemove.add(userCurrentlyInList);
-                            }
-                        }
-                        updatedEmployeesToAdd.add(tempUser);
-                    }
-                    for (User employee: oldEmployeesToRemove
-                         ) {
-                        presenter.removeEmployee(employee);
-                    }
-                    for (User employee:updatedEmployeesToAdd
-                         ) {
-                        presenter.addEmployee(employee);
-                    }
-                }
-                notifyDataReady();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        allUsersDatabaseLocation.addValueEventListener(getEmployeeListListener);
-    }
 
     //Any Code that relies on data from the cloud needs to be called from this function
     @Override
@@ -243,7 +150,6 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     //Once Data is ready to be saved to the cloud call this function.
     @Override
     public void notifyNewDataToSave() {
-        currentUserDatabaseLocation.setValue(presenter.getCurrentUser());
-        allCompanyDatabaseLocation.child(presenter.getCurrentCompany().getCompanyID()).setValue(presenter.getCurrentCompany());
+        presenter.notifyNewDataToSave();
     }
 }

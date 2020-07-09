@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "756379081692",
-    "firebase_url": "https://superior-scheduling-6c528.firebaseio.com",
-    "project_id": "superior-scheduling-6c528",
-    "storage_bucket": "superior-scheduling-6c528.appspot.com"
+    "project_number": "388350873837",
+    "firebase_url": "https://superior-scheduling.firebaseio.com",
+    "project_id": "superior-scheduling",
+    "storage_bucket": "superior-scheduling.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:756379081692:android:bbf5fe390aeef5ceb30d19",
+        "mobilesdk_app_id": "1:388350873837:android:2fb9f640ab884e3b47bce4",
         "android_client_info": {
           "package_name": "com.cs246.superiorscheduling"
         }
       },
       "oauth_client": [
         {
-          "client_id": "756379081692-hj16itp65gshtbfgkjr92oht1ri2pt2v.apps.googleusercontent.com",
+          "client_id": "388350873837-ahabo0sndqu8c8tr6mtqee3uf7s7imp4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.cs246.superiorscheduling",
-            "certificate_hash": "b9dc172294ec4ec112685b1bf467a171246729fa"
+            "certificate_hash": "7b34fcff5be02f643bca8f76cff4d6334be76928"
           }
         },
         {
-          "client_id": "756379081692-q6ug5f0fd756eqi6elfdd1sjf5aa5rtq.apps.googleusercontent.com",
+          "client_id": "388350873837-n6l4sbcpgop2uqurc70p6g8gdd0t740e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD7Ovw7Qx7SADkg7WTidOppntBUsLWa64k"
+          "current_key": "AIzaSyASLFly3EbJTt8gQ1--Qn8m9rbFFooTBLw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "756379081692-q6ug5f0fd756eqi6elfdd1sjf5aa5rtq.apps.googleusercontent.com",
+              "client_id": "388350873837-n6l4sbcpgop2uqurc70p6g8gdd0t740e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
