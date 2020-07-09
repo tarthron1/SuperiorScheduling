@@ -173,13 +173,13 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             date.setText(shift.getDate().toString());
             row.addView(date);
 
-            String shiftId = shift.getShiftID();
+
 
             Button edit = new Button(this);
             edit.setText("Edit");
             edit.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
+                    String shiftId = shift.getShiftID();
                     editShift(shiftId);
                 }
             });
