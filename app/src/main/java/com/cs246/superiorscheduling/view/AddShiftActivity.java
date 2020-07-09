@@ -100,15 +100,19 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
             dateEditText.setText(strDate);
 
             EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
-            String beginTime = presenter.getShift().getBeginTime();
-            beginTimeEditText.setText(beginTime);
+            LocalTime beginTime = presenter.getShift().getBeginTime();
+            DateFormat beginTimeFormat = new SimpleDateFormat("hh:mm:ss");
+            String strBeginTime = beginTimeFormat.format(beginTime);
+            beginTimeEditText.setText(strBeginTime);
 
             EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
-            String endTime = presenter.getShift().getEndTime();
-            endTimeEditText.setText(endTime);
+            LocalTime endTime = presenter.getShift().getEndTime();
+            DateFormat endTimeFormat = new SimpleDateFormat("hh:mm:ss");
+            String strEndTime = endTimeFormat.format(endTime);
+            endTimeEditText.setText(strEndTime);
 
             EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
-            String reqEmployees = (String) presenter.getShift().getRequiredEmployees();
+            int reqEmployees = presenter.getShift().getRequiredEmployees();
             reqEmployeesEditText.setText(reqEmployees);
         }
     }
