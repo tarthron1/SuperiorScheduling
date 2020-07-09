@@ -7,7 +7,6 @@ import java.util.UUID;
 public class ShiftTime {
 
     private String shiftTimeID;
-    UUID uuid = UUID.randomUUID();
 
     private HashSet<String> employeesOnShift;
     LocalTime startTime;
@@ -69,7 +68,7 @@ public class ShiftTime {
         this.startTime = startTime;
         this.endTime = endTime;
         this.parentShift = parentShift.getShiftID();
-        this.shiftTimeID = uuid.toString();
+        this.shiftTimeID = UUID.randomUUID().toString();
     }
 
     // Adds employee to the shiftTime

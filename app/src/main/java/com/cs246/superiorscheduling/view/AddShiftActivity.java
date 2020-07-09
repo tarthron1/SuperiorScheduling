@@ -10,7 +10,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.model.Shift;
+import com.cs246.superiorscheduling.presenter.AddShiftPresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,12 +22,16 @@ import java.time.format.DateTimeFormatter;
 
 // Fragment to view the shifts
 public class AddShiftActivity extends AppCompatActivity implements Listener {
+    private AddShiftPresenter presenter;
     Intent editShift;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_shift);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        presenter = new AddShiftPresenter(mAuth.getUid(), database, this);
 
         //check if shift is being edited and adds editable info to view
         checkEditShift();
@@ -69,25 +77,33 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         if(editShift != null) {
             String shiftId = editShift.getStringExtra("shiftId");
 
-            //todo: get shift info by shiftId, replace hardcoded values
+            //todo: get shift info by shiftId(done), replace hardcoded values(need conversion to strings)
+            for (Shift shift: presenter.getShifts()
+                 ) {
+                if (shift.getShiftID().equals(shiftId)){
+                    presenter.setShift(shift);
+                    break;
+                }
+            }
+
             EditText shiftEditText = (EditText) findViewById(R.id.shift_type);
-            String shiftType = "Shift Type";
+            String shiftType = presenter.getShift().getShiftType();
             shiftEditText.setText(shiftType);
 
             EditText dateEditText = (EditText) findViewById(R.id.shift_date);
-            String date = "mm/dd/yyyy";
+            String date = presenter.getShift().getDate();
             dateEditText.setText(date);
 
             EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
-            String beginTime = "HH:mm";
+            String beginTime = presenter.getShift().getBeginTime();
             beginTimeEditText.setText(beginTime);
 
             EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
-            String endTime = "HH:mm";
+            String endTime = presenter.getShift().getEndTime();
             endTimeEditText.setText(endTime);
 
             EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
-            String reqEmployees = "#";
+            String reqEmployees = (String) presenter.getShift().getRequiredEmployees();
             reqEmployeesEditText.setText(reqEmployees);
         }
     }
