@@ -5,15 +5,42 @@ import com.cs246.superiorscheduling.model.Schedule;
 import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class EditSchedulePresenter {
+public class EditSchedulePresenter implements Listener {
     private User currentUser;
     private ArrayList<Schedule> schedules = new ArrayList<>();
     private ArrayList<Shift> shifts = new ArrayList<>();
     private ArrayList<ShiftTime> shiftTimes = new ArrayList<>();
     private Company currentCompany;
+    private ArrayList<Listener> listeners = new ArrayList<>();
+    private DatabaseHelper helper;
+
+    public EditSchedulePresenter(String userID, FirebaseDatabase database, Listener listener) {
+        listeners.add(listener);
+        helper = new DatabaseHelper(userID, database, this);
+    }
+
+    @Override
+    public void notifyDataReady() {
+        currentUser = helper.getUser();
+        schedules = helper.getSchedules();
+        shifts = helper.getShifts();
+        shiftTimes = helper.getShiftTimes();
+        currentCompany = helper.getCompany();
+        for (Listener listener : listeners
+        ) {
+            listener.notifyDataReady();
+        }
+    }
+
+    @Override
+    public void notifyNewDataToSave() {
+
+
+    }
 
     public User getCurrentUser() {
         return currentUser;
@@ -54,4 +81,5 @@ public class EditSchedulePresenter {
     public void setCurrentCompany(Company currentCompany) {
         this.currentCompany = currentCompany;
     }
+
 }
