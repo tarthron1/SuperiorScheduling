@@ -57,11 +57,24 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     }
 
     public void clearSchedule(View view) {
-        //todo: create logic to delete shifts on schedule
+        for (Shift shift: presenter.getShifts()
+             ) {
+            if (shift.getParentSchedule().equals(presenter.getCurrentSchedule().getScheduleID()))
+            for (ShiftTime shiftTime: presenter.getShiftTimes()
+                 ) {
+                if (shiftTime.getParentShift().equals(shift.getShiftID())){
+                    presenter.removeShiftTime(shiftTime);
+                }
+            }
+            presenter.removeShift(shift);
+        }
+
     }
 
     public void publishSchedule(View view) {
         //todo: set schedule published to true, save schedule to cloud
+        presenter.getCurrentSchedule().publishSchedule();
+        notifyNewDataToSave();
     }
 
     // display a list of current shifts that will be added to schedule
@@ -103,6 +116,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     public void editShift(String shiftId) {
         Intent intent = new Intent(this, AddShiftActivity.class);
         intent.putExtra("shiftId", shiftId);
+        intent.putExtra("scheduleId", presenter.getCurrentSchedule().getScheduleID());
         startActivity(intent);
     }
 
