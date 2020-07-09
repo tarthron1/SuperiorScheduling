@@ -38,10 +38,9 @@ import java.util.UUID;
 
 public class RequestTimeOffActivity extends AppCompatActivity implements Listener {
 
-    RequestTimeOffPresenter presenter = new RequestTimeOffPresenter();
+    RequestTimeOffPresenter presenter;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference databaseCurrentUser, databaseScheduleList, databaseShiftList, databaseRequestList;
     Spinner dropdown;
 
 
@@ -53,84 +52,10 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         setContentView(R.layout.activity_request_time_off);
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        databaseCurrentUser = database.getReference().child("users").child(Objects.requireNonNull(mAuth.getUid()));
-        getDatabaseData();
+        presenter = new RequestTimeOffPresenter(mAuth.getUid(), database, this);
     }
 
-    private void getDatabaseData() {
-        databaseCurrentUser.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                presenter.setCurrentUser(snapshot.getValue(User.class));
-                getSchedulesAndRequests();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getSchedulesAndRequests() {
-        databaseScheduleList = database.getReference().child("schedule").child(presenter.getCurrentUser().getCompanies().get(0));
-
-        for (String requestID: presenter.getCurrentUser().getRequests()
-             ) {
-            databaseRequestList = database.getReference().child("request").child(presenter.getCurrentUser().getUserID()).child(requestID);
-            databaseRequestList.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Request newRequest = snapshot.getValue(Request.class);
-                    presenter.addRequest(newRequest);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-
-        databaseScheduleList.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final ArrayList<Schedule> scheduleList = new ArrayList<>();
-                for (DataSnapshot schedule: snapshot.getChildren()
-                ) {
-                    scheduleList.add(schedule.getValue(Schedule.class));
-                }
-                presenter.setScheduleList(scheduleList);
-                getShiftLists();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getShiftLists() {
-        databaseShiftList = database.getReference().child("shift").child(presenter.getCurrentUser().getCompanies().get(0));
-        databaseShiftList.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Shift> tempShiftList = new ArrayList<>();
-                for (DataSnapshot shift: snapshot.getChildren()
-                ) {
-                    tempShiftList.add(shift.getValue(Shift.class));
-                }
-                presenter.setShiftList(tempShiftList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        notifyDataReady();
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void submitRequest(View view) {
@@ -226,9 +151,6 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
 
     @Override
     public void notifyNewDataToSave() {
-        databaseCurrentUser.setValue(presenter.getCurrentUser());
-        DatabaseReference requestLocation = database.getReference().child("request").child(presenter.getCurrentUser().getUserID()).child(presenter.getNewRequest().getRequestID());
-        requestLocation.setValue(presenter.getNewRequest());
-
+        presenter.notifyNewDataToSave();
     }
 }

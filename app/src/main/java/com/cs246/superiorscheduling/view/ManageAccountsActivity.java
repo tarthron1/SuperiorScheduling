@@ -31,16 +31,14 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
 
     private static String TAG = "ManageAccountsActivity";
     private ManageAccountsPresenter presenter;
-    private FirebaseDatabase database;
-    private FirebaseAuth mAuth;
     private TableLayout table;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_accounts);
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new ManageAccountsPresenter(mAuth.getUid(), database, this);
     }
 
