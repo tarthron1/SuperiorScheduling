@@ -61,6 +61,9 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
 
         //todo: create and save shift
+        Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, beginTime, endTime, shiftType);
+        presenter.setShift(shift);
+        notifyNewDataToSave();
 
         //pass shift type and number needed to AddEmployeeActivity
         Intent intent = new Intent(this, AddEmployeeActivity.class);

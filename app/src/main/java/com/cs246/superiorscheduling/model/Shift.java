@@ -106,8 +106,8 @@ public class Shift {
     }
 
     // Constructor (Standard)
-    public Shift(Schedule parentSchedule, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
-        this.parentSchedule = parentSchedule.getScheduleID();
+    public Shift(String parentScheduleID, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
+        this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
@@ -116,8 +116,8 @@ public class Shift {
     }
 
     // Constructor (Specific?)
-    public Shift(Schedule parentSchedule, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
-        this.parentSchedule = parentSchedule.getScheduleID();
+    public Shift(String parentScheduleID, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
+        this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
