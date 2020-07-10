@@ -1,7 +1,10 @@
 package com.cs246.superiorscheduling.view;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -33,6 +36,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -63,7 +67,8 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         String reason = null;
         Request timeOffRequest;
         Spinner spinner = (Spinner) findViewById(R.id.request_shift);
-        String valueCheck = spinner.getSelectedView().toString();
+
+        // get request date
         EditText dateEditText = findViewById(R.id.request_date);
         date = dateEditText.getText().toString();
         Date localDate= null;
@@ -72,14 +77,18 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        // get request reason
         EditText reasonView = findViewById(R.id.request_reason);
         reason = reasonView.getText().toString();
         String shift = spinner.getSelectedItem().toString();
         if (shift == "All Day"){
              timeOffRequest = new Request(presenter.getCurrentUser(), localDate, reason);
         } else {
-         timeOffRequest = new Request(presenter.getCurrentUser(), localDate, shift, reason);
+            timeOffRequest = new Request(presenter.getCurrentUser(), localDate, shift, reason);
         }
+
+        // save request
         presenter.setNewRequest(timeOffRequest);
         presenter.getCurrentUser().addRequest(timeOffRequest);
         notifyNewDataToSave();
@@ -110,16 +119,63 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         return shiftTypeKeys;
     }
 
-    public void viewSubmittedRequests() {
+    public LinearLayout createRowSeparator() {
+        LinearLayout separator = new LinearLayout(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        separator.setLayoutParams(params);
+        separator.setBackgroundColor(Color.BLACK);
 
+        return separator;
+    }
+
+    // set up layout parameters
+    public HashMap<String, LinearLayout.LayoutParams> getParams() {
+        HashMap<String, LinearLayout.LayoutParams> params = new HashMap<>();
+
+        // calculate view widths
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+
+        float density = this.getResources().getDisplayMetrics().density;
+        float px = 16 * density;
+        float margin = 10 * density;
+
+        int genWidth = (int) (width - (px * 2) - (margin * 4)) / 3;
+
+        // set general params
+        LinearLayout.LayoutParams genParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        genParams.width = genWidth;
+        genParams.gravity = Gravity.CENTER_VERTICAL;
+        genParams.setMargins(10, 10, 0, 10);
+        params.put("general", genParams);
+
+        // set last view params
+        LinearLayout.LayoutParams lastParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lastParams.width = genWidth;
+        lastParams.gravity = Gravity.CENTER_VERTICAL;
+        lastParams.setMargins(10, 10, 10, 10);
+        params.put("last", lastParams);
+
+        return params;
+    }
+
+    public void viewSubmittedRequests() {
+        HashMap<String, LinearLayout.LayoutParams> params = getParams();
         LinearLayout requests = findViewById(R.id.submitted_requests);
+
+        // add submitted requests to the list
         if (presenter.getUserRequests() != null) {
-            for (Request request : presenter.getUserRequests()) { //todo: get list of requests for user
+            for (Request request : presenter.getUserRequests()) {
+                LinearLayout separator = createRowSeparator();
                 LinearLayout row = new LinearLayout(this);
                 row.setOrientation(LinearLayout.HORIZONTAL);
 
                 // Set date to row
                 TextView date = new TextView(this);
+                date.setLayoutParams(params.get("general"));
                 date.setText(request.getDate().toString());
                 row.addView(date);
 
@@ -127,6 +183,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
                 if (request.getShiftID() != null) {
                     // Set shiftType to row
                     TextView shift = new TextView(this);
+                    shift.setLayoutParams(params.get("general"));
                     shift.setText("Shift Type"); //todo: get shift type for submitted requests
                     row.addView(shift);
                 }
@@ -135,11 +192,15 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
                 if (request.getReason() != null) {
                     // Set reason to row
                     TextView reason = new TextView(this);
+                    reason.setLayoutParams(params.get("last"));
                     reason.setText(request.getReason());
                     row.addView(reason);
                 }
+                requests.addView(separator);
                 requests.addView(row);
             }
+            LinearLayout separator = createRowSeparator();
+            requests.addView(separator);
         }
     }
 

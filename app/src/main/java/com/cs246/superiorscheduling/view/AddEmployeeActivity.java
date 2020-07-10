@@ -3,6 +3,8 @@ package com.cs246.superiorscheduling.view;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -25,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
@@ -98,27 +102,82 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         setEmployeeTableData();
     }
 
+    public LinearLayout createRowSeparator() {
+        LinearLayout separator = new LinearLayout(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        separator.setLayoutParams(params);
+        separator.setBackgroundColor(Color.BLACK);
+
+        return separator;
+    }
+
+    // set up layout parameters
+    public HashMap<String, LinearLayout.LayoutParams> getParams() {
+        HashMap<String, LinearLayout.LayoutParams> params = new HashMap<>();
+
+        // calculate view widths
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+
+        float density = this.getResources().getDisplayMetrics().density;
+        float px = 16 * density;
+
+        int genWidth = (int)(width - (px * 2)) / 2;
+
+        // set name params
+        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        nameParams.width = genWidth;
+        nameParams.gravity = Gravity.CENTER_VERTICAL;
+        nameParams.setMargins(10, 10, 0, 10);
+        params.put("name", nameParams);
+
+        // set userId params
+        LinearLayout.LayoutParams idParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        idParams.width = 0;
+        idParams.gravity = Gravity.CENTER_VERTICAL;
+        params.put("id", idParams);
+
+        // set addToShift params
+        LinearLayout.LayoutParams addParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        addParams.width = genWidth;
+        addParams.gravity = Gravity.CENTER_VERTICAL;
+        addParams.gravity = Gravity.RIGHT;
+        addParams.setMargins(10, 10, 10, 10);
+        params.put("add", addParams);
+
+        return params;
+    }
+
     public void setEmployeeTableData() {
+        HashMap<String, LinearLayout.LayoutParams> params = getParams();
         LinearLayout employeeList = findViewById(R.id.employee_list);
 
         //add all employees to the list
         int i = 0;
         for (User employee: presenter.getEmployeeList()) {
+            LinearLayout separator = createRowSeparator();
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
             i++;
 
             TextView name = new TextView(this);
+            name.setLayoutParams(params.get("name"));
             name.setText((employee.getFirstName() + " " + employee.getLastName()));
             row.addView(name);
 
             TextView userId = new TextView(this);
+            userId.setLayoutParams(params.get("id"));
             userId.setText(employee.getUserID());
             userId.setVisibility(View.INVISIBLE);
-            row.addView(name);
+            row.addView(userId);
 
             Switch addToShift = new Switch(this);
+            addToShift.setLayoutParams(params.get("add"));
             //if shift is being edited, check if employee was added previously to shift
             if (editingShiftId != null) {
                 //todo: create logic to check if employee is already on shift
@@ -130,10 +189,13 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             Boolean timeOff = checkRequestedOff(employee, presenter.getShift());
             if (timeOff) {
                 // color set to red if employee requested the time off
-                row.setBackgroundColor(Color.RED);
+                row.setBackgroundColor(Color.parseColor("#ed5a6b"));
             }
+            employeeList.addView(separator);
             employeeList.addView(row);
         }
+        LinearLayout separator = createRowSeparator();
+        employeeList.addView(separator);
     }
 
     @Override
