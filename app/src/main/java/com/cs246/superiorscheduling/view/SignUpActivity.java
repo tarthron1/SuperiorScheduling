@@ -2,19 +2,29 @@ package com.cs246.superiorscheduling.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.cs246.superiorscheduling.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.core.utilities.Validation;
+
 // The SignUp view to create an account
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private static final int CREATE_COMPANY_REQUEST = 2;
     private String companyName;
+    EditText fn, ln, nn, bd, un, pass, cpass;
+    AwesomeValidation awesomeValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,20 @@ public class SignUpActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, AttachCompanyActivity.class);
         startActivityForResult(intent, CREATE_COMPANY_REQUEST);
+        fn = (EditText) findViewById(R.id.first_name);
+        ln = (EditText) findViewById(R.id.last_name);
+        nn = (EditText) findViewById(R.id.nick_name);
+        bd = (EditText) findViewById(R.id.birth_date);
+        un = (EditText) findViewById(R.id.email);
+        pass = (EditText) findViewById(R.id.password);
+        cpass = (EditText) findViewById(R.id.cpassword);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        awesomeValidation.addValidation(this,R.id.first_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
+        awesomeValidation.addValidation(this,R.id.last_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
+        awesomeValidation.addValidation(this,R.id.email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
+        awesomeValidation.addValidation(this,R.id.birth_date,"(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d",R.string.invalid_date);
+        awesomeValidation.addValidation(this,R.id.password, ".{8,}",R.string.invalid_password);
+        awesomeValidation.addValidation(this,R.id.cpassword,R.id.password,R.string.invalid_confirm);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -33,27 +57,34 @@ public class SignUpActivity extends AppCompatActivity {
         companyName = data.getStringExtra("company");
     }
 
+    public void onClick(View view) {
+        if (awesomeValidation.validate()) {
+            addAccount(view);
+        }
+        else {
+            Toast.makeText(getApplicationContext()
+                    ,"Check Validation.",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // collect info and pass back to main activity
     public void addAccount(View view){
         Intent intent = new Intent(this, MainActivity.class);
 
         // collect info from view
-        EditText fn = (EditText) findViewById(R.id.first_name);
         String firstName = fn.getText().toString();
 
-        EditText ln = (EditText) findViewById(R.id.last_name);
+
         String lastName = ln.getText().toString();
 
-        EditText nn = (EditText) findViewById(R.id.nick_name);
+
         String nickName = nn.getText().toString();
 
-        EditText bd = (EditText) findViewById(R.id.birth_date);
+
         String birthDate = bd.getText().toString();
 
-        EditText un = (EditText) findViewById(R.id.email);
         String email = un.getText().toString();
 
-        EditText pass = (EditText) findViewById(R.id.password);
         String password = pass.getText().toString();
 
         // Add info to intent
