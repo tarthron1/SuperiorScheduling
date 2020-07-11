@@ -19,7 +19,6 @@ public class EmployeeView extends AppCompatActivity implements Listener {
         setContentView(R.layout.activity_employee_view);
     }
 
-    // TODO: Create Ability to view the Current Schedule
     public void viewSchedule(View view){
         Intent intent = new Intent(this, ScheduleViewActivity.class);
         startActivity(intent);

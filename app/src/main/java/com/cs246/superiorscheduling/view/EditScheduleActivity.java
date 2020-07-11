@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 // The view used to edit the Schedules
 public class EditScheduleActivity extends AppCompatActivity implements Listener {
@@ -29,7 +28,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     private EditSchedulePresenter presenter;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
-    List<String> btnShiftIds = new ArrayList<>();
+    ArrayList<String> btnShiftIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,6 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             }
             presenter.removeShift(shift);
         }
-
     }
 
     public void publishSchedule(View view) {

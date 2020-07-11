@@ -81,42 +81,28 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         // calculate other view widths
         int genWidth = (width - nameWidth) / 2;
 
-        // set name header params
-        LinearLayout.LayoutParams nameHeaderParams = new LinearLayout.LayoutParams
+        // set general params
+        LinearLayout.LayoutParams genParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        nameHeaderParams.width = nameWidth;
-        nameHeaderParams.gravity = Gravity.CENTER;
-        nameHeaderParams.setMargins(10, 10, 0, 10);
-        params.put("nameHeader", nameHeaderParams);
-
-        // set other header params
-        LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        headerParams.width = genWidth;
-        headerParams.gravity = Gravity.CENTER;
-        params.put("genHeader", headerParams);
+        genParams.width = genWidth;
+        genParams.gravity = Gravity.CENTER;
+        params.put("general", genParams);
 
         // set name params
         LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         nameParams.width = nameWidth;
-        nameParams.gravity = Gravity.CENTER_VERTICAL;
-        nameParams.setMargins(10, 10, 0, 10);
+        nameParams.gravity = Gravity.CENTER;
+        nameParams.setMargins(10, 20, 0, 20);
         params.put("name", nameParams);
 
         // set position params
         LinearLayout.LayoutParams posParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        posParams.width = genWidth;
+        posParams.width = genWidth - 150;
         posParams.gravity = Gravity.CENTER;
+        posParams.setMargins(0, 20, 0, 20);
         params.put("position", posParams);
-
-        // set active params
-        LinearLayout.LayoutParams actParams = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        actParams.width = genWidth;
-        actParams.gravity = Gravity.CENTER;
-        params.put("active", actParams);
     }
 
     public void createTable() {
@@ -124,20 +110,23 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
         LinearLayout th = new LinearLayout(this);
 
         TextView thName = new TextView(this);
-        thName.setLayoutParams(params.get("nameHeader"));
+        thName.setLayoutParams(params.get("name"));
         thName.setText("Employee Name");
+        thName.setTextSize(18);
         thName.setTypeface(null, Typeface.BOLD);
         th.addView(thName);
 
         TextView thPos = new TextView(this);
-        thPos.setLayoutParams(params.get("genHeader"));
+        thPos.setLayoutParams(params.get("general"));
         thPos.setText("Manager");
+        thPos.setTextSize(18);
         thPos.setTypeface(null, Typeface.BOLD);
         th.addView(thPos);
 
         TextView thActive = new TextView(this);
-        thActive.setLayoutParams(params.get("genHeader"));
+        thActive.setLayoutParams(params.get("general"));
         thActive.setText("Active");
+        thActive.setTextSize(18);
         thActive.setTypeface(null, Typeface.BOLD);
         th.addView(thActive);
 
@@ -162,6 +151,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
             // set employee name to row
             TextView name = new TextView(this);
             name.setLayoutParams(params.get("name"));
+            name.setTextSize(16);
             name.setText((employee.getFirstName() + " " + employee.getLastName()));
             row.addView(name);
 
@@ -177,7 +167,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
 
             // set active switch to row
             Switch active = new Switch(this);
-            active.setLayoutParams(params.get("active"));
+            active.setLayoutParams(params.get("general"));
             if (presenter.getCurrentCompany().getActiveEmployeeList().contains(employee.getUserID())) {
                 active.setChecked(true);
             } else {

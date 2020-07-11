@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Company;
@@ -28,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 // Ability to add an employee to a shift
@@ -35,6 +41,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     private AddEmployeePresenter presenter;
     Intent intent;
     String editingShiftId;
+    ArrayList<String> shiftTimes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,17 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new AddEmployeePresenter(mAuth.getUid(), database, this);
         setUpView();
+    }
+
+    public void openShiftTimeDialog(View view) {
+        ShiftTimeDialog dialog = new ShiftTimeDialog();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        dialog.show(fragmentManager, "ShiftTimeDialog");
+    }
+
+    public void addShiftTime(Time startTime, Time endTime){
+        //todo: set times to spinner dropdown
+        shiftTimes.add("");
     }
 
     public void setUpView(){
@@ -153,14 +171,22 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     public void setEmployeeTableData() {
+        // get layout parameters
         HashMap<String, LinearLayout.LayoutParams> params = getParams();
-        LinearLayout employeeList = findViewById(R.id.employee_list);
+
+        // populate shiftTime options on spinners
+        shiftTimes.add("Select");
+        for(String time : presenter.getShift().getShiftTimes()) {
+            shiftTimes.add(time);
+        }
+
+        final LinearLayout employeeList = findViewById(R.id.employee_list);
 
         //add all employees to the list
         int i = 0;
         for (User employee: presenter.getEmployeeList()) {
             LinearLayout separator = createRowSeparator();
-            LinearLayout row = new LinearLayout(this);
+            final LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
             i++;
@@ -176,14 +202,38 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             userId.setVisibility(View.INVISIBLE);
             row.addView(userId);
 
-            Switch addToShift = new Switch(this);
+            final Switch addToShift = new Switch(this);
             addToShift.setLayoutParams(params.get("add"));
+            addToShift.setId(i);
             //if shift is being edited, check if employee was added previously to shift
             if (editingShiftId != null) {
                 //todo: create logic to check if employee is already on shift
                 //addToShift.setChecked();
             }
+            // if switch is checked show spinner with shift times
+            addToShift.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    LinearLayout updateRow = findViewById(v.getId());
+                    View spinner = updateRow.getChildAt(3);
+                    if(addToShift.isChecked()) {
+                        // show spinner on row
+                        spinner.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        //hide spinner on row
+                        spinner.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
             row.addView(addToShift);
+
+            Spinner addToShiftTime = new Spinner(this);
+            addToShiftTime.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_list_item_multiple_choice,
+                    shiftTimes));
+            addToShiftTime.setVisibility(View.INVISIBLE);
+            addToShiftTime.setLayoutParams(params.get("add"));
+            row.addView(addToShiftTime);
 
             // Check if employee requested time off
             Boolean timeOff = checkRequestedOff(employee, presenter.getShift());
