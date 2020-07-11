@@ -3,6 +3,7 @@ package com.cs246.superiorscheduling.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,6 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Company;
 import com.cs246.superiorscheduling.model.User;
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private EditText loginEmailField;
     private EditText loginPasswordField;
 
+    AwesomeValidation awesomeValidation;
+    EditText email, password;
 
     boolean companyExistsInDatabase = false;
     private Company company;
@@ -60,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements Listener {
         database = FirebaseDatabase.getInstance();
         loginEmailField = findViewById(R.id.editTextLoginEmail);
         loginPasswordField = findViewById(R.id.editTextTextPassword);
+        email = (EditText) findViewById(R.id.editTextLoginEmail);
+        password = (EditText) findViewById(R.id.editTextTextPassword);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        awesomeValidation.addValidation(this,R.id.editTextLoginEmail, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
+        awesomeValidation.addValidation(this,R.id.editTextTextPassword, RegexTemplate.NOT_EMPTY,R.string.lacking_password);
     }
 
     public void getCompanies(){
@@ -81,6 +92,16 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
         };
         companiesLocation.addValueEventListener(companyListener);
+    }
+
+    public void onLogin(View view) {
+        if (awesomeValidation.validate()) {
+            login(view);
+        }
+        else {
+            Toast.makeText(getApplicationContext()
+                    ,"Check Validation.",Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Ability to login into your account

@@ -6,10 +6,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Company;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +30,9 @@ public class AttachCompanyActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private ArrayList<Company> companies = new ArrayList<>();
     private List<String> companyNames = new ArrayList<>();
+    AwesomeValidation awesomeValidation;
     private Spinner spinner;
+    EditText cn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,9 @@ public class AttachCompanyActivity extends AppCompatActivity {
         //populate company spinner options
         getCompanies();
         spinner = (Spinner) findViewById(R.id.company);
+        cn = (EditText) findViewById(R.id.company_name);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        awesomeValidation.addValidation(this,R.id.company_name, RegexTemplate.NOT_EMPTY,R.string.invalid_cname);
     }
 
     public void createUser(View view) {
@@ -81,12 +90,22 @@ public class AttachCompanyActivity extends AppCompatActivity {
         companiesLocation.addValueEventListener(companyListener);
     }
 
+    public void onClick(View view) {
+        if (awesomeValidation.validate()) {
+            createCompany(view);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext()
+                    ,"Check Validation.",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void createCompany(View view){
         Intent intent = new Intent(this, SignUpActivity.class);
 
         // get company name from editText
-        EditText cn = (EditText) findViewById(R.id.company_name);
+
         String companyName = cn.getText().toString();
 
         // add company to intent

@@ -37,4 +37,6 @@
     <string name="invalid_password">Password minimum is eight digits</string>
     <string name="invalid_confirm">Password doesn\'t match</string>
     <string name="invalid_date">Invalid date format</string>
+    <string name="invalid_cname">Input a company name</string>
+    <string name="lacking_password">Enter a password</string>
 </resources>
