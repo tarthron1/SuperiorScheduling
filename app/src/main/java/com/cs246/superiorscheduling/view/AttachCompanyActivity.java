@@ -47,6 +47,7 @@ public class AttachCompanyActivity extends AppCompatActivity {
         cn = (EditText) findViewById(R.id.company_name);
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this,R.id.company_name, RegexTemplate.NOT_EMPTY,R.string.invalid_cname);
+        awesomeValidation.addValidation(this,R.id.first_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
     }
 
     public void createUser(View view) {

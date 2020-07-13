@@ -11,11 +11,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Request;
 import com.cs246.superiorscheduling.model.Schedule;
@@ -46,6 +50,8 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     Spinner dropdown;
+    EditText dateEditText, reasonView;
+    AwesomeValidation awesomeValidation;
 
 
 
@@ -57,9 +63,26 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         presenter = new RequestTimeOffPresenter(mAuth.getUid(), database, this);
+        reasonView = findViewById(R.id.request_reason);
+        dateEditText = findViewById(R.id.request_date);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        awesomeValidation.addValidation(this,R.id.request_date,"(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d",R.string.invalid_date);
+        awesomeValidation.addValidation(this,R.id.request_reason, RegexTemplate.NOT_EMPTY,R.string.invalid_reason);
+
+
+
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void submitValidation(View view) {
+        if (awesomeValidation.validate()) {
+            submitRequest(view);
+        }
+        else {
+            Toast.makeText(getApplicationContext()
+                    ,"Check Validation.",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void submitRequest(View view) {
@@ -69,7 +92,6 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         Spinner spinner = (Spinner) findViewById(R.id.request_shift);
 
         // get request date
-        EditText dateEditText = findViewById(R.id.request_date);
         date = dateEditText.getText().toString();
         Date localDate= null;
         try {
@@ -79,7 +101,6 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         }
 
         // get request reason
-        EditText reasonView = findViewById(R.id.request_reason);
         reason = reasonView.getText().toString();
         String shift = spinner.getSelectedItem().toString();
         if (shift == "All Day"){
