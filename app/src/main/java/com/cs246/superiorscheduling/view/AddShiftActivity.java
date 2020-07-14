@@ -117,13 +117,13 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
             dateEditText.setText(strDate);
 
             EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
-            LocalTime beginTime = presenter.getCurrentShift().getBeginTime();
+            Date beginTime = presenter.getCurrentShift().getBeginTime();
             DateFormat beginTimeFormat = new SimpleDateFormat("hh:mm:ss");
             String strBeginTime = beginTimeFormat.format(beginTime);
             beginTimeEditText.setText(strBeginTime);
 
             EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
-            LocalTime endTime = presenter.getCurrentShift().getEndTime();
+            Date endTime = presenter.getCurrentShift().getEndTime();
             DateFormat endTimeFormat = new SimpleDateFormat("hh:mm:ss");
             String strEndTime = endTimeFormat.format(endTime);
             endTimeEditText.setText(strEndTime);
