@@ -80,10 +80,12 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
     // checks if shift is being edited, if it is it displays shift info
     public void checkEditShift() {
         editShift = getIntent();
-        if(editShift != null) {
-            String shiftId = editShift.getStringExtra("shiftId");
+        String shiftId = editShift.getStringExtra("shiftId");
+        if(shiftId != null) {
+
 
             //todo: get shift info by shiftId(done), replace hardcoded values(need conversion to strings)
+
             for (Shift shift: presenter.getShifts()
                  ) {
                 if (shift.getShiftID().equals(shiftId)){
