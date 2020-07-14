@@ -60,7 +60,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
         int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
 
-        //todo: create and save shift
+        //todo: create and save shift(done)
         Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, beginTime, endTime, shiftType);
         presenter.setShift(shift);
         notifyNewDataToSave();
@@ -83,7 +83,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         if(editShift != null) {
             String shiftId = editShift.getStringExtra("shiftId");
 
-            //todo: get shift info by shiftId(done), replace hardcoded values(need conversion to strings)
+            //todo: get shift info by shiftId(done), replace hardcoded values(need conversion to strings)(done)
             for (Shift shift: presenter.getShifts()
                  ) {
                 if (shift.getShiftID().equals(shiftId)){
