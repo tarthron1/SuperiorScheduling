@@ -12,15 +12,15 @@ public class Shift {
     private String shiftType;
     private String parentSchedule;
     private Date date;
-    private LocalTime beginTime;
-    private LocalTime endTime;
+    private Date beginTime;
+    private Date endTime;
     private ArrayList<String> shiftTimes;
     int requiredEmployees;
 
-    public Shift(Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime) {
+    public Shift(Date date, int requiredEmployees, Date beginTime, Date endTime) {
     }
 
-    public Shift(Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType) {
+    public Shift(Date date, int requiredEmployees, Date beginTime, Date endTime, String shiftType) {
     }
 
     public Shift() {
@@ -66,22 +66,22 @@ public class Shift {
     }
 
     // BeginTime Getter
-    public LocalTime getBeginTime() {
+    public Date getBeginTime() {
         return beginTime;
     }
 
     // BeginTime Setter
-    public void setBeginTime(LocalTime beginTime) {
+    public void setBeginTime(Date beginTime) {
         this.beginTime = beginTime;
     }
 
     // EndTime Getter
-    public LocalTime getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
     // EndTime Setter
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -106,7 +106,7 @@ public class Shift {
     }
 
     // Constructor (Standard)
-    public Shift(String parentScheduleID, Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
+    public Shift(String parentScheduleID, Date date, int requiredEmployees, Date beginTime, Date endTime){
         this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;

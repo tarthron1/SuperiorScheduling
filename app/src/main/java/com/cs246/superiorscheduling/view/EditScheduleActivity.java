@@ -42,14 +42,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         presenter = new EditSchedulePresenter(mAuth.getUid(), database, this);
-        if (presenter.getSchedules().size() != 0) {
-            for (Schedule schedule : presenter.getSchedules()
-            ) {
-                if (!schedule.isPublished()) {
-                    presenter.setCurrentSchedule(schedule);
-                }
-            }
-        }
+
     }
 
     // start AddShiftActivity
@@ -72,6 +65,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             notifyNewDataToSave();
         }
         Intent intent = new Intent(this, AddShiftActivity.class);
+        intent.putExtra("scheduleID", presenter.getCurrentSchedule().getScheduleID());
         startActivity(intent);
     }
 /*
@@ -195,12 +189,24 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     public void editShift(String shiftId) {
         Intent intent = new Intent(this, AddShiftActivity.class);
         intent.putExtra("shiftId", shiftId);
-        //intent.putExtra("scheduleId", presenter.getCurrentSchedule().getScheduleID());
+        intent.putExtra("scheduleID", presenter.getCurrentSchedule().getScheduleID());
         startActivity(intent);
     }
 
     @Override
     public void notifyDataReady() {
+        if (presenter.getSchedules().size() != 0) {
+            for (Schedule schedule : presenter.getSchedules()
+            ) {
+                if (!schedule.isPublished()) {
+                    presenter.setCurrentSchedule(schedule);
+                    EditText startDateEditText = findViewById(R.id.editTextDate4);
+                    EditText endDateEditText = findViewById(R.id.editTextDate5);
+                    startDateEditText.setText(presenter.getCurrentSchedule().getStartDay().toString());
+                    endDateEditText.setText(presenter.getCurrentSchedule().getEndDay().toString());
+                }
+            }
+        }
         setShiftList();
     }
 
