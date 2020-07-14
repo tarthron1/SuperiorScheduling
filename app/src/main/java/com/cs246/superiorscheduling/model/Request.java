@@ -1,8 +1,5 @@
 package com.cs246.superiorscheduling.model;
 
-import android.widget.EditText;
-
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 

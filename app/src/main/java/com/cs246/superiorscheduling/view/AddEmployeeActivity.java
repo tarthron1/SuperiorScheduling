@@ -12,27 +12,18 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.cs246.superiorscheduling.R;
-import com.cs246.superiorscheduling.model.Company;
-import com.cs246.superiorscheduling.model.Request;
 import com.cs246.superiorscheduling.model.Shift;
-import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.AddEmployeePresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
