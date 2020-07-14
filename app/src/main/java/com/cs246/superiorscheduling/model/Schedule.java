@@ -3,16 +3,20 @@ package com.cs246.superiorscheduling.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class Schedule {
 
     private String scheduleID;
-    UUID uuid = UUID.randomUUID();
-    LocalDate startDay;
-    LocalDate endDay;
+    private Date startDay;
+    private Date endDay;
     public ArrayList<String> shiftList;
     boolean published = false;
+
+    public Schedule(){
+
+    }
 
     // ID Getter
     public String getScheduleID() {
@@ -25,22 +29,22 @@ public class Schedule {
     }
 
     // StartDay Getter
-    public LocalDate getStartDay() {
+    public Date getStartDay() {
         return startDay;
     }
 
     // StartDay Setter
-    public void setStartDay(LocalDate startDay) {
+    public void setStartDay(Date startDay) {
         this.startDay = startDay;
     }
 
     // EndDay Getter
-    public LocalDate getEndDay() {
+    public Date getEndDay() {
         return endDay;
     }
 
     // EndDay Setter
-    public void setEndDay(LocalDate endDay) {
+    public void setEndDay(Date endDay) {
         this.endDay = endDay;
     }
 
@@ -65,10 +69,10 @@ public class Schedule {
     }
 
     // Constructor
-    public Schedule(LocalDate startDay, LocalDate endDay){
+    public Schedule(Date startDay, Date endDay){
         this.startDay = startDay;
         this.endDay = endDay;
-        this.scheduleID = uuid.toString();
+        this.scheduleID = UUID.randomUUID().toString();
     }
 
     // Creates shift

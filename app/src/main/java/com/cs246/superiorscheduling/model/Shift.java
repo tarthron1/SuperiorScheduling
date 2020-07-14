@@ -1,26 +1,26 @@
 package com.cs246.superiorscheduling.model;
 
-import java.time.LocalDate;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class Shift {
 
     private String shiftID;
-    UUID uuid = UUID.randomUUID();
-    String shiftType;
+    private String shiftType;
     private String parentSchedule;
-    LocalDate date;
-    LocalTime beginTime;
-    LocalTime endTime;
-    ArrayList<String> shiftTimes;
+    private Date date;
+    private LocalTime beginTime;
+    private LocalTime endTime;
+    private ArrayList<String> shiftTimes;
     int requiredEmployees;
 
-    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime) {
+    public Shift(Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime) {
     }
 
-    public Shift(LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType) {
+    public Shift(Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType) {
     }
 
     public Shift() {
@@ -56,12 +56,12 @@ public class Shift {
     }
 
     // Date Getter
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
     // Date Setter
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -106,24 +106,24 @@ public class Shift {
     }
 
     // Constructor (Standard)
-    public Shift(String parentScheduleID, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
+    public Shift(String parentScheduleID, Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime){
         this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
         this.endTime = endTime;
-        this.shiftID = uuid.toString();
+        this.shiftID = UUID.randomUUID().toString();
     }
 
     // Constructor (Specific?)
-    public Shift(String parentScheduleID, LocalDate date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
+    public Shift(String parentScheduleID, Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
         this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.shiftType = shiftType;
-        this.shiftID = uuid.toString();
+        this.shiftID = UUID.randomUUID().toString();
     }
 
     // Adds new ShiftTime

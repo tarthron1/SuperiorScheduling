@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class EditSchedulePresenter implements Listener {
     private User currentUser;
+    private Schedule currentSchedule;
     private ArrayList<Schedule> schedules = new ArrayList<>();
     private ArrayList<Shift> shifts = new ArrayList<>();
     private ArrayList<ShiftTime> shiftTimes = new ArrayList<>();
@@ -38,7 +39,7 @@ public class EditSchedulePresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-
+        helper.addSchedule(currentSchedule);
 
     }
 
@@ -82,4 +83,11 @@ public class EditSchedulePresenter implements Listener {
         this.currentCompany = currentCompany;
     }
 
+    public Schedule getCurrentSchedule() {
+        return currentSchedule;
+    }
+
+    public void setCurrentSchedule(Schedule currentSchedule) {
+        this.currentSchedule = currentSchedule;
+    }
 }

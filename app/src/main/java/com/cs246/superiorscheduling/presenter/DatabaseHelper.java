@@ -280,6 +280,14 @@ public class DatabaseHelper implements Listener{
         databaseSchedules.push().setValue(schedule);
     }
 
+    public void setShifts(ArrayList<Shift> shifts){
+        DatabaseReference databaseShifts = database.getReference().child("shift").child(company.getCompanyID());
+        databaseShifts.removeValue();
+        for (Shift shift: shifts
+             ) {
+            databaseShifts.push().setValue(shift);
+        }
+    }
     public void addShift(Shift shift){
         DatabaseReference databaseShifts = database.getReference().child("shift").child(company.getCompanyID());
         databaseShifts.push().setValue(shift);

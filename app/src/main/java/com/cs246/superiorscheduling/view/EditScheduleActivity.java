@@ -7,19 +7,24 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.model.Schedule;
 import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.presenter.EditSchedulePresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 // The view used to edit the Schedules
@@ -37,10 +42,35 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         presenter = new EditSchedulePresenter(mAuth.getUid(), database, this);
+        if (presenter.getSchedules().size() != 0) {
+            for (Schedule schedule : presenter.getSchedules()
+            ) {
+                if (!schedule.isPublished()) {
+                    presenter.setCurrentSchedule(schedule);
+                }
+            }
+        }
     }
 
     // start AddShiftActivity
     public void addShift(View view){
+        if (presenter.getCurrentSchedule() == null) {
+            EditText startDateEditText = findViewById(R.id.editTextDate4);
+            EditText endDateEditText = findViewById(R.id.editTextDate5);
+            String startDateString = startDateEditText.getText().toString();
+            String endDateString = endDateEditText.getText().toString();
+            Date startDate = null;
+            Date endDate = null;
+            try {
+                startDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDateString);
+                endDate = new SimpleDateFormat("MM/dd/yyyy").parse(endDateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Schedule newSchedule = new Schedule(startDate, endDate);
+            presenter.setCurrentSchedule(newSchedule);
+            notifyNewDataToSave();
+        }
         Intent intent = new Intent(this, AddShiftActivity.class);
         startActivity(intent);
     }
@@ -177,6 +207,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     @Override
     public void notifyNewDataToSave() {
         //todo what all needs saved to the database from this activity?
+        presenter.notifyNewDataToSave();
 
     }
 }
