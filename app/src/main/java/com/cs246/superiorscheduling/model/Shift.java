@@ -116,7 +116,7 @@ public class Shift {
     }
 
     // Constructor (Specific?)
-    public Shift(String parentScheduleID, Date date, int requiredEmployees, LocalTime beginTime, LocalTime endTime, String shiftType){
+    public Shift(String parentScheduleID, Date date, int requiredEmployees, Date beginTime, Date endTime, String shiftType){
         this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;

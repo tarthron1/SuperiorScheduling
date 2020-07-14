@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -52,21 +53,27 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         EditText dateEditText = (EditText) findViewById(R.id.shift_date);
         LocalDate localDate = LocalDate.parse(dateEditText.getText().toString(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         //converting localDate to date
-        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());)
+        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
         //https://developer.android.com/reference/android/widget/DatePicker
 
         EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
         LocalTime beginTime = LocalTime.parse(beginTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
+        //converting LocalTime to Date object
+        Instant startInstant = beginTime.atDate(LocalDate.from(beginTime)).atZone(ZoneId.systemDefault()).toInstant();
+        Date startTime = Date.from(startInstant);
         //https://developer.android.com/reference/android/widget/TimePicker
 
         EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
         LocalTime endTime = LocalTime.parse(endTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
+        //converting LocalTime to Date object
+        Instant endInstant = endTime.atDate(LocalDate.from(endTime)).atZone(ZoneId.systemDefault()).toInstant();
+        Date finishTime = Date.from(endInstant);
 
         EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
         int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
 
         //todo: create and save shift
-        Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, beginTime, endTime, shiftType);
+        Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, startTime, finishTime, shiftType);
         presenter.setCurrentShift(shift);
         notifyNewDataToSave();
 
