@@ -20,13 +20,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 // Fragment to view the shifts
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class AddShiftActivity extends AppCompatActivity implements Listener {
     private AddShiftPresenter presenter;
     Intent editShift;
+    ZoneId defaultZoneId = ZoneId.systemDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,9 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         String shiftType = shiftEditText.getText().toString();
 
         EditText dateEditText = (EditText) findViewById(R.id.shift_date);
-        LocalDate date = LocalDate.parse(dateEditText.getText().toString(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate localDate = LocalDate.parse(dateEditText.getText().toString(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        //converting localDate to date
+        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());)
         //https://developer.android.com/reference/android/widget/DatePicker
 
         EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
