@@ -41,7 +41,6 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new AddEmployeePresenter(mAuth.getUid(), database, this);
-        setUpView();
     }
 
     public void openShiftTimeDialog(View view) {
@@ -60,7 +59,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         intent = getIntent();
         String shiftType = intent.getStringExtra("shiftType");
 
-        String numberNeeded = intent.getStringExtra("numberNeeded");
+        int numberNeeded = intent.getIntExtra("numberNeeded", 0);
 
         // check if shiftId sent - shift is being edited
         if(intent.getStringExtra("shiftId") != null) {
@@ -75,7 +74,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         shiftTextView.setText(shiftType);
 
         TextView numberTextView = findViewById(R.id.req_employees);
-        numberTextView.setText(numberNeeded);
+        numberTextView.setText(String.valueOf(numberNeeded));
     }
 
     public void addToShift(View view) {
@@ -108,6 +107,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyDataReady() {
+        setUpView();
         setEmployeeTableData();
     }
 
@@ -167,8 +167,10 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         // populate shiftTime options on spinners
         shiftTimes.add("Select");
-        for(String time : presenter.getShift().getShiftTimes()) {
-            shiftTimes.add(time);
+        if (presenter.getShift().getShiftTimes() != null){
+            for(String time : presenter.getShift().getShiftTimes()) {
+                shiftTimes.add(time);
+            }
         }
 
         final LinearLayout employeeList = findViewById(R.id.employee_list);

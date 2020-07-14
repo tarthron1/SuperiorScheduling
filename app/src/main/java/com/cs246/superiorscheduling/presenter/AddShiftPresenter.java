@@ -47,6 +47,8 @@ public class AddShiftPresenter implements Listener {
 
     }
 
+
+
     public User getUser() {
         return user;
     }
@@ -77,5 +79,18 @@ public class AddShiftPresenter implements Listener {
 
     public void setCurrentShift(Shift currentShift) {
         this.currentShift = currentShift;
+    }
+
+    public void addShift(Shift newShift) {
+        boolean containsShift = false;
+        for (Shift shift: shifts
+             ) {
+            if (shift.getShiftID().equals(newShift.getShiftID())){
+                containsShift = true;
+            }
+        }
+        if (!containsShift){
+            shifts.add(newShift);
+        }
     }
 }

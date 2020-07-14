@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -56,18 +57,30 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
         //https://developer.android.com/reference/android/widget/DatePicker
 
-        EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
-        LocalTime beginTime = LocalTime.parse(beginTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-        //converting LocalTime to Date object
-        Instant startInstant = beginTime.atDate(LocalDate.from(beginTime)).atZone(ZoneId.systemDefault()).toInstant();
-        Date startTime = Date.from(startInstant);
-        //https://developer.android.com/reference/android/widget/TimePicker
+//        EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
+//        LocalTime beginTime = LocalTime.parse(beginTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
+//        //converting LocalTime to Date object
+//        Instant startInstant = beginTime.atDate(LocalDate.from(beginTime)).atZone(ZoneId.systemDefault()).toInstant();
+//        Date startTime = Date.from(startInstant);
+//        //https://developer.android.com/reference/android/widget/TimePicker
+//
+//        EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
+//        LocalTime endTime = LocalTime.parse(endTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
+//        //converting LocalTime to Date object
+//        Instant endInstant = endTime.atDate(LocalDate.from(endTime)).atZone(ZoneId.systemDefault()).toInstant();
+//        Date finishTime = Date.from(endInstant);
 
-        EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
-        LocalTime endTime = LocalTime.parse(endTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-        //converting LocalTime to Date object
-        Instant endInstant = endTime.atDate(LocalDate.from(endTime)).atZone(ZoneId.systemDefault()).toInstant();
-        Date finishTime = Date.from(endInstant);
+        String amString = "09:00 AM";
+        String pmString = "05:00 PM";
+        DateFormat time = new SimpleDateFormat("hh:mm a");
+        Date startTime = null;
+        Date finishTime = null;
+        try {
+            startTime = time.parse(amString);
+            finishTime = time.parse(pmString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
         int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
@@ -75,6 +88,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         //todo: create and save shift
         Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, startTime, finishTime, shiftType);
         presenter.setCurrentShift(shift);
+        presenter.addShift(shift);
         notifyNewDataToSave();
 
         //pass shift type and number needed to AddEmployeeActivity

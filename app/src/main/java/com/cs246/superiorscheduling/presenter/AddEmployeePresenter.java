@@ -30,6 +30,10 @@ public class AddEmployeePresenter implements Listener {
         currentCompany = helper.getCompany();
         requests = helper.getRequestsByCompany();
         employeeList = helper.getEmployees();
+        for (Listener listener: listeners
+             ) {
+            listener.notifyDataReady();
+        }
     }
 
     @Override
