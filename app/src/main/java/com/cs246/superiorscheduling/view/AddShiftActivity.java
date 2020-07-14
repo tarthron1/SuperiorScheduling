@@ -25,7 +25,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-// Fragment to view the shifts
+// view the shifts
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class AddShiftActivity extends AppCompatActivity implements Listener {
     private AddShiftPresenter presenter;

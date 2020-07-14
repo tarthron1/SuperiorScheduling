@@ -49,7 +49,9 @@ public class ShiftTimeDialog extends DialogFragment {
             public void onClick(View v) {
                 // convert start TimePicker values to Time
                 int startHour = startPick.getHour();
+                System.out.println("Start Hour ----> " + startHour);
                 int startMinute = startPick.getMinute();
+                System.out.println("Start Minute ----> " + startMinute);
 
                 Calendar startCal = Calendar.getInstance();
                 startCal.set(Calendar.HOUR, startHour);
@@ -58,6 +60,7 @@ public class ShiftTimeDialog extends DialogFragment {
                 long startMillis = startCal.getTimeInMillis();
 
                 Time startTime = new Time(startMillis);
+                System.out.println("Start Time ---> " + startTime);
 
                 // convert end TimePicker values to Time
                 int endHour = endPick.getHour();

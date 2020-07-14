@@ -200,10 +200,11 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             ) {
                 if (!schedule.isPublished()) {
                     presenter.setCurrentSchedule(schedule);
+                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
                     EditText startDateEditText = findViewById(R.id.editTextDate4);
                     EditText endDateEditText = findViewById(R.id.editTextDate5);
-                    startDateEditText.setText(presenter.getCurrentSchedule().getStartDay().toString());
-                    endDateEditText.setText(presenter.getCurrentSchedule().getEndDay().toString());
+                    startDateEditText.setText(format.format(presenter.getCurrentSchedule().getStartDay()));
+                    endDateEditText.setText(format.format(presenter.getCurrentSchedule().getEndDay()));
                 }
             }
         }
