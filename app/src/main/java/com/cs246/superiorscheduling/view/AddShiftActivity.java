@@ -62,7 +62,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
 
         //todo: create and save shift
         Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, beginTime, endTime, shiftType);
-        presenter.setShift(shift);
+        presenter.setCurrentShift(shift);
         notifyNewDataToSave();
 
         //pass shift type and number needed to AddEmployeeActivity
@@ -89,35 +89,35 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
             for (Shift shift: presenter.getShifts()
                  ) {
                 if (shift.getShiftID().equals(shiftId)){
-                    presenter.setShift(shift);
+                    presenter.setCurrentShift(shift);
                     break;
                 }
             }
 
             EditText shiftEditText = (EditText) findViewById(R.id.shift_type);
-            String shiftType = presenter.getShift().getShiftType();
+            String shiftType = presenter.getCurrentShift().getShiftType();
             shiftEditText.setText(shiftType);
 
             EditText dateEditText = (EditText) findViewById(R.id.shift_date);
-            LocalDate date = presenter.getShift().getDate();
+            Date date = presenter.getCurrentShift().getDate();
             DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyy");
             String strDate = dateFormat.format(date);
             dateEditText.setText(strDate);
 
             EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
-            LocalTime beginTime = presenter.getShift().getBeginTime();
+            LocalTime beginTime = presenter.getCurrentShift().getBeginTime();
             DateFormat beginTimeFormat = new SimpleDateFormat("hh:mm:ss");
             String strBeginTime = beginTimeFormat.format(beginTime);
             beginTimeEditText.setText(strBeginTime);
 
             EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
-            LocalTime endTime = presenter.getShift().getEndTime();
+            LocalTime endTime = presenter.getCurrentShift().getEndTime();
             DateFormat endTimeFormat = new SimpleDateFormat("hh:mm:ss");
             String strEndTime = endTimeFormat.format(endTime);
             endTimeEditText.setText(strEndTime);
 
             EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
-            int reqEmployees = presenter.getShift().getRequiredEmployees();
+            int reqEmployees = presenter.getCurrentShift().getRequiredEmployees();
             reqEmployeesEditText.setText(reqEmployees);
         }
     }
@@ -129,6 +129,6 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-
+        presenter.notifyNewDataToSave();
     }
 }

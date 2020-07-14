@@ -13,7 +13,7 @@ public class AddShiftPresenter implements Listener {
     private User user;
     private Company company;
     private ArrayList<Shift> shifts;
-    private Shift shift;
+    private Shift currentShift;
 
 
     public AddShiftPresenter(String userId, FirebaseDatabase database, Listener listener){
@@ -36,6 +36,14 @@ public class AddShiftPresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
+        for (Shift shift: shifts
+             ) {
+            if (shift.getShiftID().equals(currentShift.getShiftID())){
+                shifts.remove(shift);
+                shifts.add(currentShift);
+            }
+        }
+        helper.setShifts(shifts);
 
     }
 
@@ -63,11 +71,11 @@ public class AddShiftPresenter implements Listener {
         this.shifts = shifts;
     }
 
-    public Shift getShift() {
-        return shift;
+    public Shift getCurrentShift() {
+        return currentShift;
     }
 
-    public void setShift(Shift shift) {
-        this.shift = shift;
+    public void setCurrentShift(Shift currentShift) {
+        this.currentShift = currentShift;
     }
 }
