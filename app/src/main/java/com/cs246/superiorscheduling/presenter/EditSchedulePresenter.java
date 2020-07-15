@@ -87,6 +87,14 @@ public class EditSchedulePresenter implements Listener {
         return currentSchedule;
     }
 
+    public void removeShift(Shift shift){
+
+    }
+
+    public void removeShiftTime(ShiftTime shiftTime){
+
+    }
+
     public void setCurrentSchedule(Schedule currentSchedule) {
         this.currentSchedule = currentSchedule;
     }

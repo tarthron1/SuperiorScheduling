@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Schedule;
 import com.cs246.superiorscheduling.model.Shift;
+import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.presenter.EditSchedulePresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,10 +69,9 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         intent.putExtra("scheduleID", presenter.getCurrentSchedule().getScheduleID());
         startActivity(intent);
     }
-/*
+
     public void clearSchedule(View view) {
-        for (Shift shift: presenter.getShifts()
-             ) {
+        for (Shift shift: presenter.getShifts()) {
             if (shift.getParentSchedule().equals(presenter.getCurrentSchedule().getScheduleID()))
             for (ShiftTime shiftTime: presenter.getShiftTimes()
                  ) {
@@ -82,7 +82,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             presenter.removeShift(shift);
         }
     }
-*/
+
     public void publishSchedule(View view) {
         //todo: set schedule published to true, save schedule to cloud
        // presenter.getCurrentSchedule().publishSchedule();
