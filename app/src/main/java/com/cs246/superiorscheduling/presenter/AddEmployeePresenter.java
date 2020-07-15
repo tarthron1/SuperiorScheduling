@@ -119,4 +119,8 @@ public class AddEmployeePresenter implements Listener {
     public void setShifts(ArrayList<Shift> shifts) {
         this.shifts = shifts;
     }
+
+    public void addShiftTime(ShiftTime shiftTime) {
+        shiftTimes.add(shiftTime);
+    }
 }

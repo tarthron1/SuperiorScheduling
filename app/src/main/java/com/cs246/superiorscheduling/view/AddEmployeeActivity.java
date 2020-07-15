@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.model.Request;
 import com.cs246.superiorscheduling.model.Shift;
 import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
@@ -54,7 +55,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     public void addShiftTime(Date startTime, Date endTime){
         //todo: set times to spinner dropdown
-        shiftTimes.add("");
+        ShiftTime shiftTime = new ShiftTime(startTime, endTime, presenter.getCurrentShift());
+        presenter.addShiftTime(shiftTime);
+        shiftTimes.add(shiftTime.getStartTime().toString());
     }
 
     public void setUpView(){
@@ -97,9 +100,25 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     public Boolean checkRequestedOff(User employee, Shift shift) {
-        // todo: create logic to check if employee requested time off
+        //  logic to check if employee requested time off
+        ArrayList<Request> employeeRequests = new ArrayList<>();
+        for (Request request: presenter.getRequests()
+             ) {
+            if (request.getRequesterID().equals(employee.getUserID())){
+                employeeRequests.add(request);
+            }
+        }
+        Date shiftDate = shift.getDate();
 
-        return false; // return true if time was requested off
+        for (Request request: employeeRequests
+        ) {
+            if (request.getShiftID() == shift.getShiftID()){
+                return true;
+            } else if (request.getDate().equals(shiftDate)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -176,8 +195,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // populate shiftTime options on spinners
         shiftTimes.add("Select");
         if (presenter.getCurrentShift().getShiftTimes() != null){
-            for(String time : presenter.getCurrentShift().getShiftTimes()) {
-                shiftTimes.add(time);
+            for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
+                 ) {
+                shiftTimes.add(shiftTime.getStartTime().toString());
             }
         }
 
@@ -208,8 +228,16 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             addToShift.setId(i);
             //if shift is being edited, check if employee was added previously to shift
             if (editingShiftId != null) {
-                //todo: create logic to check if employee is already on shift
-                //addToShift.setChecked();
+                // logic to check if employee is already on shift
+                for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
+                     ) {
+                    if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())){
+                        addToShift.setChecked(true);
+                        
+                    }
+
+                }
+
             }
             // if switch is checked show spinner with shift times
             addToShift.setOnClickListener(new View.OnClickListener() {
