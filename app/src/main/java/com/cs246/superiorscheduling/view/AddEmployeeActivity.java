@@ -62,13 +62,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         int numberNeeded = intent.getIntExtra("numberNeeded", 0);
 
-        // check if shiftId sent - shift is being edited
-        if(intent.getStringExtra("shiftId") != null) {
-            editingShiftId = intent.getStringExtra("shiftId");
-        }
-        else {
-            editingShiftId = null;
-        }
+        editingShiftId = intent.getStringExtra("shiftId");
 
         // set shift type and number needed onto view
         TextView shiftTextView = findViewById(R.id.shift_name);
