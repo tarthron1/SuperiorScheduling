@@ -293,9 +293,13 @@ public class DatabaseHelper implements Listener{
         databaseShifts.push().setValue(shift);
     }
 
-    public void addShiftTime(ShiftTime shiftTime){
+    public void addShiftTime(ArrayList<ShiftTime> shiftTimes){
         DatabaseReference databaseShiftTimes = database.getReference().child("shiftTime").child(company.getCompanyID());
-        databaseShiftTimes.push().setValue(shiftTime);
+        databaseShiftTimes.removeValue();
+        for (ShiftTime shiftTime: shiftTimes
+             ) {
+            databaseShiftTimes.push().setValue(shiftTime);
+        }
     }
 
     public void addRequest(Request request){

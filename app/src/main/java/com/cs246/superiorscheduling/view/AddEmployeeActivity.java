@@ -168,8 +168,8 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
         // populate shiftTime options on spinners
         shiftTimes.add("Select");
-        if (presenter.getShift().getShiftTimes() != null){
-            for(String time : presenter.getShift().getShiftTimes()) {
+        if (presenter.getCurrentShift().getShiftTimes() != null){
+            for(String time : presenter.getCurrentShift().getShiftTimes()) {
                 shiftTimes.add(time);
             }
         }
@@ -230,7 +230,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             row.addView(addToShiftTime);
 
             // Check if employee requested time off
-            Boolean timeOff = checkRequestedOff(employee, presenter.getShift());
+            Boolean timeOff = checkRequestedOff(employee, presenter.getCurrentShift());
             if (timeOff) {
                 // color set to red if employee requested the time off
                 row.setBackgroundColor(Color.parseColor("#ed5a6b"));

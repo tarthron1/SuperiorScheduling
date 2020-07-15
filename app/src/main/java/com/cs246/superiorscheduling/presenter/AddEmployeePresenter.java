@@ -14,8 +14,10 @@ public class AddEmployeePresenter implements Listener {
     private Company currentCompany;
     private ArrayList<Request> requests;
     private ArrayList<User> employeeList;
-    private Shift shift;
-    private ShiftTime shiftTime;
+    private Shift currentShift;
+    private ArrayList<Shift>  shifts = new ArrayList<>();
+    private ArrayList<ShiftTime> shiftTimes = new ArrayList<>();
+    private ArrayList<ShiftTime> shiftTimesByShift = new ArrayList<>();
     private ArrayList<Listener> listeners;
     private DatabaseHelper helper;
 
@@ -30,6 +32,8 @@ public class AddEmployeePresenter implements Listener {
         currentCompany = helper.getCompany();
         requests = helper.getRequestsByCompany();
         employeeList = helper.getEmployees();
+        shifts = helper.getShifts();
+        shiftTimes = helper.getShiftTimes();
         for (Listener listener: listeners
              ) {
             listener.notifyDataReady();
@@ -38,8 +42,8 @@ public class AddEmployeePresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-        helper.addShift(shift);
-        helper.addShiftTime(shiftTime);
+        helper.addShift(currentShift);
+        helper.addShiftTime(shiftTimes);
 
     }
 
@@ -83,20 +87,20 @@ public class AddEmployeePresenter implements Listener {
         this.employeeList = employeeList;
     }
 
-    public Shift getShift() {
-        return shift;
+    public Shift getCurrentShift() {
+        return currentShift;
     }
 
-    public void setShift(Shift shift) {
-        this.shift = shift;
+    public void setCurrentShift(Shift currentShift) {
+        this.currentShift = currentShift;
     }
 
-    public ShiftTime getShiftTime() {
-        return shiftTime;
+    public ArrayList<ShiftTime> getShiftTimes() {
+        return shiftTimes;
     }
 
-    public void setShiftTime(ShiftTime shiftTime) {
-        this.shiftTime = shiftTime;
+    public void setShiftTimes(ArrayList shiftTimes) {
+        this.shiftTimes = shiftTimes;
     }
 
 
