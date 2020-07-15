@@ -16,21 +16,13 @@ import androidx.fragment.app.DialogFragment;
 import com.cs246.superiorscheduling.R;
 
 import java.util.Date;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class ShiftTimeDialog extends DialogFragment {
     private TimePicker startPick, endPick;
     private TextView actionOk, actionCancel;
-    String sMin;
-    String sHour;
-    String eMin;
-    String eHour;
 
     @Nullable
     @Override
@@ -58,10 +50,6 @@ public class ShiftTimeDialog extends DialogFragment {
                 String strStartTime = convertTimes(startPick.getHour(), startPick.getMinute());
                 String strEndTime = convertTimes(endPick.getHour(), endPick.getMinute());
 
-                //test output
-                System.out.println("Start Time ---> " + strStartTime);
-                System.out.println("End Time ---> " + strEndTime);
-
                 DateFormat time = new SimpleDateFormat("kk:mm");
                 Date startTime = null;
                 Date endTime = null;
@@ -69,9 +57,6 @@ public class ShiftTimeDialog extends DialogFragment {
                     startTime = time.parse(strStartTime);
                     endTime = time.parse(strEndTime);
 
-                    //test output
-                    System.out.println("Date Start Time ----> " + startTime);
-                    System.out.println("Date End Time ----> " + endTime);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

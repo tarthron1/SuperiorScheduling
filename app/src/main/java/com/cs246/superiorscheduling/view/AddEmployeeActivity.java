@@ -37,6 +37,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     String editingShiftId;
     ArrayList<String> shiftTimes = new ArrayList<>();
     LinearLayout employeeList;
+    LinearLayout updateRow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,9 +182,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // set addToShift params
         LinearLayout.LayoutParams addParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        addParams.width = genWidth / 2;
+        addParams.width = genWidth / 3;
         addParams.gravity = Gravity.CENTER_VERTICAL;
-        addParams.gravity = Gravity.RIGHT;
+        addParams.gravity = Gravity.END;
         addParams.setMargins(10, 10, 10, 10);
         params.put("add", addParams);
 
@@ -258,7 +259,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             // if switch is checked show spinner with shift times
             addToShift.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    LinearLayout updateRow = findViewById(v.getId());
+                    updateRow = findViewById(v.getId());
                     View spinner = updateRow.getChildAt(3);
                     if(addToShift.isChecked()) {
                         // show spinner on row
