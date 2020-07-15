@@ -223,6 +223,15 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             userId.setVisibility(View.INVISIBLE);
             row.addView(userId);
 
+            Spinner addToShiftTime = new Spinner(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
+                    android.R.layout.simple_list_item_multiple_choice,
+                    shiftTimes);
+            addToShiftTime.setAdapter(adapter);
+            addToShiftTime.setVisibility(View.INVISIBLE);
+            addToShiftTime.setLayoutParams(params.get("add"));
+            row.addView(addToShiftTime);
+
             final Switch addToShift = new Switch(this);
             addToShift.setLayoutParams(params.get("add"));
             addToShift.setId(i);
@@ -233,7 +242,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                      ) {
                     if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())){
                         addToShift.setChecked(true);
-                        
+                        String currentStartTime = shiftTime.getStartTime().toString();
+                        int spinnerPos = adapter.getPosition(currentStartTime);
+                        addToShiftTime.setSelection(spinnerPos);
                     }
 
                 }
@@ -256,13 +267,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             });
             row.addView(addToShift);
 
-            Spinner addToShiftTime = new Spinner(this);
-            addToShiftTime.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                    android.R.layout.simple_list_item_multiple_choice,
-                    shiftTimes));
-            addToShiftTime.setVisibility(View.INVISIBLE);
-            addToShiftTime.setLayoutParams(params.get("add"));
-            row.addView(addToShiftTime);
+
 
             // Check if employee requested time off
             Boolean timeOff = checkRequestedOff(employee, presenter.getCurrentShift());
