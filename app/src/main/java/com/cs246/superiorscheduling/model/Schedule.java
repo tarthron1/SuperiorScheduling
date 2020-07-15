@@ -9,7 +9,7 @@ public class Schedule {
     private String scheduleID;
     private Date startDay;
     private Date endDay;
-    public ArrayList<String> shiftList;
+    public ArrayList<String> shiftList = new ArrayList<>();
     boolean published = false;
 
     public Schedule(){

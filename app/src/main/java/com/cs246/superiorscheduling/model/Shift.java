@@ -14,7 +14,7 @@ public class Shift {
     private Date date;
     private Date beginTime;
     private Date endTime;
-    private ArrayList<String> shiftTimes;
+    private ArrayList<String> shiftTimes = new ArrayList<>();
     int requiredEmployees;
 
     public Shift(Date date, int requiredEmployees, Date beginTime, Date endTime) {
