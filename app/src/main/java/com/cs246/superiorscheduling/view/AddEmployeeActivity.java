@@ -36,6 +36,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     Intent intent;
     String editingShiftId;
     ArrayList<String> shiftTimes = new ArrayList<>();
+    LinearLayout employeeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         ShiftTime shiftTime = new ShiftTime(startTime, endTime, presenter.getCurrentShift());
         presenter.addShiftTime(shiftTime);
         shiftTimes.add(shiftTime.getStartTime().toString());
+        notifyDataReady();
     }
 
     public void setUpView(){
@@ -164,7 +166,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // set name params
         LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        nameParams.width = genWidth;
+        nameParams.width = genWidth / 2;
         nameParams.gravity = Gravity.CENTER_VERTICAL;
         nameParams.setMargins(10, 10, 0, 10);
         params.put("name", nameParams);
@@ -179,7 +181,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // set addToShift params
         LinearLayout.LayoutParams addParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        addParams.width = genWidth;
+        addParams.width = genWidth / 2;
         addParams.gravity = Gravity.CENTER_VERTICAL;
         addParams.gravity = Gravity.RIGHT;
         addParams.setMargins(10, 10, 10, 10);
@@ -193,6 +195,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         HashMap<String, LinearLayout.LayoutParams> params = getParams();
 
         // populate shiftTime options on spinners
+        shiftTimes.clear();
         shiftTimes.add("Select");
         if (presenter.getCurrentShift().getShiftTimes() != null){
             for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
@@ -201,7 +204,8 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             }
         }
 
-        final LinearLayout employeeList = findViewById(R.id.employee_list);
+        employeeList = findViewById(R.id.employee_list);
+        employeeList.removeAllViews();
 
         //add all employees to the list
         int i = 0;
@@ -240,13 +244,14 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                 // logic to check if employee is already on shift
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                      ) {
-                    if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())){
-                        addToShift.setChecked(true);
-                        String currentStartTime = shiftTime.getStartTime().toString();
-                        int spinnerPos = adapter.getPosition(currentStartTime);
-                        addToShiftTime.setSelection(spinnerPos);
+                    if(shiftTime.getEmployeesOnShift() != null) {
+                        if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())) {
+                            addToShift.setChecked(true);
+                            String currentStartTime = shiftTime.getStartTime().toString();
+                            int spinnerPos = adapter.getPosition(currentStartTime);
+                            addToShiftTime.setSelection(spinnerPos);
+                        }
                     }
-
                 }
 
             }
