@@ -95,7 +95,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         Intent intent = new Intent(this, AddEmployeeActivity.class);
         intent.putExtra("shiftType", shiftType);
         intent.putExtra("numberNeeded", requiredEmployees);
-        String shiftId = editShift.getStringExtra("shiftId");
+        String shiftId = shift.getShiftID();
         intent.putExtra("shiftId", shiftId);
         startActivity(intent);
     }

@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 // Ability to add an employee to a shift
@@ -50,7 +51,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         dialog.show(fragmentManager, "ShiftTimeDialog");
     }
 
-    public void addShiftTime(Time startTime, Time endTime){
+    public void addShiftTime(Date startTime, Date endTime){
         //todo: set times to spinner dropdown
         shiftTimes.add("");
     }
