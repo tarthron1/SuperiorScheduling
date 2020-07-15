@@ -42,20 +42,21 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         presenter = new AddShiftPresenter(mAuth.getUid(), database, this);
 
         //check if shift is being edited and adds editable info to view
-        checkEditShift();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createShift(View view){
         //get shift data from the view
-        EditText shiftEditText = (EditText) findViewById(R.id.shift_type);
-        String shiftType = shiftEditText.getText().toString();
 
-        EditText dateEditText = (EditText) findViewById(R.id.shift_date);
-        LocalDate localDate = LocalDate.parse(dateEditText.getText().toString(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        //converting localDate to date
-        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-        //https://developer.android.com/reference/android/widget/DatePicker
+            EditText shiftEditText = (EditText) findViewById(R.id.shift_type);
+            String shiftType = shiftEditText.getText().toString();
+
+            EditText dateEditText = (EditText) findViewById(R.id.shift_date);
+            LocalDate localDate = LocalDate.parse(dateEditText.getText().toString(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            //converting localDate to date
+            Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+            //https://developer.android.com/reference/android/widget/DatePicker
 
 //        EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
 //        LocalTime beginTime = LocalTime.parse(beginTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
@@ -70,32 +71,38 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
 //        Instant endInstant = endTime.atDate(LocalDate.from(endTime)).atZone(ZoneId.systemDefault()).toInstant();
 //        Date finishTime = Date.from(endInstant);
 
-        String amString = "09:00 AM";
-        String pmString = "05:00 PM";
-        DateFormat time = new SimpleDateFormat("hh:mm a");
-        Date startTime = null;
-        Date finishTime = null;
-        try {
-            startTime = time.parse(amString);
-            finishTime = time.parse(pmString);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            String amString = "09:00 AM";
+            String pmString = "05:00 PM";
+            DateFormat time = new SimpleDateFormat("hh:mm a");
+            Date startTime = null;
+            Date finishTime = null;
+            try {
+                startTime = time.parse(amString);
+                finishTime = time.parse(pmString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
+            int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
+        if (presenter.getCurrentShift() == null) {
+            Shift shift = new Shift(editShift.getStringExtra("scheduleID"), date, requiredEmployees, startTime, finishTime, shiftType);
+            presenter.setCurrentShift(shift);
+            presenter.addShift(shift);
+        } else {
+            presenter.getCurrentShift().setBeginTime(startTime);
+            presenter.getCurrentShift().setEndTime(finishTime);
+            presenter.getCurrentShift().setDate(date);
+            presenter.getCurrentShift().setRequiredEmployees(requiredEmployees);
+            presenter.getCurrentShift().setShiftType(shiftType);
         }
-
-        EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
-        int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
-
-        //todo: create and save shift
-        Shift shift = new Shift(editShift.getStringExtra("scheduleID"),date, requiredEmployees, startTime, finishTime, shiftType);
-        presenter.setCurrentShift(shift);
-        presenter.addShift(shift);
         notifyNewDataToSave();
 
         //pass shift type and number needed to AddEmployeeActivity
         Intent intent = new Intent(this, AddEmployeeActivity.class);
         intent.putExtra("shiftType", shiftType);
         intent.putExtra("numberNeeded", requiredEmployees);
-        String shiftId = shift.getShiftID();
+        String shiftId = presenter.getCurrentShift().getShiftID();
         intent.putExtra("shiftId", shiftId);
         startActivity(intent);
     }
@@ -123,7 +130,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
 
             EditText dateEditText = (EditText) findViewById(R.id.shift_date);
             Date date = presenter.getCurrentShift().getDate();
-            DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyy");
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy");
             String strDate = dateFormat.format(date);
             dateEditText.setText(strDate);
 
@@ -141,13 +148,13 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
 
             EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
             int reqEmployees = presenter.getCurrentShift().getRequiredEmployees();
-            reqEmployeesEditText.setText(reqEmployees);
+            reqEmployeesEditText.setText(String.valueOf(reqEmployees));
         }
     }
 
     @Override
     public void notifyDataReady() {
-
+        checkEditShift();
     }
 
     @Override

@@ -104,4 +104,19 @@ public class AddEmployeePresenter implements Listener {
     }
 
 
+    public ArrayList<ShiftTime> getShiftTimesByShift() {
+        return shiftTimesByShift;
+    }
+
+    public void setShiftTimesByShift(ArrayList<ShiftTime> shiftTimesByShift) {
+        this.shiftTimesByShift = shiftTimesByShift;
+    }
+
+    public ArrayList<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(ArrayList<Shift> shifts) {
+        this.shifts = shifts;
+    }
 }

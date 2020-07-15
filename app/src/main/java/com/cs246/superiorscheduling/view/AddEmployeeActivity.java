@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Shift;
+import com.cs246.superiorscheduling.model.ShiftTime;
 import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.AddEmployeePresenter;
 import com.cs246.superiorscheduling.presenter.Listener;
@@ -103,7 +104,18 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyDataReady() {
-
+        for (Shift shift: presenter.getShifts()
+             ) {
+            if (shift.getShiftID().equals(editingShiftId)){
+                presenter.setCurrentShift(shift);
+            }
+        }
+        for (ShiftTime shiftTime: presenter.getShiftTimes()
+             ) {
+            if (shiftTime.getParentShift().equals(editingShiftId)){
+                presenter.getShiftTimesByShift().add(shiftTime);
+            }
+        }
         setEmployeeTableData();
     }
 
