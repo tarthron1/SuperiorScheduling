@@ -127,7 +127,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         // set shiftType params
         LinearLayout.LayoutParams shiftParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        shiftParams.width = genWidth;
+        shiftParams.width = genWidth / 2;
         shiftParams.gravity = Gravity.CENTER_VERTICAL;
         shiftParams.setMargins(10, 10, 10, 10);
         params.put("shift", shiftParams);

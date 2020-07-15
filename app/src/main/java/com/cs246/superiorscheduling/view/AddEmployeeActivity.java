@@ -41,6 +41,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new AddEmployeePresenter(mAuth.getUid(), database, this);
+        setUpView();
     }
 
     public void openShiftTimeDialog(View view) {
@@ -107,7 +108,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyDataReady() {
-        setUpView();
+
         setEmployeeTableData();
     }
 
