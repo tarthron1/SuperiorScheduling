@@ -168,7 +168,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
 
     public void publishSchedule(View view) {
         //todo: set schedule published to true, save schedule to cloud
-       // presenter.getCurrentSchedule().publishSchedule();
+        presenter.getCurrentSchedule().publishSchedule();
         notifyNewDataToSave();
     }
 
