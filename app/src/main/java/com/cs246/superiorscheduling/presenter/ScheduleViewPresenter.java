@@ -19,6 +19,7 @@ public class ScheduleViewPresenter implements Listener {
     private User user;
     private Company company;
     private Schedule selectedSchedule;
+    private ArrayList<User> employees;
 
     public ScheduleViewPresenter(String userID, FirebaseDatabase database, Listener listener){
         listeners = new ArrayList<>();
@@ -32,6 +33,7 @@ public class ScheduleViewPresenter implements Listener {
         schedules = helper.getSchedules();
         shifts = helper.getShifts();
         shiftTimes = helper.getShiftTimes();
+        employees = helper.getEmployees();
         for (Listener listener:listeners
              ) {
             listener.notifyDataReady();
@@ -90,5 +92,13 @@ public class ScheduleViewPresenter implements Listener {
 
     public void setSelectedSchedule(Schedule selectedSchedule) {
         this.selectedSchedule = selectedSchedule;
+    }
+
+    public ArrayList<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(ArrayList<User> employees) {
+        this.employees = employees;
     }
 }
