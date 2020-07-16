@@ -176,7 +176,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
     }
 
     public void saveChanges(View view) {
-        int tableIterator = 1;
+        int tableIterator = 3;
         for (User employee : presenter.getEmployeeList()) {
             LinearLayout row = (LinearLayout) table.getChildAt(tableIterator);
             View manager = row.getChildAt(1);
@@ -200,7 +200,7 @@ public class ManageAccountsActivity extends AppCompatActivity implements Listene
                     presenter.getCurrentCompany().toggleActiveEmployee(employee);
                 }
             }
-            tableIterator++;
+            tableIterator+=2;
         }
 
         // save updated lists

@@ -81,6 +81,12 @@ public class DatabaseHelper implements Listener{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = null;
                 user = snapshot.getValue(User.class);
+                if (user.getRequests() == null){
+                    user.setRequests(new ArrayList<String>());
+                }
+                if (user.getCompanies() == null){
+                    user.setCompanies(new ArrayList<String>());
+                }
                 pullRequestsByUser();
                 pullCompany();
             }
@@ -99,6 +105,12 @@ public class DatabaseHelper implements Listener{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 employee = null;
                 employee = snapshot.getValue(User.class);
+                if (employee.getRequests() == null){
+                    employee.setRequests(new ArrayList<String>());
+                }
+                if (employee.getCompanies() == null){
+                    employee.setCompanies(new ArrayList<String>());
+                }
                 boolean containsEmployee = false;
                 for (User user:employees
                      ) {
@@ -128,6 +140,21 @@ public class DatabaseHelper implements Listener{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 company = null;
                 company = snapshot.getValue(Company.class);
+                if(company.getActiveEmployeeList() == null){
+                    company.setActiveEmployeeList(new ArrayList<String>());
+                }
+                if(company.getInactiveEmployeeList() == null){
+                    company.setInactiveEmployeeList(new ArrayList<String>());
+                }
+                if(company.getManagerList() == null){
+                    company.setManagerList(new ArrayList<String>());
+                }
+                if(company.getScheduleList() == null){
+                    company.setScheduleList(new ArrayList<String>());
+                }
+                if(company.getRequestList() == null){
+                    company.setRequestList(new ArrayList<String>());
+                }
                 pullEmployeesByCompany();
                 pullRequestsByCompany();
                 pullSchedules();
@@ -170,7 +197,11 @@ public class DatabaseHelper implements Listener{
                 schedules = new ArrayList<>();
                 for (DataSnapshot schedule:snapshot.getChildren()
                      ) {
-                    schedules.add(schedule.getValue(Schedule.class));
+                    Schedule newSchedule = schedule.getValue(Schedule.class);
+                    if(newSchedule.getShiftList() == null){
+                        newSchedule.setShiftList(new ArrayList<String>());
+                    }
+                    schedules.add(newSchedule);
                 }
             }
 
@@ -190,7 +221,11 @@ public class DatabaseHelper implements Listener{
                 shifts = new ArrayList<>();
                 for (DataSnapshot shift: snapshot.getChildren()
                      ) {
-                    shifts.add(shift.getValue(Shift.class));
+                    Shift newShift = shift.getValue(Shift.class);
+                    if(newShift.getShiftTimes() == null){
+                        newShift.setShiftTimes(new ArrayList<String>());
+                    }
+                    shifts.add(newShift);
                 }
             }
 
@@ -210,7 +245,11 @@ public class DatabaseHelper implements Listener{
                 shiftTimes = new ArrayList<>();
                 for (DataSnapshot shiftTime:snapshot.getChildren()
                      ) {
-                    shiftTimes.add(shiftTime.getValue(ShiftTime.class));
+                    ShiftTime newShiftTime = shiftTime.getValue(ShiftTime.class);
+                    if(newShiftTime.getEmployeesOnShift() == null){
+                        newShiftTime.setEmployeesOnShift(new ArrayList<String>());
+                    }
+                    shiftTimes.add(newShiftTime);
                 }
                 notifyDataReady();
             }

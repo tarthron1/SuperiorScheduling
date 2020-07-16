@@ -56,7 +56,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         dateLabel.setText("Schedule from " + startString + " to " + endString);
 
         //todo: iterate through schedules by date
-
+/*
         for (Schedule schedule: ) {
             //set day layout
             LinearLayout dayRow = new LinearLayout(this);
