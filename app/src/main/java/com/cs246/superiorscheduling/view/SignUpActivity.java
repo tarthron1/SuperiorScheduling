@@ -1,9 +1,11 @@
 package com.cs246.superiorscheduling.view;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,6 +17,8 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.cs246.superiorscheduling.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.core.utilities.Validation;
+
+import java.util.Calendar;
 
 // The SignUp view to create an account
 public class SignUpActivity extends AppCompatActivity {
@@ -40,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         un = (EditText) findViewById(R.id.email);
         pass = (EditText) findViewById(R.id.password);
         cpass = (EditText) findViewById(R.id.cpassword);
+        setDatePickerDialogListener();
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this,R.id.first_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
         awesomeValidation.addValidation(this,R.id.last_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
@@ -54,6 +59,29 @@ public class SignUpActivity extends AppCompatActivity {
 
         // get company info from AttachCompanyActivity
         companyName = data.getStringExtra("company");
+    }
+
+    public void setDatePickerDialogListener() {
+        bd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To show current date in the DatePicker
+                Calendar currentDate = Calendar.getInstance();
+                int year = currentDate.get(Calendar.YEAR);
+                int month = currentDate.get(Calendar.MONTH);
+                int day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                //create DatePicker dialog
+                DatePickerDialog startDatePicker;
+                startDatePicker = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        String dateString = "" + (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+                        bd.setText(dateString);
+                    }
+                }, year, month, day);
+                startDatePicker.show();
+            }
+        });
     }
 
     public void onClick(View view) {

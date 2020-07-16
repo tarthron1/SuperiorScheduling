@@ -1,5 +1,6 @@
 package com.cs246.superiorscheduling.view;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -39,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
@@ -65,12 +68,36 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         presenter = new RequestTimeOffPresenter(mAuth.getUid(), database, this);
         reasonView = findViewById(R.id.request_reason);
         dateEditText = findViewById(R.id.request_date);
+        setDatePickerDialogListener();
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this,R.id.request_date,"(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d",R.string.invalid_date);
         awesomeValidation.addValidation(this,R.id.request_reason, RegexTemplate.NOT_EMPTY,R.string.invalid_reason);
 
 
 
+    }
+
+    public void setDatePickerDialogListener() {
+        dateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To show current date in the DatePicker
+                Calendar currentDate = Calendar.getInstance();
+                int year = currentDate.get(Calendar.YEAR);
+                int month = currentDate.get(Calendar.MONTH);
+                int day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                //create DatePicker dialog
+                DatePickerDialog startDatePicker;
+                startDatePicker = new DatePickerDialog(RequestTimeOffActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        String dateString = "" + (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+                        dateEditText.setText(dateString);
+                    }
+                }, year, month, day);
+                startDatePicker.show();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
