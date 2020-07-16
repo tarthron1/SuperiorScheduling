@@ -220,7 +220,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         if (presenter.getShiftTimesByShift() != null){
             for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
             ) {
-                // format time output
+                // format time and add output
                 shiftTimes.add(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
             }
         }

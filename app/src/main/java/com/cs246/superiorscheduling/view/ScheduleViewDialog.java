@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.cs246.superiorscheduling.R;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,8 +21,6 @@ import java.util.Date;
 public class ScheduleViewDialog extends DialogFragment {
     private DatePicker startPick, endPick;
     private TextView actionOk, actionCancel;
-    long endTime, startTime;
-    Date startDate, endDate;
 
     @Nullable
     @Override
@@ -44,23 +43,23 @@ public class ScheduleViewDialog extends DialogFragment {
         actionOk.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String start = (startPick.getMonth() + 1) + "/" + startPick.getDayOfMonth() + "/" + startPick.getYear();
-                String end = (endPick.getMonth() + 1) + "/" + endPick.getDayOfMonth() + "/" + endPick.getYear();
+                // convert DatePicker values to date
+                String strStartDate = convertDates(startPick.getMonth(), startPick.getDayOfMonth(), startPick.getYear());
+                String strEndDate = convertDates(endPick.getMonth(), endPick.getDayOfMonth(), endPick.getYear());
+
+                DateFormat date = new SimpleDateFormat("MM/dd/yyyy");
+                Date startDate = null;
+                Date endDate = null;
+                try {
+                    startDate = date.parse(strStartDate);
+                    endDate = date.parse(strEndDate);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 //check if end date is earlier than start date, set it to equal start date
-                try {
-                    endDate = new SimpleDateFormat("MM/dd/yyyy").parse(end);
-                    endTime = endDate.getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    startDate = new SimpleDateFormat("MM/dd/yyyy").parse(start);
-                    startTime = startDate.getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if (endTime < startTime) {
+                if (endDate.before(startDate)) {
                     endDate = startDate;
                 }
 
@@ -73,5 +72,9 @@ public class ScheduleViewDialog extends DialogFragment {
         });
 
         return view;
+    }
+
+    private String convertDates(int month, int dayOfMonth, int year) {
+        return (month + 1) + "/" + dayOfMonth + "/" + year;
     }
 }
