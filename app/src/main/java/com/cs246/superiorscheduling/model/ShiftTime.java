@@ -10,7 +10,7 @@ public class ShiftTime {
 
     private String shiftTimeID;
 
-    private ArrayList<String> employeesOnShift = new ArrayList<>();
+    private ArrayList<String> employeesOnShift;
     private Date startTime;
     private Date endTime;
     private String parentShift;
@@ -35,13 +35,7 @@ public class ShiftTime {
 
     // EmployeesOnShift Setter
     public void setEmployeesOnShift(ArrayList<String> employeesOnShift) {
-        this.employeesOnShift.clear();
-        for (String employeeId: employeesOnShift
-             ) {
-            if (!this.employeesOnShift.contains(employeeId)){
-                employeesOnShift.add(employeeId);
-            }
-        }
+        this.employeesOnShift = employeesOnShift;
     }
 
     // StartTime Getter
@@ -76,6 +70,7 @@ public class ShiftTime {
 
     // Constructor
     public ShiftTime(Date startTime, Date endTime, Shift parentShift){
+        employeesOnShift = new ArrayList<>();
         this.startTime = startTime;
         this.endTime = endTime;
         this.parentShift = parentShift.getShiftID();

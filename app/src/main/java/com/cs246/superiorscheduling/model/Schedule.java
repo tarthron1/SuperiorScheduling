@@ -9,7 +9,7 @@ public class Schedule {
     private String scheduleID;
     private Date startDay;
     private Date endDay;
-    public ArrayList<String> shiftList = new ArrayList<>();
+    public ArrayList<String> shiftList;
     boolean published = false;
 
     public Schedule(){
@@ -68,6 +68,7 @@ public class Schedule {
 
     // Constructor
     public Schedule(Date startDay, Date endDay){
+        shiftList = new ArrayList<>();
         this.startDay = startDay;
         this.endDay = endDay;
         this.scheduleID = UUID.randomUUID().toString();

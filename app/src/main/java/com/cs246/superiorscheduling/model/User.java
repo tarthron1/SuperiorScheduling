@@ -12,8 +12,8 @@ public class User {
     private String lastName;
     private String nickName;
     private Date birthDate;
-    private ArrayList<String> companies = new ArrayList<>();
-    private ArrayList<String> requests = new ArrayList<>();
+    private ArrayList<String> companies;
+    private ArrayList<String> requests;
 
     //  Default?
     public User(){
@@ -22,6 +22,8 @@ public class User {
 
     // Constructor (Basic)
     public User(String firstName, String lastName, Date birthDate){
+        companies = new ArrayList<>();
+        requests = new ArrayList<>();
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -29,6 +31,8 @@ public class User {
 
     // Constructor (Specified)
     public User(String userID, String firstName, String lastName, String nickName, Date birthDate){
+        companies = new ArrayList<>();
+        requests = new ArrayList<>();
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;

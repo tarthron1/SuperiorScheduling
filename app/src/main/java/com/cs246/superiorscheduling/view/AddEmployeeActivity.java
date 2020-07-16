@@ -97,6 +97,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                 //Set employeesOnShift list in ShiftTime object
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                      ) {
+                    if (shiftTime.getEmployeesOnShift() == null){
+                        shiftTime.setEmployeesOnShift(new ArrayList<String>());
+                    }
                     if (shiftTime.getEmployeesOnShift().contains(currentUserId.getText().toString())){
                         shiftTime.removeEmployee(currentUserId.getText().toString());
                     }
@@ -105,6 +108,10 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             } else {
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                      ) {
+                    if (shiftTime.getEmployeesOnShift() == null){
+                        ArrayList<String> pleaseWork = new ArrayList<>();
+                        shiftTime.setEmployeesOnShift(pleaseWork);
+                    }
                     if (formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()).equals(((Spinner) currentShiftSpinner).getSelectedItem().toString())){
                         if (!shiftTime.getEmployeesOnShift().contains(currentUserId.getText().toString())){
                             shiftTime.addEmployee(currentUserId.getText().toString());
@@ -259,14 +266,15 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             if (editingShiftId != null) {
                 // logic to check if employee is already on shift
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()) {
-                    if(shiftTime.getEmployeesOnShift() != null) {
-                        if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())) {
-                            String currentStartTime = shiftTime.getStartTime().toString();
-                            int spinnerPos = adapter.getPosition(currentStartTime);
-                            addToShiftTime.setSelection(spinnerPos);
-                        }
-                        else {
-                            addToShiftTime.setSelection(0);
+                    if (shiftTime.getEmployeesOnShift() != null) {
+                        if (shiftTime.getEmployeesOnShift().size() != 0) {
+                            if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())) {
+                                String spinnerContents = formatTime(shiftTime.getStartTime(), shiftTime.getEndTime());
+                                int spinnerPos = adapter.getPosition(spinnerContents);
+                                addToShiftTime.setSelection(spinnerPos);
+                            } else {
+                                addToShiftTime.setSelection(0);
+                            }
                         }
                     }
                 }

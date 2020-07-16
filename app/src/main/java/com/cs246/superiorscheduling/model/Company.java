@@ -8,11 +8,11 @@ public class Company  {
     private String name;
     private String companyID;
     UUID uuid = UUID.randomUUID();
-    ArrayList<String> inactiveEmployeeList = new ArrayList<>();
-    ArrayList<String> activeEmployeeList = new ArrayList<>();
-    ArrayList<String> managerList = new ArrayList<>();
-    ArrayList<String> scheduleList = new ArrayList<>();
-    ArrayList<String> requestList = new ArrayList<>();
+    ArrayList<String> inactiveEmployeeList;
+    ArrayList<String> activeEmployeeList;
+    ArrayList<String> managerList;
+    ArrayList<String> scheduleList;
+    ArrayList<String> requestList;
 
     // Default?
     public Company(){
@@ -21,6 +21,12 @@ public class Company  {
 
     // Constructor
     public Company(String name, User manager){
+        inactiveEmployeeList = new ArrayList<>();
+        activeEmployeeList = new ArrayList<>();
+        managerList = new ArrayList<>();
+        scheduleList = new ArrayList<>();
+        requestList = new ArrayList<>();
+
         this.setName(name);
         this.addManager(manager);
         this.companyID = uuid.toString();
