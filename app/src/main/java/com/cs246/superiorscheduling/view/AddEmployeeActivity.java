@@ -81,7 +81,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     public void addToShift(View view) {
-        LinearLayout employeeList = findViewById(R.id.employee_list);
+        employeeList = findViewById(R.id.employee_list);
         // iterate through each row on the list, get employee id and onShift switch
         for (int i = 0; i < employeeList.getChildCount(); i++){
             LinearLayout row = findViewById(i);
@@ -175,7 +175,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // set userId params
         LinearLayout.LayoutParams idParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        idParams.width = 0;
+        idParams.width = 100;
         idParams.gravity = Gravity.CENTER_VERTICAL;
         params.put("id", idParams);
 
@@ -215,6 +215,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             final LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setId(i);
+            System.out.println("Row ID ---> " + row.getId());
             i++;
 
             TextView name = new TextView(this);
@@ -225,7 +226,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             TextView userId = new TextView(this);
             userId.setLayoutParams(params.get("id"));
             userId.setText(employee.getUserID());
-            userId.setVisibility(View.INVISIBLE);
+            userId.setVisibility(View.VISIBLE);
             row.addView(userId);
 
             Spinner addToShiftTime = new Spinner(this);
@@ -233,7 +234,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                     android.R.layout.simple_list_item_multiple_choice,
                     shiftTimes);
             addToShiftTime.setAdapter(adapter);
-            addToShiftTime.setVisibility(View.INVISIBLE);
+            addToShiftTime.setVisibility(View.VISIBLE);
             addToShiftTime.setLayoutParams(params.get("add"));
             row.addView(addToShiftTime);
 
@@ -259,7 +260,33 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             // if switch is checked show spinner with shift times
             addToShift.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    updateRow = findViewById(v.getId());
+                    for (int i = 0; i < employeeList.getChildCount() - 1; i++) {
+                        LinearLayout currentRow = (LinearLayout) employeeList.getChildAt(i);
+                        View currentSwitch = currentRow.getChildAt(3);
+                        View tvUserId = currentRow.getChildAt(1);
+                        TextView currentUserId = (TextView) tvUserId;
+                        String stringUserId = currentUserId.getText().toString();
+                        if (((Switch)currentSwitch).isChecked()) {
+                            Spinner currentSpinner = (Spinner) currentRow.getChildAt(2);
+                            String spinnerValue = currentSpinner.getSelectedItem().toString();
+                            for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
+                                 ) {
+                                if (shiftTime.getStartTime().equals(spinnerValue)){
+                                    shiftTime.addEmployee(stringUserId);
+                                }
+                            }
+                        } else {
+                            for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
+                                 ) {
+                                if (shiftTime.getEmployeesOnShift().contains(currentUserId)){
+                                    shiftTime.removeEmployee(stringUserId);
+                                }
+                            }
+                        }
+                    }
+                    int switchId = v.getId();
+                    System.out.println("Switch ID ---> " + switchId);
+                    updateRow = findViewById(switchId);
                     View spinner = updateRow.getChildAt(3);
                     if(addToShift.isChecked()) {
                         // show spinner on row

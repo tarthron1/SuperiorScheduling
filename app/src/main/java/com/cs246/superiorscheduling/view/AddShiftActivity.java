@@ -1,10 +1,14 @@
 package com.cs246.superiorscheduling.view;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 // view the shifts
@@ -32,6 +35,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
     private AddShiftPresenter presenter;
     Intent editShift;
     ZoneId defaultZoneId = ZoneId.systemDefault();
+    EditText shiftDateEditText, startTimeEditText, endTimeEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,59 +44,107 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new AddShiftPresenter(mAuth.getUid(), database, this);
+        // set listeners to date and time TextEdits in layout
+        setDateAndTimePickerDialogListeners();
+    }
 
-        //check if shift is being edited and adds editable info to view
+    private void setDateAndTimePickerDialogListeners() {
+        shiftDateEditText = findViewById(R.id.shift_date);
+        startTimeEditText = findViewById(R.id.begin_time);
+        endTimeEditText = findViewById(R.id.end_time);
 
+        shiftDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To show current date in the DatePicker
+                Calendar currentDate = Calendar.getInstance();
+                int year = currentDate.get(Calendar.YEAR);
+                int month = currentDate.get(Calendar.MONTH);
+                int day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                //create DatePicker dialog
+                DatePickerDialog startDatePicker;
+                startDatePicker = new DatePickerDialog(AddShiftActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        String dateString =  "" + (selectedMonth + 1)  + "/" + selectedDay + "/" + selectedYear;
+                        shiftDateEditText.setText(dateString);
+                    }
+                }, year, month, day);
+                startDatePicker.show();
+            }
+        });
+
+        startTimeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddShiftActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        String timeString = "" + hourOfDay + ":" + minute;
+                        startTimeEditText.setText(timeString);
+                    }
+                }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        endTimeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddShiftActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        String timeString = "" + hourOfDay + ":" + minute;
+                        endTimeEditText.setText(timeString);
+                    }
+                }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createShift(View view){
         //get shift data from the view
 
-            EditText shiftEditText = (EditText) findViewById(R.id.shift_type);
-            String shiftType = shiftEditText.getText().toString();
+        EditText shiftEditText = (EditText) findViewById(R.id.shift_type);
+        String shiftType = shiftEditText.getText().toString();
 
-            EditText dateEditText = (EditText) findViewById(R.id.shift_date);
-            LocalDate localDate = LocalDate.parse(dateEditText.getText().toString(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-            //converting localDate to date
-            Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-            //https://developer.android.com/reference/android/widget/DatePicker
+        String shiftDateString = shiftDateEditText.getText().toString();
+        String startTimeString = startTimeEditText.getText().toString();
+        String endTimeString = endTimeEditText.getText().toString();
 
-//        EditText beginTimeEditText = (EditText) findViewById(R.id.begin_time);
-//        LocalTime beginTime = LocalTime.parse(beginTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-//        //converting LocalTime to Date object
-//        Instant startInstant = beginTime.atDate(LocalDate.from(beginTime)).atZone(ZoneId.systemDefault()).toInstant();
-//        Date startTime = Date.from(startInstant);
-//        //https://developer.android.com/reference/android/widget/TimePicker
-//
-//        EditText endTimeEditText = (EditText) findViewById(R.id.end_time);
-//        LocalTime endTime = LocalTime.parse(endTimeEditText.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-//        //converting LocalTime to Date object
-//        Instant endInstant = endTime.atDate(LocalDate.from(endTime)).atZone(ZoneId.systemDefault()).toInstant();
-//        Date finishTime = Date.from(endInstant);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat timeFormat = new SimpleDateFormat("kk:mm");
+        Date shiftDate = null;
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            shiftDate = dateFormat.parse(shiftDateString);
+            startTime = timeFormat.parse(startTimeString);
+            endTime = timeFormat.parse(endTimeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-            String amString = "09:00 AM";
-            String pmString = "05:00 PM";
-            DateFormat time = new SimpleDateFormat("hh:mm a");
-            Date startTime = null;
-            Date finishTime = null;
-            try {
-                startTime = time.parse(amString);
-                finishTime = time.parse(pmString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
-            int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
+        EditText reqEmployeesEditText = (EditText) findViewById(R.id.number_needed);
+        int requiredEmployees = Integer.parseInt(reqEmployeesEditText.getText().toString());
         if (presenter.getCurrentShift() == null) {
-            Shift shift = new Shift(editShift.getStringExtra("scheduleID"), date, requiredEmployees, startTime, finishTime, shiftType);
+            Shift shift = new Shift(editShift.getStringExtra("scheduleID"), shiftDate, requiredEmployees, startTime, endTime, shiftType);
             presenter.setCurrentShift(shift);
             presenter.addShift(shift);
         } else {
             presenter.getCurrentShift().setBeginTime(startTime);
-            presenter.getCurrentShift().setEndTime(finishTime);
-            presenter.getCurrentShift().setDate(date);
+            presenter.getCurrentShift().setEndTime(endTime);
+            presenter.getCurrentShift().setDate(shiftDate);
             presenter.getCurrentShift().setRequiredEmployees(requiredEmployees);
             presenter.getCurrentShift().setShiftType(shiftType);
         }

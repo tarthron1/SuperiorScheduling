@@ -76,4 +76,10 @@ public class ShiftTime {
     public void addEmployee(User user){
         this.employeesOnShift.add(user.getUserID());
     }
+
+    public void addEmployee(String userId) { this.employeesOnShift.add(userId); }
+
+    public void removeEmployee(String currentUserId) {
+        this.employeesOnShift.remove(currentUserId);
+    }
 }

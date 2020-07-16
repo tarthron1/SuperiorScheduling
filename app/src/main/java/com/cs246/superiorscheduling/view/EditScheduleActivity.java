@@ -1,5 +1,6 @@
 package com.cs246.superiorscheduling.view;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -35,6 +38,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     ArrayList<String> btnShiftIds = new ArrayList<>();
+    EditText startDateEditText, endDateEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +47,84 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         presenter = new EditSchedulePresenter(mAuth.getUid(), database, this);
+        // set listeners to date TextEdits in layout
+        setDatePickerDialogListeners();
+    }
 
+    public void setDatePickerDialogListeners() {
+        startDateEditText = findViewById(R.id.schedule_startDate);
+        endDateEditText = findViewById(R.id.schedule_endDate);
+
+        startDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To show current date in the DatePicker
+                Calendar currentDate = Calendar.getInstance();
+                int year = currentDate.get(Calendar.YEAR);
+                int month = currentDate.get(Calendar.MONTH);
+                int day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                //create DatePicker dialog
+                DatePickerDialog startDatePicker;
+                startDatePicker = new DatePickerDialog(EditScheduleActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        String dateString =  "" + (selectedMonth + 1)  + "/" + selectedDay + "/" + selectedYear;
+                        startDateEditText.setText(dateString);
+                    }
+                }, year, month, day);
+                startDatePicker.show();
+            }
+        });
+
+        endDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To show current date in the DatePicker
+                Calendar currentDate = Calendar.getInstance();
+                int year = currentDate.get(Calendar.YEAR);
+                int month = currentDate.get(Calendar.MONTH);
+                int day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                //create DatePicker dialog
+                DatePickerDialog startDatePicker;
+                startDatePicker = new DatePickerDialog(EditScheduleActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        String dateString =  "" + (selectedMonth + 1)  + "/" + selectedDay + "/" + selectedYear;
+                        endDateEditText.setText(dateString);
+                    }
+                }, year, month, day);
+                startDatePicker.show();
+            }
+        });
     }
 
     // start AddShiftActivity
     public void addShift(View view){
         if (presenter.getCurrentSchedule() == null) {
-            EditText startDateEditText = findViewById(R.id.editTextDate4);
-            EditText endDateEditText = findViewById(R.id.editTextDate5);
+            startDateEditText = findViewById(R.id.schedule_startDate);
+
+            startDateEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //To show current date in the DatePicker
+                    Calendar currentDate = Calendar.getInstance();
+                    int year = currentDate.get(Calendar.YEAR);
+                    int month = currentDate.get(Calendar.MONTH);
+                    int day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                    //create DatePicker dialog
+                    DatePickerDialog startDatePicker;
+                    startDatePicker = new DatePickerDialog(EditScheduleActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            String dateString = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                            startDateEditText.setText(dateString);
+                        }
+                    }, year, month, day);
+                    startDatePicker.show();
+                }
+            });
+
+            EditText endDateEditText = findViewById(R.id.schedule_endDate);
             String startDateString = startDateEditText.getText().toString();
             String endDateString = endDateEditText.getText().toString();
             Date startDate = null;
@@ -201,8 +275,8 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
                 if (!schedule.isPublished()) {
                     presenter.setCurrentSchedule(schedule);
                     SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-                    EditText startDateEditText = findViewById(R.id.editTextDate4);
-                    EditText endDateEditText = findViewById(R.id.editTextDate5);
+                    EditText startDateEditText = findViewById(R.id.schedule_startDate);
+                    EditText endDateEditText = findViewById(R.id.schedule_endDate);
                     startDateEditText.setText(format.format(presenter.getCurrentSchedule().getStartDay()));
                     endDateEditText.setText(format.format(presenter.getCurrentSchedule().getEndDay()));
                 }
