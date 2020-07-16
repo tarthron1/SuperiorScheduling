@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ScheduleViewDialog extends DialogFragment {
-    private DatePicker startPick, endPick;
+    private DatePicker startPick;
     private TextView actionOk, actionCancel;
 
     @Nullable
@@ -29,7 +29,6 @@ public class ScheduleViewDialog extends DialogFragment {
         actionCancel = view.findViewById(R.id.schedule_cancel);
         actionOk = view.findViewById(R.id.schedule_ok);
         startPick = view.findViewById(R.id.schedule_start_date);
-        endPick = view.findViewById(R.id.schedule_end_date);
 
         // close dialog when cancel is clicked
         actionCancel.setOnClickListener(new View.OnClickListener(){
@@ -45,26 +44,17 @@ public class ScheduleViewDialog extends DialogFragment {
             public void onClick(View v) {
                 // convert DatePicker values to date
                 String strStartDate = convertDates(startPick.getMonth(), startPick.getDayOfMonth(), startPick.getYear());
-                String strEndDate = convertDates(endPick.getMonth(), endPick.getDayOfMonth(), endPick.getYear());
 
                 DateFormat date = new SimpleDateFormat("MM/dd/yyyy");
                 Date startDate = null;
-                Date endDate = null;
                 try {
                     startDate = date.parse(strStartDate);
-                    endDate = date.parse(strEndDate);
-
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                //check if end date is earlier than start date, set it to equal start date
-                if (endDate.before(startDate)) {
-                    endDate = startDate;
-                }
-
                 //call ScheduleViewActivity setScheduleView()
-                ((ScheduleViewActivity)getActivity()).setScheduleView(startDate, endDate);
+                ((ScheduleViewActivity)getActivity()).setScheduleView(startDate);
 
                 //close dialog
                 getDialog().dismiss();

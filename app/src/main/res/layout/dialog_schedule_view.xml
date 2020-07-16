@@ -11,8 +11,6 @@
         style="@android:style/Widget.DatePicker"
         android:layout_width="197dp"
         android:layout_height="135dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:scaleX=".8"
@@ -20,23 +18,8 @@
         android:spinnersShown="false"
         android:theme="@style/DatePickerStyle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView32" />
-
-    <DatePicker
-        android:id="@+id/schedule_end_date"
-        style="@android:style/Widget.DatePicker"
-        android:layout_width="197dp"
-        android:layout_height="135dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:scaleX=".8"
-        android:scaleY=".8"
-        android:spinnersShown="false"
-        android:theme="@style/DatePickerStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
     <TextView
         android:id="@+id/schedule_ok"
@@ -44,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="16dp"
@@ -53,7 +35,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_end_date" />
+        app:layout_constraintTop_toBottomOf="@+id/schedule_start_date" />
 
     <TextView
         android:id="@+id/schedule_cancel"
@@ -63,38 +45,11 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:text="CANCEL"
         android:textColor="#33bbff"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_end_date" />
-
-    <TextView
-        android:id="@+id/textView32"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="right"
-        android:text="From:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView34" />
-
-    <TextView
-        android:id="@+id/textView33"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="right"
-        android:text="To:"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/schedule_start_date" />
 
@@ -103,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Set Schedule Dates"
+        android:text="Set Schedule Date"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

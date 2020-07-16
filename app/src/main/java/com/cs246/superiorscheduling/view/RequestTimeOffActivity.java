@@ -72,9 +72,6 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this,R.id.request_date,"(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d",R.string.invalid_date);
         awesomeValidation.addValidation(this,R.id.request_reason, RegexTemplate.NOT_EMPTY,R.string.invalid_reason);
-
-
-
     }
 
     public void setDatePickerDialogListener() {

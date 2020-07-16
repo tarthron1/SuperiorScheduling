@@ -75,13 +75,22 @@ public class SignUpActivity extends AppCompatActivity {
                 DatePickerDialog startDatePicker;
                 startDatePicker = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        String dateString = "" + (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+                        String dateString = "" + convertDateString(selectedMonth + 1) + "/" + convertDateString(selectedDay) + "/" + selectedYear;
                         bd.setText(dateString);
                     }
                 }, year, month, day);
                 startDatePicker.show();
             }
         });
+    }
+
+    private String convertDateString(int date) {
+        if(date < 10) {
+            return "0" + date;
+        }
+        else {
+            return String.valueOf(date);
+        }
     }
 
     public void onClick(View view) {
