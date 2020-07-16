@@ -91,13 +91,22 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
                 DatePickerDialog startDatePicker;
                 startDatePicker = new DatePickerDialog(RequestTimeOffActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        String dateString = "" + (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+                        String dateString = "" + convertDateString(selectedMonth + 1) + "/" + convertDateString(selectedDay) + "/" + selectedYear;
                         dateEditText.setText(dateString);
                     }
                 }, year, month, day);
                 startDatePicker.show();
             }
         });
+    }
+
+    private String convertDateString(int date) {
+        if(date < 10) {
+            return "0" + date;
+        }
+        else {
+            return String.valueOf(date);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

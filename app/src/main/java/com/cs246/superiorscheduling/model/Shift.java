@@ -14,7 +14,7 @@ public class Shift {
     private Date date;
     private Date beginTime;
     private Date endTime;
-    private ArrayList<String> shiftTimes = new ArrayList<>();
+    private ArrayList<String> shiftTimes;
     int requiredEmployees;
 
     public Shift(Date date, int requiredEmployees, Date beginTime, Date endTime) {
@@ -107,6 +107,7 @@ public class Shift {
 
     // Constructor (Standard)
     public Shift(String parentScheduleID, Date date, int requiredEmployees, Date beginTime, Date endTime){
+        shiftTimes = new ArrayList<>();
         this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;
@@ -117,6 +118,7 @@ public class Shift {
 
     // Constructor (Specific?)
     public Shift(String parentScheduleID, Date date, int requiredEmployees, Date beginTime, Date endTime, String shiftType){
+        shiftTimes = new ArrayList<>();
         this.parentSchedule = parentScheduleID;
         this.date = date;
         this.requiredEmployees = requiredEmployees;

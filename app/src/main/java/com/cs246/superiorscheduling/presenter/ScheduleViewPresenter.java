@@ -18,6 +18,8 @@ public class ScheduleViewPresenter implements Listener {
     private ArrayList<Listener> listeners;
     private User user;
     private Company company;
+    private Schedule selectedSchedule;
+    private ArrayList<User> employees;
 
     public ScheduleViewPresenter(String userID, FirebaseDatabase database, Listener listener){
         listeners = new ArrayList<>();
@@ -31,6 +33,7 @@ public class ScheduleViewPresenter implements Listener {
         schedules = helper.getSchedules();
         shifts = helper.getShifts();
         shiftTimes = helper.getShiftTimes();
+        employees = helper.getEmployees();
         for (Listener listener:listeners
              ) {
             listener.notifyDataReady();
@@ -41,5 +44,61 @@ public class ScheduleViewPresenter implements Listener {
     @Override
     public void notifyNewDataToSave() {
 
+    }
+
+    public ArrayList<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(ArrayList<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
+    public ArrayList<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(ArrayList<Shift> shifts) {
+        this.shifts = shifts;
+    }
+
+    public ArrayList<ShiftTime> getShiftTimes() {
+        return shiftTimes;
+    }
+
+    public void setShiftTimes(ArrayList<ShiftTime> shiftTimes) {
+        this.shiftTimes = shiftTimes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Schedule getSelectedSchedule() {
+        return selectedSchedule;
+    }
+
+    public void setSelectedSchedule(Schedule selectedSchedule) {
+        this.selectedSchedule = selectedSchedule;
+    }
+
+    public ArrayList<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(ArrayList<User> employees) {
+        this.employees = employees;
     }
 }

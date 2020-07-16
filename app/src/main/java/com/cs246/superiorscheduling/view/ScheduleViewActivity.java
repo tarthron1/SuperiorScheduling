@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.cs246.superiorscheduling.R;
+import com.cs246.superiorscheduling.model.Schedule;
+import com.cs246.superiorscheduling.model.Shift;
+import com.cs246.superiorscheduling.model.ShiftTime;
+import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.ScheduleViewPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 // The Schedule View
 public class ScheduleViewActivity extends AppCompatActivity implements Listener {
@@ -45,12 +51,55 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         String startString = df.format(startDate);
         String endString = df.format(endDate);
 
-        TextView dateLabel = new TextView(this);
+        //set schedule header
+        TextView dateLabel = findViewById(R.id.schedule_dates);
         dateLabel.setText("Schedule from " + startString + " to " + endString);
-        view.addView(dateLabel);
 
         //todo: iterate through schedules by date
-        //todo: change Schedule LocalDate objects to Date objects
+
+        for (Schedule schedule: ) {
+            //set day layout
+            LinearLayout dayRow = new LinearLayout(this);
+
+            //set day header
+            String currentDay = "Day"; // todo: change hardcoded values
+            TextView dayLabel = new TextView(this);
+            dayLabel.setText(currentDay);
+            dayRow.addView(dayLabel);
+
+            for (Shift shift : ) {
+                //set shift header
+                TextView shiftLabel = new TextView(this);
+                shiftLabel.setText(shift.getShiftType());
+                dayRow.addView(shiftLabel);
+
+                //set shift layout
+                LinearLayout shiftRow = new LinearLayout(this);
+                for (ShiftTime shiftTime: ) {
+                    //set time header
+                    TextView timeLabel = new TextView(this);
+                    timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
+                    shiftRow.addView(timeLabel);
+
+                    //set employee layout
+                    LinearLayout employeesOnShift = new LinearLayout(this);
+                    for (User employee: ) {
+                        //set each employee name to employee layout
+                        TextView employeeName = new TextView(this);
+                        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+                        employeesOnShift.addView(employeeName);
+                    }
+                    shiftRow.addView(employeesOnShift);
+                }
+                dayRow.addView(shiftRow);
+            }
+            view.addView(dayRow);
+        }*/
+    }
+
+    private String formatTime(Date sTime, Date eTime) {
+        DateFormat formatTime = new SimpleDateFormat("hh:mm a");
+        return formatTime.format(sTime) + " - " + formatTime.format(eTime);
     }
 
     @Override
