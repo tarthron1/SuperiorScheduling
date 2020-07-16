@@ -60,7 +60,8 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     public void addShiftTime(Date startTime, Date endTime){
         ShiftTime shiftTime = new ShiftTime(startTime, endTime, presenter.getCurrentShift());
         presenter.addShiftTime(shiftTime);
-
+        presenter.getCurrentShift().addShiftTime(shiftTime);
+        notifyNewDataToSave();
         notifyDataReady();
     }
 
@@ -90,13 +91,30 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             View currentShiftSpinner = row.getChildAt(2);
 
             // check if spinner option is shift time, add employee id to ShiftTime
-            if (!((Spinner) currentShiftSpinner).getSelectedItem().toString().equals("Not on Shift")) {
-                // todo: Set employeesOnShift list in ShiftTime object
+            if (((Spinner) currentShiftSpinner).getSelectedItem().toString().equals("Not on Shift")) {
+                //Set employeesOnShift list in ShiftTime object
+                for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
+                     ) {
+                    if (shiftTime.getEmployeesOnShift().contains(currentUserId.toString())){
+                        shiftTime.removeEmployee(currentUserId.toString());
+                    }
+                }
 
+            } else {
+                for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
+                     ) {
+                    if (formatTime(shiftTime.getStartTime()).equals(((Spinner) currentShiftSpinner).getSelectedItem().toString())){
+                        if (!shiftTime.getEmployeesOnShift().contains(currentUserId.toString())){
+                            shiftTime.addEmployee(currentUserId.toString());
+                        }
+                    } else if (shiftTime.getEmployeesOnShift().contains(currentUserId.toString())){
+                        shiftTime.removeEmployee(currentUserId.toString());
+                    }
+                }
             }
         }
-        // todo: save to cloud (if shift is being edited, need to remove old shift and replace with edited shift)
-
+        //  save to cloud (if shift is being edited, need to remove old shift and replace with edited shift)
+        notifyNewDataToSave();
         // update table
         setEmployeeTableData();
         Toast.makeText(this, ("Changes Saved."),
@@ -131,12 +149,6 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
              ) {
             if (shift.getShiftID().equals(editingShiftId)){
                 presenter.setCurrentShift(shift);
-            }
-        }
-        for (ShiftTime shiftTime: presenter.getShiftTimes()
-             ) {
-            if (shiftTime.getParentShift().equals(editingShiftId)){
-                presenter.getShiftTimesByShift().add(shiftTime);
             }
         }
         setEmployeeTableData();
@@ -196,7 +208,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // populate shiftTime options on spinners
         shiftTimes.clear();
         shiftTimes.add("Not on Shift");
-        if (presenter.getCurrentShift().getShiftTimes() != null){
+        if (presenter.getShiftTimesByShift() != null){
             for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
             ) {
                 // format time output

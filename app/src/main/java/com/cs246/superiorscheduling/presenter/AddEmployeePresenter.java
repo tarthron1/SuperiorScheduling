@@ -42,7 +42,7 @@ public class AddEmployeePresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-        helper.addShift(currentShift);
+        helper.setShifts(shifts);
         helper.addShiftTime(shiftTimes);
 
     }
@@ -93,6 +93,13 @@ public class AddEmployeePresenter implements Listener {
 
     public void setCurrentShift(Shift currentShift) {
         this.currentShift = currentShift;
+        shiftTimesByShift.clear();
+        for (ShiftTime shiftTime: shiftTimes
+             ) {
+            if (shiftTime.getParentShift().equals(currentShift.getShiftID()) && !shiftTimesByShift.contains(shiftTime.getShiftTimeID())){
+                shiftTimesByShift.add(shiftTime);
+            }
+        }
     }
 
     public ArrayList<ShiftTime> getShiftTimes() {

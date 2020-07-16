@@ -1,6 +1,7 @@
 package com.cs246.superiorscheduling.model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.UUID;
@@ -9,11 +10,14 @@ public class ShiftTime {
 
     private String shiftTimeID;
 
-    private HashSet<String> employeesOnShift = new HashSet<>();
-    Date startTime;
-    Date endTime;
-    String parentShift;
+    private ArrayList<String> employeesOnShift = new ArrayList<>();
+    private Date startTime;
+    private Date endTime;
+    private String parentShift;
 
+    public ShiftTime(){
+
+    }
     // ID Getter
     public String getShiftTimeID() {
         return shiftTimeID;
@@ -25,13 +29,19 @@ public class ShiftTime {
     }
 
     // EmployeesOnShift Getter
-    public HashSet<String> getEmployeesOnShift() {
+    public ArrayList<String> getEmployeesOnShift() {
         return employeesOnShift;
     }
 
     // EmployeesOnShift Setter
-    public void setEmployeesOnShift(HashSet<String> employeesOnShift) {
-        this.employeesOnShift = employeesOnShift;
+    public void setEmployeesOnShift(ArrayList<String> employeesOnShift) {
+        this.employeesOnShift.clear();
+        for (String employeeId: employeesOnShift
+             ) {
+            if (!this.employeesOnShift.contains(employeeId)){
+                employeesOnShift.add(employeeId);
+            }
+        }
     }
 
     // StartTime Getter
