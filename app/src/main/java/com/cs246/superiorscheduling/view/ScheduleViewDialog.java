@@ -44,8 +44,8 @@ public class ScheduleViewDialog extends DialogFragment {
         actionOk.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String start = startPick.getMonth() + "/" + startPick.getDayOfMonth() + "/" + startPick.getYear();
-                String end = endPick.getMonth() + "/" + endPick.getDayOfMonth() + "/" + endPick.getYear();
+                String start = (startPick.getMonth() + 1) + "/" + startPick.getDayOfMonth() + "/" + startPick.getYear();
+                String end = (endPick.getMonth() + 1) + "/" + endPick.getDayOfMonth() + "/" + endPick.getYear();
 
                 //check if end date is earlier than start date, set it to equal start date
                 try {
@@ -75,4 +75,3 @@ public class ScheduleViewDialog extends DialogFragment {
         return view;
     }
 }
-//source: https://www.youtube.com/watch?v=--dJm6z5b0s

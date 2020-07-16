@@ -192,21 +192,25 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         return params;
     }
 
-    public void setEmployeeTableData() {
-        // get layout parameters
-        HashMap<String, LinearLayout.LayoutParams> params = getParams();
-
+    public void setShiftTimesToSpinner() {
         // populate shiftTime options on spinners
         shiftTimes.clear();
         shiftTimes.add("Not on Shift");
         if (presenter.getCurrentShift().getShiftTimes() != null){
             for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
-                 ) {
+            ) {
                 // format time output
                 String sTime = formatTime(shiftTime.getStartTime());
+
                 shiftTimes.add(sTime);
             }
         }
+    }
+
+    public void setEmployeeTableData() {
+        // get layout parameters
+        HashMap<String, LinearLayout.LayoutParams> params = getParams();
+        setShiftTimesToSpinner();
 
         employeeList = findViewById(R.id.employee_list);
         employeeList.removeAllViews();
@@ -270,9 +274,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         employeeList.addView(separator);
     }
 
-    private String formatTime(Date startTime) {
+    private String formatTime(Date time) {
         DateFormat formatTime = new SimpleDateFormat("hh:mm a");
-        return formatTime.format(startTime);
+        return formatTime.format(time);
     }
 
     @Override
