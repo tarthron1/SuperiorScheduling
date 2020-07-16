@@ -1,7 +1,11 @@
 package com.cs246.superiorscheduling.view;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,59 +48,61 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         dialog.show(fragmentManager, "ScheduleViewDialog");
     }
 
-    public void setScheduleView(Date startDate, Date endDate){
+    public void setScheduleView(Date startDate){
         LinearLayout view = findViewById(R.id.schedule_view);
         view.removeAllViews();
 
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String startString = df.format(startDate);
-        String endString = df.format(endDate);
 
         //set schedule header
         TextView dateLabel = findViewById(R.id.schedule_dates);
-        dateLabel.setText("Schedule from " + startString + " to " + endString);
+        dateLabel.setText("Schedule containing " + startString);
 
-        //todo: iterate through schedules by date
+        //iterate through schedules, get schedule by date
+        for (Schedule schedule: presenter.getSchedules()) {
+            if ((startDate.after(schedule.getStartDay()) && startDate.before(schedule.getEndDay())) ||
+                    startDate.equals(schedule.getStartDay()) ||
+                    startDate.equals(schedule.getEndDay())) {
 
-        for (Schedule schedule: ) {
-            //set day layout
-            LinearLayout dayRow = new LinearLayout(this);
+                presenter.setSelectedSchedule(schedule);
+                //set day layout
+                LinearLayout dayRow = new LinearLayout(this);
 
-            //set day header
-            String currentDay = "Day"; // todo: change hardcoded values
-            TextView dayLabel = new TextView(this);
-            dayLabel.setText(currentDay);
-            dayRow.addView(dayLabel);
+                for (Shift shift : presenter.getShifts()) {
+                    //set shift/day header
+                    TextView shiftLabel = new TextView(this);
+                    shiftLabel.setText(shift.getShiftType() + " for " + df.format(shift.getDate()));
+                    dayRow.addView(shiftLabel);
 
-            for (Shift shift : ) {
-                //set shift header
-                TextView shiftLabel = new TextView(this);
-                shiftLabel.setText(shift.getShiftType());
-                dayRow.addView(shiftLabel);
+                    //set shift layout
+                    LinearLayout shiftRow = new LinearLayout(this);
+                    for (ShiftTime shiftTime : presenter.getShiftTimes()) {
+                        //set time header
+                        TextView timeLabel = new TextView(this);
+                        timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
+                        shiftRow.addView(timeLabel);
 
-                //set shift layout
-                LinearLayout shiftRow = new LinearLayout(this);
-                for (ShiftTime shiftTime: ) {
-                    //set time header
-                    TextView timeLabel = new TextView(this);
-                    timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
-                    shiftRow.addView(timeLabel);
-
-                    //set employee layout
-                    LinearLayout employeesOnShift = new LinearLayout(this);
-                    for (User employee: ) {
-                        //set each employee name to employee layout
-                        TextView employeeName = new TextView(this);
-                        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
-                        employeesOnShift.addView(employeeName);
+                        //set employee layout
+                        LinearLayout employeesOnShift = new LinearLayout(this);
+                        for (String employeeId : shiftTime.getEmployeesOnShift()) {
+                            for (User employee : presenter.getEmployees())
+                                if (employee.getUserID().equals(employeeId)) {
+                                    //set each employee name to employee layout
+                                    TextView employeeName = new TextView(this);
+                                    employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+                                    employeesOnShift.addView(employeeName);
+                                }
+                        }
+                        shiftRow.addView(employeesOnShift);
                     }
-                    shiftRow.addView(employeesOnShift);
+                    dayRow.addView(shiftRow);
                 }
-                dayRow.addView(shiftRow);
+                view.addView(dayRow);
             }
-            view.addView(dayRow);
-        }*/
+        }
     }
+
 
     private String formatTime(Date sTime, Date eTime) {
         DateFormat formatTime = new SimpleDateFormat("hh:mm a");
@@ -105,7 +112,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
     @Override
     public void notifyDataReady() {
         // initialize view with schedule for current day
-        setScheduleView(new Date(), new Date());
+        setScheduleView(new Date());
     }
 
     @Override

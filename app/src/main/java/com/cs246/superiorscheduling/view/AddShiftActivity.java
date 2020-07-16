@@ -66,7 +66,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
                 DatePickerDialog startDatePicker;
                 startDatePicker = new DatePickerDialog(AddShiftActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        String dateString =  "" + (selectedMonth + 1)  + "/" + selectedDay + "/" + selectedYear;
+                        String dateString =  "" + convertDateString(selectedMonth + 1)  + "/" + convertDateString(selectedDay) + "/" + selectedYear;
                         shiftDateEditText.setText(dateString);
                     }
                 }, year, month, day);
@@ -84,7 +84,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(AddShiftActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String timeString = "" + hourOfDay + ":" + minute;
+                        String timeString = "" + convertDateString(hourOfDay) + ":" + convertDateString(minute);
                         startTimeEditText.setText(timeString);
                     }
                 }, hour, minute, false);
@@ -102,13 +102,22 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(AddShiftActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String timeString = "" + hourOfDay + ":" + minute;
+                        String timeString = "" + convertDateString(hourOfDay) + ":" + convertDateString(minute);
                         endTimeEditText.setText(timeString);
                     }
                 }, hour, minute, false);
                 timePickerDialog.show();
             }
         });
+    }
+
+    private String convertDateString(int date) {
+        if(date < 10) {
+            return "0" + date;
+        }
+        else {
+            return String.valueOf(date);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

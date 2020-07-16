@@ -38,7 +38,6 @@ public class ScheduleViewPresenter implements Listener {
              ) {
             listener.notifyDataReady();
         }
-
     }
 
     @Override
