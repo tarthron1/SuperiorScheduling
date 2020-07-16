@@ -87,7 +87,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         // iterate through each row on the list, get employee id and shift time
         for (int i = 1; i < employeeList.getChildCount() - 1; i += 2){
             LinearLayout row = (LinearLayout) employeeList.getChildAt(i);
-            View currentUserId = row.getChildAt(1);
+            View userIdView = row.getChildAt(1);
+            TextView currentUserId = (TextView) userIdView;
+
             View currentShiftSpinner = row.getChildAt(2);
 
             // check if spinner option is shift time, add employee id to ShiftTime
@@ -95,7 +97,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                 //Set employeesOnShift list in ShiftTime object
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                      ) {
-                    if (shiftTime.getEmployeesOnShift().contains(currentUserId.toString())){
+                    if (shiftTime.getEmployeesOnShift().contains(currentUserId.getText().toString())){
                         shiftTime.removeEmployee(currentUserId.toString());
                     }
                 }
@@ -213,8 +215,8 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             ) {
                 // format time output
                 String sTime = formatTime(shiftTime.getStartTime());
-
-                shiftTimes.add(sTime);
+                String eTime = formatTime(shiftTime.getEndTime());
+                shiftTimes.add(sTime + " - " + eTime);
             }
         }
     }
