@@ -27,7 +27,6 @@ import java.util.List;
 // The Schedule View
 public class ScheduleViewActivity extends AppCompatActivity implements Listener {
     private ScheduleViewPresenter presenter;
-    private List<Schedule> scheduleList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
         //todo: iterate through schedules by date
 
-        for (Schedule schedule: scheduleList) {
+        for (Schedule schedule: ) {
             //set day layout
             LinearLayout dayRow = new LinearLayout(this);
 
@@ -68,7 +67,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
             dayLabel.setText(currentDay);
             dayRow.addView(dayLabel);
 
-            for (Shift shift : schedule.getShiftList()) {
+            for (Shift shift : ) {
                 //set shift header
                 TextView shiftLabel = new TextView(this);
                 shiftLabel.setText(shift.getShiftType());
@@ -76,7 +75,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
                 //set shift layout
                 LinearLayout shiftRow = new LinearLayout(this);
-                for (ShiftTime shiftTime: shift.getShiftTimes()) {
+                for (ShiftTime shiftTime: ) {
                     //set time header
                     TextView timeLabel = new TextView(this);
                     timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
@@ -84,14 +83,18 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
                     //set employee layout
                     LinearLayout employeesOnShift = new LinearLayout(this);
-                    for (User employee: shiftTime.getEmployeesOnShift()) {
+                    for (User employee: ) {
+                        //set each employee name to employee layout
                         TextView employeeName = new TextView(this);
                         employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
                         employeesOnShift.addView(employeeName);
                     }
+                    shiftRow.addView(employeesOnShift);
                 }
+                dayRow.addView(shiftRow);
             }
-        }
+            view.addView(dayRow);
+        }*/
     }
 
     private String formatTime(Date sTime, Date eTime) {
