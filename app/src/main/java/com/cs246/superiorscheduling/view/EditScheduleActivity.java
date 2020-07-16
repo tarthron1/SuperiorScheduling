@@ -170,6 +170,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         //todo: set schedule published to true, save schedule to cloud
         presenter.getCurrentSchedule().publishSchedule();
         notifyNewDataToSave();
+        notifyDataReady();
     }
 
     public LinearLayout createRowSeparator() {
