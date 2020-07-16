@@ -36,12 +36,10 @@ import java.util.HashMap;
 // Ability to add an employee to a shift
 public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     private AddEmployeePresenter presenter;
-    Intent intent;
-    String editingShiftId;
-    ArrayList<String> shiftTimes = new ArrayList<>();
-    LinearLayout employeeList;
-    LinearLayout updateRow;
-    Switch addToShift;
+    private Intent intent;
+    private String editingShiftId;
+    private ArrayList<String> shiftTimes = new ArrayList<>();
+    private LinearLayout employeeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +58,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
     }
 
     public void addShiftTime(Date startTime, Date endTime){
-        //todo: set times to spinner dropdown
         ShiftTime shiftTime = new ShiftTime(startTime, endTime, presenter.getCurrentShift());
         presenter.addShiftTime(shiftTime);
 
-        // format time output
-        DateFormat format = new SimpleDateFormat("hh:mm a");
-        String sTime = format.format(shiftTime.getStartTime());
-
-        shiftTimes.add(sTime);
         notifyDataReady();
     }
 
@@ -210,7 +202,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         if (presenter.getCurrentShift().getShiftTimes() != null){
             for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                  ) {
-                shiftTimes.add(shiftTime.getStartTime().toString());
+                // format time output
+                String sTime = formatTime(shiftTime.getStartTime());
+                shiftTimes.add(sTime);
             }
         }
 
@@ -218,13 +212,10 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         employeeList.removeAllViews();
 
         //add all employees to the list
-        //int i = 0;
         for (User employee: presenter.getEmployeeList()) {
             LinearLayout separator = createRowSeparator();
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
-            //row.setId(i);
-            //i++;
 
             // set employee name to row
             TextView name = new TextView(this);
@@ -266,71 +257,6 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             }
             row.addView(addToShiftTime);
 
-
-            /*addToShift = new Switch(this);
-            addToShift.setLayoutParams(params.get("add"));
-            addToShift.setId(i);
-            //if shift is being edited, check if employee was added previously to shift
-            if (editingShiftId != null) {
-                // logic to check if employee is already on shift
-                for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
-                     ) {
-                    if(shiftTime.getEmployeesOnShift() != null) {
-                        if (shiftTime.getEmployeesOnShift().contains(employee.getUserID())) {
-                            addToShift.setChecked(true);
-                            String currentStartTime = shiftTime.getStartTime().toString();
-                            int spinnerPos = adapter.getPosition(currentStartTime);
-                            addToShiftTime.setSelection(spinnerPos);
-                        }
-                    }
-                }
-
-            }
-            // if switch is checked show spinner with shift times
-            addToShift.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    for (int i = 1; i < employeeList.getChildCount() - 1; i += 2) {
-                        LinearLayout currentRow = (LinearLayout) employeeList.getChildAt(i);
-                        View currentSwitch = currentRow.getChildAt(3);
-                        View tvUserId = currentRow.getChildAt(1);
-                        TextView currentUserId = (TextView) tvUserId;
-                        String stringUserId = currentUserId.getText().toString();
-                        if (((Switch)currentSwitch).isChecked()) {
-                            Spinner currentSpinner = (Spinner) currentRow.getChildAt(2);
-                            String spinnerValue = currentSpinner.getSelectedItem().toString();
-                            for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
-                                 ) {
-                                if (shiftTime.getStartTime().equals(spinnerValue)){
-                                    shiftTime.addEmployee(stringUserId);
-                                }
-                            }
-                        } else {
-                            for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
-                                 ) {
-                                if (shiftTime.getEmployeesOnShift().contains(currentUserId)){
-                                    shiftTime.removeEmployee(stringUserId);
-                                }
-                            }
-                        }
-                    }
-                    int switchId = v.getId();
-                    System.out.println("Switch ID ---> " + switchId);
-                    updateRow = findViewById(v.getId());
-                    View spinner = updateRow.getChildAt(3);
-                    if(((Switch)addToShift).isChecked()) {
-                        // show spinner on row
-                        spinner.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        //hide spinner on row
-                        spinner.setVisibility(View.INVISIBLE);
-                    }
-                }
-            });
-            row.addView(addToShift);*/
-
-
-
             // Check if employee requested time off
             Boolean timeOff = checkRequestedOff(employee, presenter.getCurrentShift());
             if (timeOff) {
@@ -342,6 +268,11 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         }
         LinearLayout separator = createRowSeparator();
         employeeList.addView(separator);
+    }
+
+    private String formatTime(Date startTime) {
+        DateFormat formatTime = new SimpleDateFormat("hh:mm a");
+        return formatTime.format(startTime);
     }
 
     @Override
