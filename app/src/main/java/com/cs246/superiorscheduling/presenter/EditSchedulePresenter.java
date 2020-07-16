@@ -39,6 +39,9 @@ public class EditSchedulePresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
+        if (!schedules.contains(currentSchedule)){
+            schedules.add(currentSchedule);
+        }
         helper.addSchedule(schedules);
 
     }
