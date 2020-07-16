@@ -39,7 +39,7 @@ public class EditSchedulePresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-        helper.addSchedule(currentSchedule);
+        helper.addSchedule(schedules);
 
     }
 

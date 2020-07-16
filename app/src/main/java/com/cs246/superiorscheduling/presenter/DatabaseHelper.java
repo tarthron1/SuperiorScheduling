@@ -314,8 +314,9 @@ public class DatabaseHelper implements Listener{
         databaseCompany.setValue(company);
     }
 
-    public void addSchedule(Schedule schedule){
+    public void addSchedule(ArrayList<Schedule> schedule){
         DatabaseReference databaseSchedules = database.getReference().child("schedule").child(company.getCompanyID());
+        databaseSchedules.removeValue();
         databaseSchedules.push().setValue(schedule);
     }
 
