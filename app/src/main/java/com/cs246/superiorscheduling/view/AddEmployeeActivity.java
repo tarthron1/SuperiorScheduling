@@ -288,9 +288,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         employeeList.addView(separator);
     }
 
-    private String formatTime(Date time) {
+    private String formatTime(Date sTime, Date eTime) {
         DateFormat formatTime = new SimpleDateFormat("hh:mm a");
-        return formatTime.format(time);
+        return formatTime.format(sTime) + " - " + formatTime.format(eTime);
     }
 
     @Override
