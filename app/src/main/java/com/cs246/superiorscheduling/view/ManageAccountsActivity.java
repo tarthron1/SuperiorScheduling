@@ -10,21 +10,17 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.ManageAccountsPresenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.HashMap;
 
 // The Manager's View of accounts
 public class ManageAccountsActivity extends AppCompatActivity implements Listener {
-
     private static String TAG = "ManageAccountsActivity";
     private ManageAccountsPresenter presenter;
     private LinearLayout table;
