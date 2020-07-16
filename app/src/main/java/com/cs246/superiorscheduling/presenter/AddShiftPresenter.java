@@ -36,13 +36,6 @@ public class AddShiftPresenter implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-        for (Shift shift: shifts
-             ) {
-            if (shift.getShiftID().equals(currentShift.getShiftID())){
-                shifts.remove(shift);
-                shifts.add(currentShift);
-            }
-        }
         helper.setShifts(shifts);
 
     }

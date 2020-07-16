@@ -1,6 +1,7 @@
 package com.cs246.superiorscheduling.model;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -9,8 +10,8 @@ public class ShiftTime {
     private String shiftTimeID;
 
     private HashSet<String> employeesOnShift;
-    LocalTime startTime;
-    LocalTime endTime;
+    Date startTime;
+    Date endTime;
     String parentShift;
 
     // ID Getter
@@ -34,22 +35,22 @@ public class ShiftTime {
     }
 
     // StartTime Getter
-    public LocalTime getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
     // StartTime Setter
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
     // EndTime Getter
-    public LocalTime getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
     // EndTime Setter
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -64,7 +65,7 @@ public class ShiftTime {
     }
 
     // Constructor
-    public ShiftTime(LocalTime startTime, LocalTime endTime, Shift parentShift){
+    public ShiftTime(Date startTime, Date endTime, Shift parentShift){
         this.startTime = startTime;
         this.endTime = endTime;
         this.parentShift = parentShift.getShiftID();
@@ -74,5 +75,11 @@ public class ShiftTime {
     // Adds employee to the shiftTime
     public void addEmployee(User user){
         this.employeesOnShift.add(user.getUserID());
+    }
+
+    public void addEmployee(String userId) { this.employeesOnShift.add(userId); }
+
+    public void removeEmployee(String currentUserId) {
+        this.employeesOnShift.remove(currentUserId);
     }
 }

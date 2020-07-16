@@ -11,8 +11,8 @@ public class Company  {
     ArrayList<String> inactiveEmployeeList = new ArrayList<>();
     ArrayList<String> activeEmployeeList = new ArrayList<>();
     ArrayList<String> managerList = new ArrayList<>();
-    ArrayList<String> scheduleList;
-    ArrayList<String> requestList;
+    ArrayList<String> scheduleList = new ArrayList<>();
+    ArrayList<String> requestList = new ArrayList<>();
 
     // Default?
     public Company(){

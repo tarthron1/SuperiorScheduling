@@ -15,11 +15,10 @@ import androidx.fragment.app.DialogFragment;
 
 import com.cs246.superiorscheduling.R;
 
-import java.sql.Time;
+import java.util.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.Calendar;
 
 public class ShiftTimeDialog extends DialogFragment {
     private TimePicker startPick, endPick;
@@ -47,32 +46,20 @@ public class ShiftTimeDialog extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                // convert start TimePicker values to Time
-                int startHour = startPick.getHour();
-                System.out.println("Start Hour ----> " + startHour);
-                int startMinute = startPick.getMinute();
-                System.out.println("Start Minute ----> " + startMinute);
+                // convert TimePicker values to Date
+                String strStartTime = convertTimes(startPick.getHour(), startPick.getMinute());
+                String strEndTime = convertTimes(endPick.getHour(), endPick.getMinute());
 
-                Calendar startCal = Calendar.getInstance();
-                startCal.set(Calendar.HOUR, startHour);
-                startCal.set(Calendar.MINUTE, startMinute);
+                DateFormat time = new SimpleDateFormat("kk:mm");
+                Date startTime = null;
+                Date endTime = null;
+                try {
+                    startTime = time.parse(strStartTime);
+                    endTime = time.parse(strEndTime);
 
-                long startMillis = startCal.getTimeInMillis();
-
-                Time startTime = new Time(startMillis);
-                System.out.println("Start Time ---> " + startTime);
-
-                // convert end TimePicker values to Time
-                int endHour = endPick.getHour();
-                int endMinute = endPick.getMinute();
-
-                Calendar endCal = Calendar.getInstance();
-                endCal.set(Calendar.HOUR, endHour);
-                endCal.set(Calendar.MINUTE, endMinute);
-
-                long endMillis = endCal.getTimeInMillis();
-
-                Time endTime = new Time(endMillis);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 //check if end time is earlier than start time, set it equal to start time
                 if (endTime.before(startTime)) {
@@ -89,4 +76,20 @@ public class ShiftTimeDialog extends DialogFragment {
 
         return view;
     }
+
+    private String convertTimes(int hour, int minute) {
+        String hourString = convertTimeString(hour);
+        String minuteString = convertTimeString(minute);
+        return hourString + ":" + minuteString;
+    }
+
+    private String convertTimeString(int time) {
+        if(time < 10) {
+           return "0" + time;
+        }
+        else {
+            return String.valueOf(time);
+        }
+    }
+
 }
