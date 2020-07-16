@@ -9,7 +9,7 @@ public class ShiftTime {
 
     private String shiftTimeID;
 
-    private HashSet<String> employeesOnShift;
+    private HashSet<String> employeesOnShift = new HashSet<>();
     Date startTime;
     Date endTime;
     String parentShift;
