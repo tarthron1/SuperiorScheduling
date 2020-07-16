@@ -98,19 +98,19 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                      ) {
                     if (shiftTime.getEmployeesOnShift().contains(currentUserId.getText().toString())){
-                        shiftTime.removeEmployee(currentUserId.toString());
+                        shiftTime.removeEmployee(currentUserId.getText().toString());
                     }
                 }
 
             } else {
                 for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
                      ) {
-                    if (formatTime(shiftTime.getStartTime()).equals(((Spinner) currentShiftSpinner).getSelectedItem().toString())){
-                        if (!shiftTime.getEmployeesOnShift().contains(currentUserId.toString())){
-                            shiftTime.addEmployee(currentUserId.toString());
+                    if (formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()).equals(((Spinner) currentShiftSpinner).getSelectedItem().toString())){
+                        if (!shiftTime.getEmployeesOnShift().contains(currentUserId.getText().toString())){
+                            shiftTime.addEmployee(currentUserId.getText().toString());
                         }
-                    } else if (shiftTime.getEmployeesOnShift().contains(currentUserId.toString())){
-                        shiftTime.removeEmployee(currentUserId.toString());
+                    } else if (shiftTime.getEmployeesOnShift().contains(currentUserId.getText().toString())){
+                        shiftTime.removeEmployee(currentUserId.getText().toString());
                     }
                 }
             }
@@ -214,9 +214,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
             for (ShiftTime shiftTime: presenter.getShiftTimesByShift()
             ) {
                 // format time output
-                String sTime = formatTime(shiftTime.getStartTime());
-                String eTime = formatTime(shiftTime.getEndTime());
-                shiftTimes.add(sTime + " - " + eTime);
+                shiftTimes.add(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
             }
         }
     }
