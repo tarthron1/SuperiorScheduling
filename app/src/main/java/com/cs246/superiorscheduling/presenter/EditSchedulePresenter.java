@@ -32,6 +32,7 @@ public class EditSchedulePresenter implements Listener {
         shifts = helper.getShifts();
         shiftTimes = helper.getShiftTimes();
         currentCompany = helper.getCompany();
+        shiftsBySchedule = new ArrayList<>();
         for (Schedule schedule: schedules
              ) {
             if (!schedule.isPublished()){
