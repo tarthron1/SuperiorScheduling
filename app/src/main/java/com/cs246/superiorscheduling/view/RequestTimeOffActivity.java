@@ -14,49 +14,33 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.cs246.superiorscheduling.R;
 import com.cs246.superiorscheduling.model.Request;
-import com.cs246.superiorscheduling.model.Schedule;
 import com.cs246.superiorscheduling.model.Shift;
-import com.cs246.superiorscheduling.model.User;
 import com.cs246.superiorscheduling.presenter.Listener;
 import com.cs246.superiorscheduling.presenter.RequestTimeOffPresenter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
 
 public class RequestTimeOffActivity extends AppCompatActivity implements Listener {
-
-    RequestTimeOffPresenter presenter;
-    FirebaseAuth mAuth;
-    FirebaseDatabase database;
-    Spinner dropdown;
-    EditText dateEditText, reasonView;
-    AwesomeValidation awesomeValidation;
-
-
+    private RequestTimeOffPresenter presenter;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private Spinner dropdown;
+    private EditText dateEditText, reasonView;
+    private AwesomeValidation awesomeValidation;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -148,10 +132,10 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
         notifyNewDataToSave();
         viewSubmittedRequests();
     }
+
     public void populateSpinner(){
         dropdown = (Spinner) findViewById(R.id.request_shift);
         // set shift list to dropdown
-        // todo Iterate through the shift list get the shiftType. First item in list needs to be all day or something similar.
         dropdown.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 getShiftType())); 
@@ -230,7 +214,8 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
                 // Set date to row
                 TextView date = new TextView(this);
                 date.setLayoutParams(params.get("general"));
-                date.setText(request.getDate().toString());
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                date.setText(df.format(request.getDate()));
                 row.addView(date);
 
                 // Check if there is a shift for the request
