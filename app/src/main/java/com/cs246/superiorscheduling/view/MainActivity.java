@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            presenter.updateMAuth(mAuth.getUid());
                             for (User user: presenter.getAllUsers()
                                  ) {
                                 if (user.getUserID().equals(firebaseUser.getUid())){
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            presenter.updateMAuth(mAuth.getUid());
                             User modelUser = new User(user.getUid(),firstName, lastName, nickName, birthDate);
                             // todo pass modelUser to a company object once we figure out where to create said company object
                             presenter.setCurrentUser(modelUser);
@@ -262,17 +264,16 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-            presenter.updateMAuth(mAuth.getUid());
             presenter.notifyNewDataToSave();
     }
 
 
-        @Override
-        protected void onStart() {
-            super.onStart();
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            updateUI(currentUser);
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
 
     // Updates the User Interface
     private void updateUI(FirebaseUser user) {
