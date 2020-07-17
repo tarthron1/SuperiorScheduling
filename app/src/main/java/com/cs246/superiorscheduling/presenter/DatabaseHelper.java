@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper implements Listener{
     private FirebaseDatabase database;
@@ -22,6 +23,8 @@ public class DatabaseHelper implements Listener{
     private User user;
     private User employee;
     private Company company;
+    private ArrayList<User> allUsers;
+    private ArrayList<Company> companies;
     private ArrayList<User> employees;
     private ArrayList<Schedule> schedules;
     private ArrayList<Shift> shifts;
@@ -36,6 +39,60 @@ public class DatabaseHelper implements Listener{
         listeners = new ArrayList<>();
         listeners.add(listener);
         pullUser();
+    }
+
+    public DatabaseHelper(FirebaseDatabase database, Listener listener){
+        this.database = database;
+        listeners = new ArrayList<>();
+        listeners.add(listener);
+        pullCompanies();
+        pullAllUsers();
+    }
+
+    private void pullCompanies() {
+        DatabaseReference companiesLocation = database.getInstance().getReference().child("companies");
+        ValueEventListener companyListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot company: snapshot.getChildren()
+                ) {
+                    companies.add(company.getValue(Company.class));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        };
+        companiesLocation.addValueEventListener(companyListener);
+    }
+
+    private void pullAllUsers(){
+        DatabaseReference databaseCurrentUser = database.getReference().child("users");
+        databaseCurrentUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot user: snapshot.getChildren()
+                     ) {
+                    User tempUser = user.getValue(User.class);
+                    if (tempUser.getRequests() == null){
+                        tempUser.setRequests(new ArrayList<String>());
+                    }
+                    if (tempUser.getCompanies() == null){
+                        tempUser.setCompanies(new ArrayList<String>());
+                    }
+                    allUsers.add(tempUser);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public User getUser(){
@@ -367,5 +424,21 @@ public class DatabaseHelper implements Listener{
     @Override
     public void notifyNewDataToSave() {
 
+    }
+
+    public ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
+
+    public void setAllUsers(ArrayList<User> allUsers) {
+        this.allUsers = allUsers;
+    }
+
+    public ArrayList<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(ArrayList<Company> companies) {
+        this.companies = companies;
     }
 }

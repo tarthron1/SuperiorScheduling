@@ -13,34 +13,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MainPresenter {
+public class MainPresenter implements Listener{
 
     private ArrayList<Listener> registeredDataListeners = new ArrayList<>();
     private ArrayList<Company> companies = new ArrayList<>();
     private User currentUser;
-    private FirebaseDatabase database;
-    private DatabaseReference companiesLocation;
-    private FirebaseAuth mAuth;
+    private DatabaseHelper helper;
+    private ArrayList<User> allUsers;
 
-    public MainPresenter(){
-
-        companiesLocation = database.getInstance().getReference().child("companies");
-        ValueEventListener companyListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot company: snapshot.getChildren()
-                     ) {
-                    companies.add(company.getValue(Company.class));
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        };
+    public MainPresenter(FirebaseDatabase database, Listener listener){
+        registeredDataListeners.add(listener);
+        helper = new DatabaseHelper(database, this);
     }
 
     // Registers listener
@@ -56,7 +39,7 @@ public class MainPresenter {
     // Sets current user and notifies the cloud
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
-        notifyCloudNewDataToSave();
+        notifyNewDataToSave();
     }
 
     // CurrentUser Getter
@@ -80,21 +63,27 @@ public class MainPresenter {
         return null;
     }
 
-    // Notifies change on Cloud?
-    public void notifyUsersChangeOnCloud(){
-        for (Listener listener: this.registeredDataListeners
+    @Override
+    public void notifyDataReady() {
+        this.companies = helper.getCompanies();
+        this.allUsers = helper.getAllUsers();
+        for (Listener listener: registeredDataListeners
              ) {
             listener.notifyDataReady();
         }
     }
 
-    // Notifies the Cloud to save NewData
-    public void notifyCloudNewDataToSave(){
-        for (Listener listener: this.registeredDataListeners
-             ) {
-            listener.notifyNewDataToSave();
-        }
+    @Override
+    public void notifyNewDataToSave() {
+        helper.setUser(this.currentUser);
+        helper.setCompanies(this.companies);
     }
 
+    public ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
 
+    public void setAllUsers(ArrayList<User> allUsers) {
+        this.allUsers = allUsers;
+    }
 }

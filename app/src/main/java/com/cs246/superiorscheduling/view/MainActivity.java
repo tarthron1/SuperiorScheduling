@@ -60,8 +60,9 @@ public class MainActivity extends AppCompatActivity implements Listener {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
-        presenter = new MainPresenter();
-        getCompanies();
+        database = FirebaseDatabase.getInstance();
+        presenter = new MainPresenter(database, this);
+
         presenter.registerListeners(this);
         database = FirebaseDatabase.getInstance();
         loginEmailField = findViewById(R.id.editTextLoginEmail);
@@ -71,27 +72,6 @@ public class MainActivity extends AppCompatActivity implements Listener {
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this,R.id.editTextLoginEmail, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
         awesomeValidation.addValidation(this,R.id.editTextTextPassword, RegexTemplate.NOT_EMPTY,R.string.lacking_password);
-    }
-
-    public void getCompanies(){
-        DatabaseReference companiesLocation = database.getInstance().getReference().child("companies");
-        ValueEventListener companyListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot company: snapshot.getChildren()
-                ) {
-                    presenter.addCompany(company.getValue(Company.class));
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        };
-        companiesLocation.addValueEventListener(companyListener);
     }
 
     public void onLogin(View view) {
@@ -106,6 +86,40 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
     // Ability to login into your account
     public void login(View view){
+        //if manager is true deliver EmployerView
+        String email = loginEmailField.getText().toString().trim();
+        final String password = loginPasswordField.getText().toString().trim();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            for (User user: presenter.getAllUsers()
+                                 ) {
+                                if (user.getUserID().equals(firebaseUser.getUid())){
+                                    presenter.setCurrentUser(user);
+                                    break;
+                                }
+                            }
+                            updateUI(firebaseUser);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, ("Authentication failed. "),
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
+        //if manager is false deliver EmployeeView
+    }
+
+   /* public void login(View view){
         //if manager is true deliver EmployerView
         String email = loginEmailField.getText().toString().trim();
         final String password = loginPasswordField.getText().toString().trim();
@@ -148,7 +162,8 @@ public class MainActivity extends AppCompatActivity implements Listener {
                     }
                 });
         //if manager is false deliver EmployeeView
-    }
+    }*/
+
 
     // Ability to create an account
     public void createAccount(final String companyName, String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
@@ -184,11 +199,6 @@ public class MainActivity extends AppCompatActivity implements Listener {
                                 presenter.addCompany(company);
                                 modelUser.addCompany(company);
                             }
-
-
-
-                            saveDataToCloud();
-
                             notifyNewDataToSave();
                             updateUI(user);
                         } else {
@@ -252,8 +262,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
-
-
+            presenter.notifyNewDataToSave();
     }
 
 
@@ -316,14 +325,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 //
 //    }
 
-    // Gets the correct user and company from the database
-    public void saveDataToCloud(){
-        DatabaseReference user = database.getReference().child("users").child(presenter.getCurrentUser().getUserID());
-        DatabaseReference company = database.getReference().child("companies").child(this.company.getCompanyID());
-        user.setValue(presenter.getCurrentUser());
-        company.setValue(this.company);
 
-    }
 
 
 
