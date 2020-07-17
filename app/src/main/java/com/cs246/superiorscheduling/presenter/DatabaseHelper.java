@@ -389,7 +389,7 @@ public class DatabaseHelper implements Listener{
     }
 
     public void setCompany(Company company) {
-        DatabaseReference databaseCompany = database.getReference().child("companies").child(user.getCompanies().get(0));
+        DatabaseReference databaseCompany = database.getReference().child("companies").child(company.getCompanyID());
         databaseCompany.setValue(company);
     }
 
