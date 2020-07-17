@@ -230,6 +230,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     public void setShiftList() {
         HashMap<String, LinearLayout.LayoutParams> params = getParams();
         LinearLayout shiftList = findViewById(R.id.shift_list);
+        shiftList.removeAllViews();
         int i = 0;
         // add all shifts to the list
         for (Shift shift: presenter.getShiftsBySchedule()) {
