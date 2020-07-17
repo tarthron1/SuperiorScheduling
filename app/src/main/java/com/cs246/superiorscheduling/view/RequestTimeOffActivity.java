@@ -203,7 +203,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     public void viewSubmittedRequests() {
         HashMap<String, LinearLayout.LayoutParams> params = getParams();
         LinearLayout requests = findViewById(R.id.submitted_requests);
-
+        requests.removeAllViews();
         // add submitted requests to the list
         if (presenter.getUserRequests() != null) {
             for (Request request : presenter.getUserRequests()) {

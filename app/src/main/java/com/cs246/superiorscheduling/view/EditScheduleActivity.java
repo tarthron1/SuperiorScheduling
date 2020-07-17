@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -171,6 +172,10 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         presenter.getCurrentSchedule().publishSchedule();
         notifyNewDataToSave();
         notifyDataReady();
+
+        Toast.makeText(this, ("Changes Saved."),
+                Toast.LENGTH_SHORT).show();
+        this.finish();
     }
 
     public LinearLayout createRowSeparator() {
