@@ -69,6 +69,8 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         //set employee params
         LinearLayout.LayoutParams empParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        empParams.setMargins(10, 10, 10, 10);
+        empParams.gravity = Gravity.CENTER_VERTICAL;
         params.put("employee", empParams);
 
         return params;
@@ -106,6 +108,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
                             shiftLabel.setText(shift.getShiftType() + " for " + df.format(shift.getDate()));
                             shiftLabel.setBackgroundColor(Color.parseColor("#06d6a0"));
                             shiftLabel.setLayoutParams(params.get("label"));
+                            dayRow.addView(separator);
                             dayRow.addView(shiftLabel);
 
                             //set shift layout

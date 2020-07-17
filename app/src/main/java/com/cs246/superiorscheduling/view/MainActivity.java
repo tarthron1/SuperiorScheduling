@@ -283,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements Listener {
     // Updates the User Interface
     private void updateUI(FirebaseUser user) {
         if (user != null){
-            //todo check to see if the user is a manager then create the correct activity.
             //create a list of companies that apply pass that list to the intent.
             ArrayList<Company> companiesUserIsManager = new ArrayList<>();
             ArrayList<Company> companiesUserIsEmployee = new ArrayList<>();
@@ -313,8 +312,6 @@ public class MainActivity extends AppCompatActivity implements Listener {
                 Intent intent = new Intent(this, EmployerView.class );
                 intent.putExtra("uid", presenter.getCurrentUser().getUserID());
                 startActivity(intent);
-
-
             } else {
                 Intent intent = new Intent(this, EmployeeView.class);
                 startActivity(intent);

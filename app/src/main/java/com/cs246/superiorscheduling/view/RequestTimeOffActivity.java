@@ -41,6 +41,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     private Spinner dropdown;
     private EditText dateEditText, reasonView;
     private AwesomeValidation awesomeValidation;
+    Request timeOffRequest;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -105,7 +106,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
     public void submitRequest(View view) {
         String date = null;
         String reason = null;
-        Request timeOffRequest;
+
         Spinner spinner = (Spinner) findViewById(R.id.request_shift);
 
         // get request date
@@ -119,12 +120,18 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
 
         // get request reason
         reason = reasonView.getText().toString();
-        String shift = spinner.getSelectedItem().toString();
-        if (shift == "All Day"){
-             timeOffRequest = new Request(presenter.getCurrentUser(), localDate, reason);
+        String shiftType = spinner.getSelectedItem().toString();
+
+        if (shiftType == "All Day"){
+            timeOffRequest = new Request(presenter.getCurrentUser(), localDate, reason);
         } else {
-            timeOffRequest = new Request(presenter.getCurrentUser(), localDate, shift, reason);
+            for (Shift currentShift: presenter.getShiftList()) {
+                if (currentShift.getDate().equals(localDate) && currentShift.getShiftType().equals(shiftType)) {
+                    timeOffRequest = new Request(presenter.getCurrentUser(), localDate, currentShift.getShiftID(), reason);
+                }
+            }
         }
+
 
         // save request
         presenter.setNewRequest(timeOffRequest);
