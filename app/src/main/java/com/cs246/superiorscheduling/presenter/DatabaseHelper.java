@@ -71,6 +71,8 @@ public class DatabaseHelper implements Listener{
     }
 
     private void pullAllUsers(){
+        allUsers = new ArrayList<>();
+        allUsers.clear();
         DatabaseReference databaseCurrentUser = database.getReference().child("users");
         databaseCurrentUser.addValueEventListener(new ValueEventListener() {
             @Override
