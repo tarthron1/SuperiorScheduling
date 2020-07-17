@@ -317,7 +317,7 @@ public class DatabaseHelper implements Listener{
     public void addSchedule(ArrayList<Schedule> schedule){
         DatabaseReference databaseSchedules = database.getReference().child("schedule").child(company.getCompanyID());
         databaseSchedules.removeValue();
-        databaseSchedules.push().setValue(schedule);
+        databaseSchedules.setValue(schedule);
     }
 
     public void setShifts(ArrayList<Shift> shifts){
