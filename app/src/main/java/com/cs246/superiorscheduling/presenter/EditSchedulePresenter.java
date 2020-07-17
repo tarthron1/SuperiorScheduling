@@ -43,7 +43,6 @@ public class EditSchedulePresenter implements Listener {
             schedules.add(currentSchedule);
         }
         helper.addSchedule(schedules);
-
     }
 
     public User getCurrentUser() {
