@@ -169,51 +169,56 @@ public class MainActivity extends AppCompatActivity implements Listener {
     // Ability to create an account
     public void createAccount(final String companyName, String email, String password, final String firstName, final String lastName, final String nickName, final Date birthDate) {
 
-        for (Company company: presenter.getCompanies()
-             ) {
-            if (company.getName().equals(companyName)){
-                companyExistsInDatabase = true;
-                break;
+
+        if (presenter.getCompanies() == null || presenter.getAllUsers() == null){
+            createAccount(companyName, email, password, firstName, lastName, nickName, birthDate);
+        } else {
+            for (Company company : presenter.getCompanies()
+            ) {
+                if (company.getName().equals(companyName)) {
+                    companyExistsInDatabase = true;
+                    break;
+                }
             }
-        }
 
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            presenter.updateMAuth(mAuth.getUid());
-                            User modelUser = new User(user.getUid(),firstName, lastName, nickName, birthDate);
-                            // todo pass modelUser to a company object once we figure out where to create said company object
-                            presenter.setCurrentUser(modelUser);
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                presenter.updateMAuth(mAuth.getUid());
+                                User modelUser = new User(user.getUid(), firstName, lastName, nickName, birthDate);
+                                // todo pass modelUser to a company object once we figure out where to create said company object
+                                presenter.setCurrentUser(modelUser);
 
-                            if (companyExistsInDatabase){
-                                Company companyToAddNewUserTo = presenter.getCompanyByName(companyName);
-                                companyToAddNewUserTo.addEmployee(modelUser);
-                                modelUser.addCompany(companyToAddNewUserTo);
-                                company = companyToAddNewUserTo;
+                                if (companyExistsInDatabase) {
+                                    Company companyToAddNewUserTo = presenter.getCompanyByName(companyName);
+                                    companyToAddNewUserTo.addEmployee(modelUser);
+                                    modelUser.addCompany(companyToAddNewUserTo);
+                                    company = companyToAddNewUserTo;
+                                } else {
+                                    company = new Company(companyName, modelUser);
+                                    presenter.addCompany(company);
+                                    modelUser.addCompany(company);
+                                }
+                                notifyNewDataToSave();
+                                updateUI(user);
                             } else {
-                                company = new Company(companyName, modelUser);
-                                presenter.addCompany(company);
-                                modelUser.addCompany(company);
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(MainActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                updateUI(null);
                             }
-                            notifyNewDataToSave();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
 
-                        // ...
-                    }
-                });
+                            // ...
+                        }
+                    });
+        }
     }
 
     // Creates a new intent to move the user from the MainActivity to the SignUpActivity
