@@ -50,6 +50,8 @@ public class DatabaseHelper implements Listener{
     }
 
     private void pullCompanies() {
+        companies = new ArrayList<>();
+        companies.clear();
         DatabaseReference companiesLocation = database.getInstance().getReference().child("companies");
         ValueEventListener companyListener = new ValueEventListener() {
             @Override
