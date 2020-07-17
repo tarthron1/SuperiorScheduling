@@ -128,7 +128,7 @@ public class RequestTimeOffActivity extends AppCompatActivity implements Listene
                 break;
             }
         }
-        if (shiftType == "All Day"){
+        if (shiftType.equals("All Day")){
             timeOffRequest = new Request(presenter.getCurrentUser(), localDate, reason);
         } else {
             timeOffRequest = new Request(presenter.getCurrentUser(), localDate, currentShiftId, reason);
