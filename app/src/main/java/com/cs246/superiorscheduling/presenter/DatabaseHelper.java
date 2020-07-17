@@ -58,7 +58,24 @@ public class DatabaseHelper implements Listener{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot company: snapshot.getChildren()
                 ) {
-                    companies.add(company.getValue(Company.class));
+                    Company tempCompany = null;
+                    tempCompany = company.getValue(Company.class);
+                    if(tempCompany.getActiveEmployeeList() == null){
+                        tempCompany.setActiveEmployeeList(new ArrayList<String>());
+                    }
+                    if(tempCompany.getInactiveEmployeeList() == null){
+                        tempCompany.setInactiveEmployeeList(new ArrayList<String>());
+                    }
+                    if(tempCompany.getManagerList() == null){
+                        tempCompany.setManagerList(new ArrayList<String>());
+                    }
+                    if(tempCompany.getScheduleList() == null){
+                        tempCompany.setScheduleList(new ArrayList<String>());
+                    }
+                    if(tempCompany.getRequestList() == null){
+                        tempCompany.setRequestList(new ArrayList<String>());
+                    }
+                    companies.add(tempCompany);
 
                 }
                 notifyDataReady();
