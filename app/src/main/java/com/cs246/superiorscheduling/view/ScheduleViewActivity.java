@@ -94,7 +94,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
                     //set day layout
                     LinearLayout dayRow = new LinearLayout(this);
 
-                    for (Shift shift : presenter.getShifts()) {
+                    for (Shift shift : presenter.getShiftsBySchedule()) {
 
                         for (ShiftTime shiftTime : presenter.getShiftTimesBySchedule()) {
                             LinearLayout separator = createRowSeparator();
