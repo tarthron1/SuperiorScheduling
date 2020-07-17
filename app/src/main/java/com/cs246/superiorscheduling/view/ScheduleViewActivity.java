@@ -95,36 +95,38 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
                     LinearLayout dayRow = new LinearLayout(this);
 
                     for (Shift shift : presenter.getShifts()) {
-                        LinearLayout separator = createRowSeparator();
-                        //set shift/day header
-                        TextView shiftLabel = new TextView(this);
-                        shiftLabel.setText(shift.getShiftType() + " for " + df.format(shift.getDate()));
-                        shiftLabel.setBackgroundColor(Color.parseColor("#06d6a0"));
-                        dayRow.addView(shiftLabel);
 
-                    //set shift layout
-                    LinearLayout shiftRow = new LinearLayout(this);
-                    for (ShiftTime shiftTime : presenter.getShiftTimesBySchedule()) {
-                        //set time header
-                        TextView timeLabel = new TextView(this);
-                        timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
-                        timeLabel.setBackgroundColor(Color.parseColor("#33bbff"));
-                        shiftRow.addView(timeLabel);
+                        for (ShiftTime shiftTime : presenter.getShiftTimesBySchedule()) {
+                            LinearLayout separator = createRowSeparator();
+                            //set shift/day header
+                            TextView shiftLabel = new TextView(this);
+                            shiftLabel.setText(shift.getShiftType() + " for " + df.format(shift.getDate()));
+                            shiftLabel.setBackgroundColor(Color.parseColor("#06d6a0"));
+                            dayRow.addView(shiftLabel);
 
-                            //set employee layout
-                            LinearLayout employeesOnShift = new LinearLayout(this);
-                            for (String employeeId : shiftTime.getEmployeesOnShift()) {
-                                for (User employee : presenter.getEmployees())
-                                    if (employee.getUserID().equals(employeeId)) {
-                                        //set each employee name to employee layout
-                                        TextView employeeName = new TextView(this);
-                                        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
-                                        employeesOnShift.addView(employeeName);
-                                    }
+                            //set shift layout
+                            LinearLayout shiftRow = new LinearLayout(this);
+                            //set time header
+                            TextView timeLabel = new TextView(this);
+                            timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
+                            timeLabel.setBackgroundColor(Color.parseColor("#33bbff"));
+                            shiftRow.addView(timeLabel);
+
+                                //set employee layout
+                                LinearLayout employeesOnShift = new LinearLayout(this);
+                                for (String employeeId : shiftTime.getEmployeesOnShift()) {
+                                    for (User employee : presenter.getEmployees())
+                                        if (employee.getUserID().equals(employeeId)) {
+                                            //set each employee name to employee layout
+                                            TextView employeeName = new TextView(this);
+                                            employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+                                            employeesOnShift.addView(employeeName);
+                                        }
+                                }
+                                shiftRow.addView(employeesOnShift);
+                                dayRow.addView(shiftRow);
                             }
-                            shiftRow.addView(employeesOnShift);
-                        }
-                        dayRow.addView(shiftRow);
+
                     }
                     view.addView(dayRow);
                 }
