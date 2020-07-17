@@ -18,6 +18,7 @@ public class EditSchedulePresenter implements Listener {
     private Company currentCompany;
     private ArrayList<Listener> listeners = new ArrayList<>();
     private DatabaseHelper helper;
+    private ArrayList<Shift> shiftsBySchedule = new ArrayList<>();
 
     public EditSchedulePresenter(String userID, FirebaseDatabase database, Listener listener) {
         listeners.add(listener);
@@ -31,6 +32,18 @@ public class EditSchedulePresenter implements Listener {
         shifts = helper.getShifts();
         shiftTimes = helper.getShiftTimes();
         currentCompany = helper.getCompany();
+        for (Schedule schedule: schedules
+             ) {
+            if (!schedule.isPublished()){
+                for (Shift shift: shifts
+                     ) {
+                    if (shift.getParentSchedule().equals(schedule.getScheduleID())){
+                        shiftsBySchedule.add(shift);
+                    }
+                }
+                break;
+            }
+        }
         for (Listener listener : listeners
         ) {
             listener.notifyDataReady();
@@ -44,6 +57,14 @@ public class EditSchedulePresenter implements Listener {
         }
         helper.addSchedule(schedules);
 
+    }
+
+    public ArrayList<Shift> getShiftsBySchedule() {
+        return shiftsBySchedule;
+    }
+
+    public void setShiftsBySchedule(ArrayList<Shift> shiftsBySchedule) {
+        this.shiftsBySchedule = shiftsBySchedule;
     }
 
     public User getCurrentUser() {

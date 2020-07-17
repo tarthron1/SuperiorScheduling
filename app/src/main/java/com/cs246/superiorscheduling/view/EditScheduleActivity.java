@@ -232,7 +232,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         LinearLayout shiftList = findViewById(R.id.shift_list);
         int i = 0;
         // add all shifts to the list
-        for (Shift shift: presenter.getShifts()) {
+        for (Shift shift: presenter.getShiftsBySchedule()) {
             LinearLayout separator = createRowSeparator();
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
