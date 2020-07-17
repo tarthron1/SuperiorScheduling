@@ -314,14 +314,14 @@ public class DatabaseHelper implements Listener{
         databaseCompany.setValue(company);
     }
 
-    public void addSchedule(ArrayList<Schedule> schedule){
+    public void addSchedule(ArrayList<Schedule> schedulesFromPresenter){
         DatabaseReference databaseSchedules = database.getReference().child("schedule").child(company.getCompanyID());
         databaseSchedules.removeValue();
-        for (Schedule scheduleItem: schedule
+        for (Schedule scheduleItem: schedulesFromPresenter
              ) {
             databaseSchedules.push().setValue(scheduleItem);
         }
-        databaseSchedules.setValue(schedule);
+        databaseSchedules.setValue(schedulesFromPresenter);
     }
 
     public void setShifts(ArrayList<Shift> shifts){
