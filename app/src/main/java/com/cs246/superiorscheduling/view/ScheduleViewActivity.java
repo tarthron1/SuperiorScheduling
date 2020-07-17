@@ -86,7 +86,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
                 //set day layout
                 LinearLayout dayRow = new LinearLayout(this);
 
-                for (Shift shift : presenter.getShifts()) {
+                for (Shift shift : presenter.getShiftsBySchedule()) {
                     LinearLayout separator = createRowSeparator();
                     //set shift/day header
                     TextView shiftLabel = new TextView(this);
@@ -98,7 +98,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
                     //set shift layout
                     LinearLayout shiftRow = new LinearLayout(this);
-                    for (ShiftTime shiftTime : presenter.getShiftTimes()) {
+                    for (ShiftTime shiftTime : presenter.getShiftTimesBySchedule()) {
                         //set time header
                         TextView timeLabel = new TextView(this);
                         timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
