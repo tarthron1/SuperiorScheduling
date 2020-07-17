@@ -20,6 +20,8 @@ public class ScheduleViewPresenter implements Listener {
     private Company company;
     private Schedule selectedSchedule;
     private ArrayList<User> employees;
+    private ArrayList<Shift> shiftsBySchedule;
+    private ArrayList<ShiftTime> shiftTimesBySchedule;
 
     public ScheduleViewPresenter(String userID, FirebaseDatabase database, Listener listener){
         listeners = new ArrayList<>();
@@ -43,6 +45,22 @@ public class ScheduleViewPresenter implements Listener {
     @Override
     public void notifyNewDataToSave() {
 
+    }
+
+    public void setShiftsBySchedule(ArrayList<Shift> shiftsBySchedule) {
+        this.shiftsBySchedule = shiftsBySchedule;
+    }
+
+    public ArrayList<Shift> getShiftsBySchedule() {
+        return shiftsBySchedule;
+    }
+
+    public ArrayList<ShiftTime> getShiftTimesBySchedule() {
+        return shiftTimesBySchedule;
+    }
+
+    public void setShiftTimesBySchedule(ArrayList<ShiftTime> shiftTimesBySchedule) {
+        this.shiftTimesBySchedule = shiftTimesBySchedule;
     }
 
     public ArrayList<Schedule> getSchedules() {
@@ -91,6 +109,20 @@ public class ScheduleViewPresenter implements Listener {
 
     public void setSelectedSchedule(Schedule selectedSchedule) {
         this.selectedSchedule = selectedSchedule;
+        shiftsBySchedule = new ArrayList<>();
+        shiftTimesBySchedule = new ArrayList<>();
+        for (Shift shift:shifts
+             ) {
+            if (shift.getParentSchedule().equals(selectedSchedule.getScheduleID())){
+                shiftsBySchedule.add(shift);
+                for (ShiftTime shiftTime: shiftTimes
+                     ) {
+                    if (shiftTime.getParentShift().equals(shift.getShiftID())){
+                        shiftTimesBySchedule.add(shiftTime);
+                    }
+                }
+            }
+        }
     }
 
     public ArrayList<User> getEmployees() {
