@@ -26,7 +26,7 @@ import java.util.HashMap;
 // The Schedule View
 public class ScheduleViewActivity extends AppCompatActivity implements Listener {
     private ScheduleViewPresenter presenter;
-    HashMap<String, LinearLayout.LayoutParams> params;
+    HashMap<String, LinearLayout.LayoutParams> params = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         presenter = new ScheduleViewPresenter(mAuth.getUid(), database, this);
+        getParams();
     }
 
     public void openDatePickerDialog(View view) {
@@ -53,7 +54,10 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
     }
 
     public HashMap<String, LinearLayout.LayoutParams> getParams() {
-        HashMap<String, LinearLayout.LayoutParams> params = new HashMap<>();
+        //set label params
+        LinearLayout.LayoutParams labelParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.put("label", labelParams);
 
         //set time params
         LinearLayout.LayoutParams timeParams = new LinearLayout.LayoutParams
@@ -63,6 +67,9 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         params.put("time", timeParams);
 
         //set employee params
+        LinearLayout.LayoutParams empParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.put("employee", empParams);
 
         return params;
     }
@@ -80,11 +87,6 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
         //iterate through schedules, get schedule by date
         for (Schedule schedule: presenter.getSchedules()) {
-
-            System.out.println(selectedDate);
-            System.out.println(schedule.getStartDay());
-            System.out.println(schedule.getEndDay());
-
             if ((selectedDate.after(schedule.getStartDay()) && selectedDate.before(schedule.getEndDay())) ||
                     selectedDate.equals(schedule.getStartDay()) ||
                     selectedDate.equals(schedule.getEndDay())) {
@@ -93,6 +95,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
                     //set day layout
                     LinearLayout dayRow = new LinearLayout(this);
+                    dayRow.setOrientation(LinearLayout.VERTICAL);
 
                     for (Shift shift : presenter.getShifts()) {
 
@@ -102,6 +105,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
                             TextView shiftLabel = new TextView(this);
                             shiftLabel.setText(shift.getShiftType() + " for " + df.format(shift.getDate()));
                             shiftLabel.setBackgroundColor(Color.parseColor("#06d6a0"));
+                            shiftLabel.setLayoutParams(params.get("label"));
                             dayRow.addView(shiftLabel);
 
                             //set shift layout
@@ -110,6 +114,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
                             TextView timeLabel = new TextView(this);
                             timeLabel.setText(formatTime(shiftTime.getStartTime(), shiftTime.getEndTime()));
                             timeLabel.setBackgroundColor(Color.parseColor("#33bbff"));
+                            timeLabel.setLayoutParams(params.get("time"));
                             shiftRow.addView(timeLabel);
 
                                 //set employee layout
