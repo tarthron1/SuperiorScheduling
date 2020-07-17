@@ -83,6 +83,11 @@ public class MainPresenter implements Listener{
         return allUsers;
     }
 
+    public void updateMAuth(String mAuth){
+        helper.setmAuth(mAuth);
+    }
+
+
     public void setAllUsers(ArrayList<User> allUsers) {
         this.allUsers = allUsers;
     }

@@ -445,4 +445,8 @@ public class DatabaseHelper implements Listener{
     public void setCompanies(ArrayList<Company> companies) {
         this.companies = companies;
     }
+
+    public void setmAuth(String mAuth) {
+        this.mAuthId = mAuth;
+    }
 }

@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
     @Override
     public void notifyNewDataToSave() {
+            presenter.updateMAuth(mAuth.getUid());
             presenter.notifyNewDataToSave();
     }
 
