@@ -61,6 +61,7 @@ public class DatabaseHelper implements Listener{
                     companies.add(company.getValue(Company.class));
 
                 }
+                notifyDataReady();
             }
 
             @Override
@@ -74,7 +75,6 @@ public class DatabaseHelper implements Listener{
 
     private void pullAllUsers(){
         allUsers = new ArrayList<>();
-        allUsers.clear();
         DatabaseReference databaseCurrentUser = database.getReference().child("users");
         databaseCurrentUser.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,6 +89,7 @@ public class DatabaseHelper implements Listener{
                         tempUser.setCompanies(new ArrayList<String>());
                     }
                     allUsers.add(tempUser);
+                    notifyDataReady();
                 }
             }
 
