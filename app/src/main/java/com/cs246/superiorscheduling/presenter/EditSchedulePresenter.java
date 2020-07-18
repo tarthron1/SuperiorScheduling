@@ -113,12 +113,13 @@ public class EditSchedulePresenter implements Listener {
         return currentSchedule;
     }
 
-    public void removeShift(Shift shift){
-
+    public void removeShift(){
+        shifts.clear();
+        shiftsBySchedule.clear();
     }
 
-    public void removeShiftTime(ShiftTime shiftTime){
-
+    public void removeShiftTime(){
+        shiftTimes.clear();
     }
 
     public void setCurrentSchedule(Schedule currentSchedule) {

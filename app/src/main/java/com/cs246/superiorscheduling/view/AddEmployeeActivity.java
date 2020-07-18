@@ -128,6 +128,9 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
         setEmployeeTableData();
         Toast.makeText(this, ("Changes Saved."),
                 Toast.LENGTH_SHORT).show();
+        Intent editSchedule = new Intent(this, EditScheduleActivity.class);
+        startActivity(editSchedule);
+
     }
 
     public Boolean checkRequestedOff(User employee, Shift shift) {

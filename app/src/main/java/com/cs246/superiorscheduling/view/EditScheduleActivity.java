@@ -155,7 +155,9 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
     }
 
     public void clearSchedule(View view) {
-        for (Shift shift: presenter.getShifts()) {
+        presenter.removeShiftTime();
+        presenter.removeShift();
+        /*for (Shift shift: presenter.getShifts()) {
             if (shift.getParentSchedule().equals(presenter.getCurrentSchedule().getScheduleID()))
             for (ShiftTime shiftTime: presenter.getShiftTimes()
                  ) {
@@ -164,18 +166,17 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
                 }
             }
             presenter.removeShift(shift);
-        }
+        }*/
         notifyNewDataToSave();
         // reload view
         notifyDataReady();
 
         // confirm deletion
-        Toast.makeText(this, ("Schedule Deleted."),
+        Toast.makeText(this, ("Changes Saved."),
                 Toast.LENGTH_SHORT).show();
     }
 
     public void publishSchedule(View view) {
-        //todo: set schedule published to true, save schedule to cloud
         presenter.getCurrentSchedule().publishSchedule();
         notifyNewDataToSave();
         notifyDataReady();
