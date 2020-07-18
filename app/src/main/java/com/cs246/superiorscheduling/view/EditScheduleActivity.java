@@ -166,6 +166,12 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             presenter.removeShift(shift);
         }
         notifyNewDataToSave();
+        // reload view
+        notifyDataReady();
+
+        // confirm deletion
+        Toast.makeText(this, ("Schedule Deleted."),
+                Toast.LENGTH_SHORT).show();
     }
 
     public void publishSchedule(View view) {
@@ -304,8 +310,6 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
 
     @Override
     public void notifyNewDataToSave() {
-        //todo what all needs saved to the database from this activity?
         presenter.notifyNewDataToSave();
-
     }
 }
