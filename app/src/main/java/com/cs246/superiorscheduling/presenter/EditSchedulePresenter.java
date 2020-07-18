@@ -57,6 +57,8 @@ public class EditSchedulePresenter implements Listener {
             schedules.add(currentSchedule);
         }
         helper.addSchedule(schedules);
+        helper.setShifts(shifts);
+        helper.setShiftTimes(shiftTimes);
     }
 
     public ArrayList<Shift> getShiftsBySchedule() {

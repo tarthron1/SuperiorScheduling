@@ -165,6 +165,7 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             }
             presenter.removeShift(shift);
         }
+        notifyNewDataToSave();
     }
 
     public void publishSchedule(View view) {

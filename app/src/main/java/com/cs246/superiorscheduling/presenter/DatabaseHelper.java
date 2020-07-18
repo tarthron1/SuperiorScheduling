@@ -470,4 +470,9 @@ public class DatabaseHelper implements Listener{
     public void setmAuth(String mAuth) {
         this.mAuthId = mAuth;
     }
+
+    public void setShiftTimes(ArrayList<ShiftTime> shiftTimes) {
+        DatabaseReference databaseShiftTimes = database.getReference().child("shiftTime").child(company.getCompanyID());
+        databaseShiftTimes.setValue(shiftTimes);
+    }
 }
