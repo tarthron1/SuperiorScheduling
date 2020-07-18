@@ -84,6 +84,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
         String dateString = df.format(selectedDate);
 
         //set schedule header
+        LinearLayout endSeparator = createRowSeparator();
         TextView dateLabel = findViewById(R.id.schedule_dates);
         dateLabel.setText("Schedule containing " + dateString);
 
@@ -122,6 +123,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
                                 //set employee layout
                                 LinearLayout employeesOnShift = new LinearLayout(this);
+                                employeesOnShift.setOrientation(LinearLayout.VERTICAL);
                                 for (String employeeId : shiftTime.getEmployeesOnShift()) {
                                     for (User employee : presenter.getEmployees())
                                         if (employee.getUserID().equals(employeeId)) {
@@ -137,6 +139,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements Listener 
 
                     }
                     view.addView(dayRow);
+                    view.addView(endSeparator);
                 }
             }
         }
