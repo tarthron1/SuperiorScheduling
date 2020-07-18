@@ -166,6 +166,7 @@ public class AddShiftActivity extends AppCompatActivity implements Listener {
         String shiftId = presenter.getCurrentShift().getShiftID();
         intent.putExtra("shiftId", shiftId);
         startActivity(intent);
+        this.finish();
     }
 
     // checks if shift is being edited, if it is it displays shift info

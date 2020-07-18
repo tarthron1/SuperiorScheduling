@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 // The view used to edit the Schedules
 public class EditScheduleActivity extends AppCompatActivity implements Listener {
@@ -152,12 +154,11 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
         Intent intent = new Intent(this, AddShiftActivity.class);
         intent.putExtra("scheduleID", presenter.getCurrentSchedule().getScheduleID());
         startActivity(intent);
+        this.finish();
     }
 
     public void clearSchedule(View view) {
-        presenter.removeShiftTime();
-        presenter.removeShift();
-        /*for (Shift shift: presenter.getShifts()) {
+/*        for (Shift shift: presenter.getShifts()) {
             if (shift.getParentSchedule().equals(presenter.getCurrentSchedule().getScheduleID()))
             for (ShiftTime shiftTime: presenter.getShiftTimes()
                  ) {
@@ -167,6 +168,31 @@ public class EditScheduleActivity extends AppCompatActivity implements Listener 
             }
             presenter.removeShift(shift);
         }*/
+
+        //iterate over shifts to remove shiftTimes and shifts that are on current schedule
+        List<Shift> removeShifts = new ArrayList<>();
+        removeShifts.addAll(presenter.getShifts());
+        Iterator<Shift> i = removeShifts.iterator();
+        while (i.hasNext()) {
+            Shift s = i.next();
+            //iterate over shiftTimes and remove
+            List<ShiftTime> removeShiftTimes = new ArrayList<>();
+            removeShiftTimes.addAll(presenter.getShiftTimes());
+            Iterator<ShiftTime> j = removeShiftTimes.iterator();
+            if (s.getParentSchedule().equals(presenter.getCurrentSchedule().getScheduleID())) {
+                while (j.hasNext()) {
+                    ShiftTime st = j.next();
+                    if (st.getParentShift().equals(s.getShiftID())) {
+                        //remove shiftTime
+                        presenter.removeShiftTime(st);
+                    }
+                }
+                //remove shift
+                presenter.removeShift(s);
+            }
+        }
+
+
         notifyNewDataToSave();
         // reload view
         notifyDataReady();

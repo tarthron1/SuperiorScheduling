@@ -130,7 +130,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements Listener {
                 Toast.LENGTH_SHORT).show();
         Intent editSchedule = new Intent(this, EditScheduleActivity.class);
         startActivity(editSchedule);
-
+        this.finish();
     }
 
     public Boolean checkRequestedOff(User employee, Shift shift) {
